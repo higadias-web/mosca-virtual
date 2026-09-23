@@ -114,8 +114,8 @@ controlador (a), se usado. Tudo entra em `docs/NON_CONNECTOME.md` quando for imp
 | 1 | 2026-09-23 | Métrica de ritmo (v1 → v2, §7.1); H6: confiabilidade dos transmissores; H2 × H6 em malha aberta (18 condições × 5 sementes); aparato: bola, torque, MN → músculo → junta (sinais de flexão medidos), transdução proprioceptiva (941 sensores); figuras em `results/phase3a/s1/` | H2, H6 (a) e (b) | **Não** (0 de 108 pernas×condições; malha aberta) |
 | 2 | 2026-09-23 | Direção dos proprioceptores por tipo (4 combinações); aferência imposta (marcha gravada) com sinais `verified`, H5 (fundo 5 Hz) e H6-g; ganho muscular fixado por critério (A4); loop fechado com H3 (×1, ×2); diagnóstico sem ajuste; inibição recíproca funcional; sensibilidade F_SAT; §7.2 | H1 (i e ii), H3, H5, H6-g | **Não** (aferência imposta: 0, nem reflexo). **Loop fechado: INCONCLUSIVO** por duas causas: (b) acionamento quase nulo, independente do aparato, e (a) juntas sem limite nem rigidez (§7.2). Sensibilidade F_SAT inválida, não analisada |
 
-Marco da 3ª sessão: ainda pendente. O loop fechado da Sessão 2 foi inconclusivo, e a regra para a
-Sessão 3 está proposta em §7.3 (aguarda aprovação).
+Marco da 3ª sessão: ainda pendente. O loop fechado da Sessão 2 foi inconclusivo. A Sessão 3 foi aprovada com
+ajustes, e a regra do marco (em taxa) e o pré-registro estão em §7.4.
 
 **Pré-registro (Sessão 2, antes de abrir resultados):** configuração principal para o vídeo =
 loop fechado, G3 (20 DNs de maior acionamento), vnc_scale 1, combinação de direção 00, semente
@@ -364,7 +364,7 @@ MNs, sha256 80d9d5851cb58d26… nas duas.
 **Ajustes fora do conectoma nesta sessão:** A1–A8, A5b (direção por tipo), sinal `verified`,
 H5-bg e H6-g (ver `docs/NON_CONNECTOME.md`). Nenhum resultado positivo foi obtido com eles.
 
-### 7.3 Proposta para a Sessão 3 (NÃO executada; aguarda aprovação)
+### 7.3 Proposta para a Sessão 3 (aprovada com ajustes em 2026-09-23; ajustes em §7.4)
 
 **(a) Validação do aparato antes de qualquer fila.** São 5 testes automáticos, e todos precisam
 passar antes da primeira execução com o LIF:
@@ -392,3 +392,107 @@ contando para o marco:
   Sessão 3, sem estourar o prazo do marco. Hoje: a F_SAT sem fonte (200 Hz).
 - Proposta: fixar a F_SAT com fonte antes de rodar. Se não houver fonte, manter 200 Hz e aceitar a
   regra acima. Nenhum ajuste de ganho ou de F_SAT depois de ver o resultado.
+
+### 7.4 Sessão 3: ajustes da aprovação e pré-registro (2026-09-23, antes de rodar qualquer coisa)
+
+Commitado antes de qualquer execução da Sessão 3. O que diverge de §7.3 vale como está aqui.
+
+**1. Regra do marco, em taxa (substitui §7.3 (b)).**
+- Se a mediana entre sementes da taxa média dos MNs por grupo ficar **abaixo de 10 Hz** (equivalente
+  a 0,05 × 200 Hz) **em todas as condições**, o resultado conta como ausência de ritmo com o loop
+  fechado. A 3a é encerrada e a 3b segue com o controlador (a).
+- **A exceção da F_SAT foi removida.** A F_SAT continua em 200 Hz só para mover o corpo
+  (`MotorDrive`) e não entra na decisão do marco.
+- Operacionalização, fixada agora:
+  - janela A = 450–3450 ms, como na Sessão 2;
+  - para cada execução, r_g = taxa média dos MNs do grupo muscular g (perna × junta × papel,
+    `leg_mn_table.csv`, MNs em 0 Hz incluídos);
+  - estatística da execução = mediana de r_g entre os grupos, o mesmo agregador da regra de ativação
+    da Sessão 2;
+  - condição = grupo de DNs × escala do VNC × combinação de direção;
+  - valor da condição = mediana das 5 sementes;
+  - a regra dispara se todas as condições ficarem abaixo de 10 Hz.
+- **Na fronteira:** a decisão usa a mediana das 5 sementes, olhada **uma única vez**. Não entram
+  novas sementes nem rodada extra para desempatar.
+- O ritmo continua avaliado pela métrica v2 congelada. Um ritmo só conta se sumir na ablação (§1b.2).
+
+**2. Parâmetros passivos das juntas (correção do defeito A2), com fonte.**
+Fonte: Wang, Babski, Perdomo, McMahan, Ramakrishnan, Biswas e Bhandawat 2025, "Passive muscle forces
+in *Drosophila* are large but insufficient to support a fly's weight", bioRxiv
+10.1101/2025.04.29.651225 v2 (**preprint, sem revisão por pares**; PMC12324252).
+- Método da fonte: MNs inativados geneticamente, com o torque passivo estimado pela configuração da
+  perna. O torque é linear no desvio do ângulo de repouso; n = 20 moscas; o IQR indica uma faixa de
+  ~2× entre moscas.
+- Tabela 1 (mediana). A unidade vem impressa como "mN/°". A leitura dimensionalmente coerente é
+  **mN·m/°**, que fecha com duas afirmações do artigo: o torque passivo é muito maior que o peso da
+  própria perna e 70× menor que o necessário para sustentar a mosca.
+- Conversão para a unidade do modelo (µN·mm/rad = mN·m × 10⁶ × 57,296):
+
+| DOF do NeuroMechFly (grau de liberdade da fonte) | Anterior | Média | Posterior |
+|---|---|---|---|
+| CTr pitch (levação-depressão) | 0,859 | 0,493 | 1,547 |
+| ThC pitch (retração-protração) | 0,109 | 0,630 | 3,209 |
+| FTi pitch (extensão-flexão) | 0,974 | 1,432 | 0,974 |
+| ThC roll (pronação-supinação, na ThC pela fonte) | 0,859 | 0,573 | 2,693 |
+| **Sem medida** (ThC yaw, TrF roll, TiTa pitch): mediana dos 4 valores da mesma perna, **escolha sem fonte** | 0,859 | 0,602 | 2,120 |
+
+- **Repouso das molas:** a pose neutra do NeuroMechFly (`springref` atual). A fonte só dá os ângulos
+  de repouso em figura. **Escolha sem fonte.**
+- **Amortecimento: a fonte não mede, então vale um critério fixado agora, sem ajuste depois.** Para
+  cada junta, c = max(k · 8 ms, 2·√(k·I)):
+  - 8 ms = 1/(2π · 20 Hz): a junta passiva não pode filtrar a banda de passada (3–20 Hz, Mendes et
+    al. 2013, a mesma da métrica);
+  - 2·√(k·I) é o amortecimento crítico, com I = diagonal da matriz de massa do MuJoCo na pose
+    neutra. É um piso para a junta não oscilar sozinha;
+  - estabilidade com dt = 0,1 ms: 2·√(I/k) ≥ 1,5 ms ≫ 0,1 ms (I ~ 2×10⁻⁶ a 1,5×10⁻⁵ no modelo). O
+    integrador Euler do MuJoCo trata o amortecimento de forma implícita.
+- Tarsos passivos (7,5 / 0,01): sem mudança.
+- **Limites de amplitude** (`range`): para cada DOF ativo, [mín − 0,3·s, máx + 0,3·s] da marcha
+  real gravada (MotionSnippet, 2 s), com s = máx − mín. Se o repouso da mola cair fora, a faixa é
+  estendida até ele. A fonte não dá a amplitude máxima de movimento. **Escolha sem fonte.**
+- Consequência, calculada antes de rodar: com k ~ 0,1–3 µN·mm/rad e ganho de 10–22 µN·mm (A4,
+  congelado), uma ativação líquida de 1 num grupo leva o equilíbrio a dezenas de rad, bem além dos
+  limites. Com a rigidez medida, **o que segura a junta é o balanço entre antagonistas e os
+  limites**, não a mola. Isso é coerente com a fonte (torque passivo 70× menor que o de
+  sustentação). O teste 3 de §7.3 ("varre até ~100 % da amplitude real") não pode passar e é
+  reformulado abaixo. **Nenhum ganho muda por causa disso.**
+
+**3. Validação do aparato: tolerâncias PROPOSTAS (aguardam aprovação; nada roda antes).**
+Referência medida na marcha real gravada (MotionSnippet, 2 s, 18 pares perna × {ThC pitch, CTr,
+FTi}):
+- amplitude p5–p95 de 0,25 a 1,47 rad;
+- CV da amplitude entre passadas: mediana 0,25, máximo 0,41;
+- diferença da própria medida p5–p95 entre as duas metades de 1 s: mediana 9 %, **máximo 34 %**.
+
+| Teste | Tolerância proposta | Justificativa |
+|---|---|---|
+| (a) Réplica com torques | Réplica por servo (kp = 150, como no tutorial 2 e na calibração do A4) **na bola, com as juntas novas**; os torques dos atuadores são gravados e tocados em malha aberta como MOTOR, no mesmo aparato. **Cada uma das 18 amplitudes p5–p95 fica dentro de ±35 % da marcha real** (X = 35 %) | É o máximo que a mesma medida varia na mosca real entre duas metades do registro (34 %). Uma tolerância menor reprovaria a mosca real contra ela mesma. Ainda é 17–40× mais apertada que o defeito da Sessão 2 (5,9–15×). O valor vem dos dados; a regra "a pior metade da mosca real" é escolha |
+| (b) Repouso | Sem estímulo nem ativação, por **Z = 5,7 s** (a duração de uma execução do loop). Depois de 0,5 s de acomodação, **cada junta ativa fica a menos de Y = 0,05 rad** do seu ângulo em 0,5 s, e a superfície da bola percorre < 0,2 mm | Y = 1/3 da largura da sigmoide de posição dos claw (W_RAD = 0,15 rad, A5), para a deriva de repouso não varrer os sensores de posição, e 1/5 da menor amplitude real (0,25 rad). Z cobre uma execução inteira. **Bola (0,2 mm): escolha sem fonte.** Os 0,5 s de acomodação também são escolha |
+| (c) Limites | Ativação 1 (torque = ganho) em cada grupo, sozinho, por 200 ms: a junta não passa do `range` em mais de 0,05 rad (limite macio do MuJoCo) | a mesma tolerância Y |
+| (d) Faixa dinâmica (reformulado) | Ativação de 0 a 1 em 5 degraus, em cada grupo: o ângulo varia de forma monotônica, no sentido do papel (flexor/extensor etc.), e respeita (c) | não exige cobrir a amplitude real, que depende do balanço dos antagonistas (item 2) |
+
+Os testes (b) a (d) usam o aparato da bola, com as mesmas pernas e a mesma pose. Se qualquer teste
+falhar, **nenhuma fila roda**, e a falha é relatada sem ajuste do critério.
+
+**4. Dois testes baratos (independentes do aparato; malha aberta ou só grafo).**
+- **T1, saldo E/I do caminho sensor → MN na H6-g.** Grafo do híbrido, vnc_scale 1, nos modos
+  `verified` e `verified_gluexc`.
+  - Para cada perna e cada classe proprioceptiva (claw, hook, club, placas de pelos, campaniformes),
+    calcular a soma com sinal das sinapses diretas até os MNs da mesma perna (1 sinapse) e a soma de
+    W₁·W₂ nos caminhos de 2 sinapses (produto dos pesos com sinal; a desinibição conta como
+    positiva, o que é uma linearização).
+  - Relatar E, I e (E − I)/(E + I), também separando MNs flexores e extensores da FTi.
+  - **Leitura pré-registrada:** se o saldo de 2 sinapses de claw/hook passar de negativo (`verified`)
+    a positivo (`gluexc`), isso é coerente com a elevação da H6-g sem DNs na Sessão 2 (p90 = 4,5).
+    Como a H6-g não tem base documentada, isso gera **só uma hipótese**, nunca ritmo nem resultado
+    positivo.
+- **T2, inibição recíproca no sentido extensores → flexores.** Espelho exato do teste da Sessão 2
+  (`experiments/phase3a_recip.py`):
+  - estímulo nos 20 pré-motores excitatórios mais seletivos para os extensores (entrada em E > 0 e
+    em F = 0) a 100 Hz, de 1000 a 2000 ms;
+  - G3 a 200 Hz o tempo todo; sinais `verified`, escala 1; sementes 9000–9004 (as mesmas); 12
+    pares perna × junta (CTr, FTi).
+  - **Critério pré-registrado:** a inibição recíproca E → F funciona se, na média das 5 sementes,
+    os flexores caírem ≥ 25 % em pelo menos 9 dos 12 pares, com os extensores subindo. Os limiares
+    25 % e 9/12 são **escolha sem fonte**. Um par com flexores em 0 Hz antes do estímulo é "não
+    avaliável" e conta contra.
