@@ -8,7 +8,10 @@ A especificação completa, com regras de trabalho, fases e critérios, está em
 BANC; **D-106**: Fase 3 em 3a (bolinha, marcha pelo cordão) e 3b (terrário). Prazo da 3a: 6 sessões
 ou 2 semanas (o que vier primeiro); marco na 3ª sessão (sem ritmo nos MNs de perna com loop
 proprioceptivo fechado → encerrar 3a, documentar, 3b com o controlador (a)).
-**Plano da Fase 3 em `docs/FASE3_PLANO.md`, aguardando aprovação. Não começar a 3a antes.**
+**Plano aprovado; Fase 3a em andamento: Sessão 1 concluída (2026-09-23)**, sem ritmo em malha
+aberta (H2, H6). Registro de sessões e resultados em `docs/FASE3_PLANO.md` §6–7. Prazo: 2026-10-07
+ou 6 sessões. A entrega paralela "P" (probóscide) ainda não começou.
+Ao fim de cada fase ou entrega: vídeo de 10–20 s em results/. A cada sessão: figuras em results/phase3a/.
 Fase 1 aprovada em 2026-09-23; Fase 0 em 2026-09-22 (D-003, D-006, D-008, D-101, D-102, D-104).
 Nenhuma fase começa sem aprovação explícita do usuário, e nenhuma ⚠️ DECISÃO é tomada sem ele.
 
@@ -32,6 +35,8 @@ terrario/brain/hybrid.py FlyWire 783 + VNC do BANC (pontes DN/AN pareadas por ti
 terrario/brain/connectomes.py  load("783" | "banc888" | "banc888v3" | "fw783+bancvnc")
 terrario/world/          arena do terrário (FlyGym 2.1 BaseWorld) e campos (odor 2D, temperatura, luz)
 terrario/body/           cena (build_scene), sensores da mosca (1 kHz), gravação Parquet (200 Hz)
+terrario/vnc/            Fase 3a: motor_map (MN → músculo → junta), apparatus (bola, torque), proprio, rhythm
+terrario/video.py        vídeos curtos das cenas (results/)
 configs/arena.yaml       disposição da arena (mm)
 tests/                   pytest (inclui comparação determinística spike a spike com o Brian2)
 experiments/             Fase 1: shiu_repro.py, compare_shiu.py, fila noturna; Fase 2: phase2_demo.py;
@@ -83,7 +88,8 @@ systemd-inhibit --what=idle:sleep uv run python bench/run_all.py --profiles bala
 - Unidades físicas: mm, s (padrão do FlyGym; gravidade −9810 mm/s²). Modelo neural: ms, mV.
 
 ## Pendências
-- Aprovação do plano da Fase 3 (`docs/FASE3_PLANO.md`). Registrar cada sessão da 3a no plano (contagem do prazo).
+- Fase 3a, Sessão 2: loop fechado (H1) e escala do VNC (H3). Registrar cada sessão no plano (§6).
+- Entrega P (paralela, fora do prazo): juntas da probóscide, extensão com açúcar, supressão com amargo, ablação do MN9, vídeo.
 - Fase 3: obter os IDs sensoriais nas anotações da v783 (não herdar a lista v630 do artigo; 1 dos 21 GRNs de açúcar não existe na v783).
 - Fase 3: dar juntas e atuadores à probóscide (o corpo de locomoção padrão não tem); MN9 → probóscide.
 - Fase 3a (se aprovada): bola simulada (o FlyGym 2.1 não tem), mapeamento MN → músculo → torque

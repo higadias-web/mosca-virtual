@@ -33,8 +33,10 @@ class FlyScene:
 
 def build_scene(spawn_xy=(-15.0, 4.0), heading_rad: float = 0.0, *, vision_hz: float = 0.0,
                 config=DEFAULT_CONFIG, dense_jacobian: bool = True, name: str = "fly",
-                colorize: bool = True) -> FlyScene:
+                colorize: bool = True, tracking_camera: bool = False) -> FlyScene:
     fly = make_locomotion_fly(name=name, add_adhesion=True, colorize=colorize)
+    if tracking_camera:
+        fly.add_tracking_camera()  # flygym BaseFly.add_tracking_camera ("<nome>/trackcam")
     if vision_hz > 0:
         fly.add_vision()
     world = TerrariumWorld(config=config, dense_jacobian=dense_jacobian)

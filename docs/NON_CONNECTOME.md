@@ -33,6 +33,23 @@ são previsões a confirmar nas fases seguintes.
 | BANC: `w_syn` do Shiu multiplicado por 1,9 (variante de teste) | `experiments/connectome_eval.py --wscale` | compensa a menor captura de sinapses do BANC; não é dado |
 | Híbrido: costura de dois animais (cérebro FlyWire + VNC BANC); pareamento de DNs/ANs por (tipo, lado), arbitrário dentro de tipos com vários membros; sinal do FlyWire nas pontes | `terrario/brain/hybrid.py` | toda a ponte é engenharia |
 
+## Fase 3a (cordão do BANC na bolinha), a partir da Sessão 1
+
+Cada item conta como **um ajuste fora do conectoma** no relatório da 3a quando for usado para
+obter um resultado (critério da aprovação de 2026-09-23).
+
+| # | Item | Onde | Observação |
+|---|---|---|---|
+| A1 | Bola (raio 5,39 mm, 54,6 mg, atrito 1,3; junta esférica) e altura da bola sob os tarsos | `terrario/vnc/apparatus.py` | parâmetros da `Ball` do FlyGym 1.x |
+| A2 | Atuadores de torque nas 42 juntas ativas; sem adesão; rigidez/amortecimento passivos de `make_locomotion_fly` | idem | biomecânica |
+| A3 | Músculo → grau de liberdade do NeuroMechFly (17 músculos → 7 DOFs) e sinal de flexão medido (CTr −, FTi +, TiTa −) | `motor_map.py`, `apparatus.py` | anatomia da literatura + modelagem |
+| A4 | Ativação muscular de 1ª ordem: τ = 20 ms, saturação a 200 Hz, ganho 30 | `apparatus.py:MotorDrive` | a calibrar na Sessão 2 |
+| A5 | Transdução proprioceptiva: claw (posição FTi), hook (direção), club (|velocidade|), placas de pelos (ThC/CTr), campaniformes (força de contato); R_MAX 100 Hz, larguras e saturações; **qual neurônio é de flexão/extensão e seu limiar (pseudoaleatório, semente fixa)** | `proprio.py` | o BANC não anota o ajuste por neurônio |
+| A6 | Limiares de posição dentro da faixa de ângulos da marcha do CPG (Fase 2) | `proprio.py:_R` | derivado de dado simulado, não biológico |
+| H6-v | Sinais "verified": `neurotransmitter_verified`, preenchido pela hemilinhagem; **MNs = glutamato** | `banc.neuron_signs` | literatura (MNs glutamatérgicos; Lacin et al. 2019) |
+| H6-g | Sinais "verified_gluexc": glutamato excitatório em todo o VNC | idem | teste de sensibilidade, sem base documentada |
+| S | Estímulo: Poisson nos DNs (como a ativação optogenética do Shiu); grupo G3 escolhido pelo acionamento no grafo | `experiments/phase3a_s1.py` | protocolo |
+
 ## Planejado (a confirmar por fase)
 
 | Item | Animal | Fase | Por que não vem do conectoma |

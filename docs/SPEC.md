@@ -62,6 +62,11 @@ colônia de bactérias no solo, com crescimento e consumo.
 6. Mantenha um CLAUDE.md na raiz com: estrutura do projeto, como rodar, fase
    atual, pendências e riscos conhecidos.
 7. Peça minha confirmação antes de executar qualquer comando com `sudo`.
+8. Ao fim de cada fase ou entrega, gere um vídeo curto (10–20 s) da cena em results/.
+   Quando uma fase for aprovada, faça o commit dela antes de começar a seguinte.
+9. Qualquer resultado de comportamento ou ritmo precisa sumir na ablação correspondente
+   (critério contra resultado fabricado), e o relatório conta quantos ajustes fora do
+   conectoma foram necessários, todos listados em docs/NON_CONNECTOME.md.
 
 ## Hardware e sistema (restrições obrigatórias)
 Máquina alvo: ThinkPad T14 Gen 4 — Intel Core i5-1345U (2P+8E núcleos, 15 W,
@@ -283,6 +288,21 @@ replay.
 - Complementos 2D por animal: raster de spikes e taxa de disparo por grupo.
 - Destaque automático das regiões mais ativas em eventos (ex.: quando a mosca
   toca a fruta, realçar os circuitos gustativos).
+
+### Atividade motora (requisito adicionado em 2026-09-23; construir na Fase 6)
+- Um painel de atividade motora por animal, sincronizado com a timeline do replay.
+- Mosca: vista do corpo em que cada perna e a probóscide acendem conforme disparam os
+  motoneurônios de cada junta, pelo mapa motoneurônio → músculo → junta do BANC
+  (músculo-alvo anotado por MN), sincronizada com o movimento das juntas no replay.
+  Clicar numa junta mostra os motoneurônios dela e o músculo-alvo de cada um.
+- O cordão nervoso ventral aparece na vista 3D do cérebro da mosca, ligado a ele
+  (posições do BANC registradas ao espaço do FlyWire, ou lado a lado com a ligação
+  pelos DNs/ANs; decidir na Fase 6).
+- Minhocas: vista da "onda motora", com os motoneurônios agrupados pelos quadrantes
+  musculares ao longo do corpo. Larva: equivalente, se ela entrar no elenco.
+- Antes da Fase 6 não se constrói painel web: nas fases anteriores, só figuras de
+  diagnóstico em results/ (ex.: na 3a, raster dos MNs por perna e por junta e o espectro
+  da métrica de ritmo, a cada sessão).
 
 ### Replay
 - Timeline com play/pause/velocidade/scrub e marcadores de eventos (contato,

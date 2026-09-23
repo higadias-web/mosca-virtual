@@ -37,7 +37,7 @@ BRIDGE = {"descending", "ascending", "sensory_ascending", "sensory_descending",
           "ascending_visceral_circulatory"}
 
 
-def build(vnc_scale: float = 1.0):
+def build(vnc_scale: float = 1.0, sign_mode: str = "predicted"):
     """Monta o híbrido. Retorna (conectoma, relatório dict)."""
     import scipy.sparse as sp
 
@@ -78,7 +78,8 @@ def build(vnc_scale: float = 1.0):
     fpre = np.repeat(np.arange(fw.n), np.diff(fw.indptr))
     neg[fpre[fw.syn_count < 0]] = True
     fw_sign[neg] = -1
-    b_sign = np.sign(bc.syn_count)
+    # sinal dos neurônios do BANC pelo modo da H6 (banc.neuron_signs); "predicted" = load()
+    b_sign = banc.neuron_signs(m, sign_mode)[pre].astype(float)
     hp, hq = hmap[pre[both_in]], hmap[post[both_in]]
     sgn = np.where(hp < fw.n, fw_sign[np.minimum(hp, fw.n - 1)], b_sign[both_in])
     wb = w[both_in] * sgn * vnc_scale
@@ -101,7 +102,7 @@ def build(vnc_scale: float = 1.0):
         banc_syn_used=float(w[both_in].sum()),
         banc_syn_bridge_bridge_skipped=float(w[bb & ~keep].sum()),
         banc_syn_vnc_to_brainonly_dropped=float(w[keep & ~both_in].sum()),
-        bridge_sign_disagreements=disagree, vnc_scale=vnc_scale,
+        bridge_sign_disagreements=disagree, vnc_scale=vnc_scale, sign_mode=sign_mode,
         matched_by_class={k: int(v) for k, v in
                           m.loc[m["banc_888_id"].isin(list(b2fw)), "super_class"]
                           .value_counts().items()},
@@ -154,6 +155,18 @@ def match_bridges(mb, fw: FlyWireConnectome) -> dict[int, int]:
     return out
 
 
+def banc_index(c: FlyWireConnectome, meta=None):
+    """Função ids_do_BANC → índices no híbrido `c` (−1 se o neurônio não está no modelo).
+    Pontes pareadas vão para o nó do FlyWire (match_bridges); as demais usam o próprio ID."""
+    m = banc.load_meta() if meta is None else meta
+    b2fw = match_bridges(m[m["super_class"].isin(BRIDGE)], flywire.load("783"))
+    f2i = c.flyid2i
+
+    def f(ids):
+        return [b2fw.get(int(b), f2i.get(int(b), -1)) for b in ids]
+    return f
+
+
 def b_sign_by_neuron(bc: FlyWireConnectome) -> np.ndarray:
     """Sinal de cada neurônio do BANC (pelo sinal das suas arestas de saída; +1 se não tem)."""
     s = np.ones(bc.n)
@@ -162,13 +175,14 @@ def b_sign_by_neuron(bc: FlyWireConnectome) -> np.ndarray:
     return s
 
 
-def load(vnc_scale: float = 1.0, cache: bool = True) -> FlyWireConnectome:
-    path = DATA / "cache" / f"fw783_bancvnc_s{vnc_scale:g}.npz"
+def load(vnc_scale: float = 1.0, cache: bool = True, sign_mode: str = "predicted") -> FlyWireConnectome:
+    tag = "" if sign_mode == "predicted" else f"_{sign_mode}"
+    path = DATA / "cache" / f"fw783_bancvnc_s{vnc_scale:g}{tag}.npz"
     if cache and path.exists():
         z = np.load(path)
         return FlyWireConnectome("fw783+bancvnc", z["flyids"], z["indptr"], z["indices"],
                                  z["syn_count"])
-    c, rep = build(vnc_scale)
+    c, rep = build(vnc_scale, sign_mode)
     if cache:
         path.parent.mkdir(parents=True, exist_ok=True)
         np.savez(path, flyids=c.flyids, indptr=c.indptr, indices=c.indices, syn_count=c.syn_count)

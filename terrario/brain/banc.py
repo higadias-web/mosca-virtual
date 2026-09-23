@@ -47,6 +47,40 @@ def load_meta():
     return m
 
 
+SIGN_MODES = ("predicted", "verified", "verified_gluexc")
+
+
+def neuron_signs(m, mode: str = "predicted") -> np.ndarray:
+    """Sinal (+1/−1) de cada neurônio de `load_meta()` para a H6 da Fase 3a.
+
+    predicted        transmissor previsto pelo BANC (`neurotransmitter_predicted`), regra do Shiu
+                     com histamina inibitória. É o padrão de `load()`.
+    verified         `neurotransmitter_verified` (1º transmissor da lista) quando existe; senão, o
+                     verificado mais comum da mesma hemilinhagem (no VNC o transmissor rápido é
+                     fixo por hemilinhagem: Lacin et al. 2019, eLife); senão, o previsto. Todos os
+                     motoneurônios (super_class motor) = glutamato: os MNs de Drosophila são
+                     glutamatérgicos; a previsão do BANC para eles tem score mediano 0,47 (H6).
+    verified_gluexc  como `verified`, mas glutamato EXCITATÓRIO nos neurônios do VNC (teste de
+                     sensibilidade de classe inteira; sem base documentada para o VNC todo).
+    NON-CONNECTOME: regra de sinal e as substituições acima.
+    """
+    if mode not in SIGN_MODES:
+        raise ValueError(mode)
+    nt = m["neurotransmitter_predicted"].astype(object).copy()
+    if mode != "predicted":
+        ver = m["neurotransmitter_verified"].astype(str).str.split(",").str[0]
+        ver = ver.where(m["neurotransmitter_verified"].notna())
+        hl = m["hemilineage"]
+        cons = ver.groupby(hl).agg(lambda x: x.value_counts().index[0] if x.notna().any() else None)
+        by_hl = hl.map(cons)
+        nt = ver.fillna(by_hl.where(m["region"] == "ventral_nerve_cord")).fillna(nt)
+        nt[m["super_class"] == "motor"] = "glutamate"
+    sign = np.where(nt.isin(INHIBITORY), -1, 1)
+    if mode == "verified_gluexc":
+        sign[((nt == "glutamate") & (m["region"] == "ventral_nerve_cord")).to_numpy()] = 1
+    return sign
+
+
 def load(edges: str = "v2", cache: bool = True) -> FlyWireConnectome:
     """Conectoma BANC no mesmo contêiner CSR do FlyWire (flyids = banc_888_id)."""
     path_cache = DATA / "cache" / f"banc_888_{edges}.npz"
