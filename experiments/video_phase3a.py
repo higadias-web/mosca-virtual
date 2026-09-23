@@ -111,6 +111,7 @@ def main():
               for h, l, j in zip(mnt.h, mnt.leg, mnt.joint)}
     hist = np.zeros((len(LEGS) * len(JOINTS), 50))
     frames = []
+    spk_i, spk_t = [], []
     fps = 30
     total = int(args.video_s * 1000)
     next_frame = 0.0
@@ -119,8 +120,11 @@ def main():
         q, qd = sim.get_joint_angles(fly.name), sim.get_joint_velocities(fly.name)
         f = sim.get_bodysegment_contact_forces(fly.name, tarsi, ground_only=True)
         brain.set_rates(pr_slots, pr.rates(q, qd, np.linalg.norm(f, axis=1).reshape(6, 5).sum(1)))
-        i, _ = brain.run(10, cap=1 << 22)
-        mi = i[np.isin(i, mnt.h.to_numpy())]
+        i, ts = brain.run(10, cap=1 << 22)
+        keep = np.isin(i, mnt.h.to_numpy())
+        mi = i[keep]
+        spk_i.append(mi)
+        spk_t.append(ts[keep] * brain.dt)
         tq = md.step(mi, 1.0)
         if t_on <= ms < t_on + kick_ms:
             tq = tq + kick
@@ -139,6 +143,15 @@ def main():
             frames.append(np.concatenate([cam, mn_panel(hist, ms, t_on, t_off)], axis=1))
     out = ROOT / "results/phase3a/s2" / f"video_closed_{args.group}_s{args.scale:g}_c{args.combo}_{args.seed}.webm"
     print(write_webm(out, frames, fps=fps), len(frames), "quadros")
+    # conferência: a reexecução tem de ser idêntica à da fila (hash dos spikes dos MNs, t < total)
+    import hashlib
+    vi, vt = np.concatenate(spk_i), np.concatenate(spk_t)
+    z = np.load(ROOT / "runs/phase3a/s2" / f"closed_{args.group}_s{args.scale:g}_c{args.combo}_{args.seed}.npz")
+    sel = z["t"] < total
+    h = lambda i, t: hashlib.sha256(np.asarray(i, np.int64).tobytes() + np.round(np.asarray(t), 6).tobytes()).hexdigest()
+    hv, hq = h(vi, vt), h(z["i"][sel], z["t"][sel])
+    print(f"spikes MN vídeo {len(vi)} | fila {sel.sum()} | sha256 vídeo {hv[:16]} fila {hq[:16]} | "
+          f"{'IDÊNTICOS' if hv == hq else 'DIFERENTES'}")
 
 
 if __name__ == "__main__":

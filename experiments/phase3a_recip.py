@@ -69,7 +69,7 @@ def main():
         for jn in ("CTr", "FTi"):
             pm, F, E = targets(c, mnt, leg, jn)
             jobs += [(leg, jn, pm, F, E, g3, 9000 + s) for s in range(5)]
-    with ProcessPoolExecutor(10, initializer=_init) as ex:
+    with ProcessPoolExecutor(4, initializer=_init) as ex:
         rows = list(ex.map(_job, jobs))
     df = pd.DataFrame(rows)
     df.to_csv(ROOT / "results/phase3a/s2_reciprocal_inhibition.csv", index=False)

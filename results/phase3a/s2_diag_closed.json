@@ -1,0 +1,19 @@
+{
+ "kind": "closed",
+ "f_sat": 200.0,
+ "n_runs": 120,
+ "mn_rate_median": 0.0,
+ "mn_rate_p90_median": 22.833333333333332,
+ "mn_frac_active": 0.27365728900255754,
+ "activation_group_mean_median": 0.001609105150798929,
+ "activation_group_mean_p90": 0.13319619125465848,
+ "frac_groups_saturated_median": 0.0,
+ "amp_ratio_median": {
+  "ThC": 5.915073656741601,
+  "CTr": 12.500231987138418,
+  "FTi": 15.204423650175958
+ },
+ "near_zero": true,
+ "saturated": false,
+ "verdict": "INCONCLUSIVO"
+}

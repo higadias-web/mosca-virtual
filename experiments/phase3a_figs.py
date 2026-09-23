@@ -269,3 +269,40 @@ def closed_loop_fig(tag: str, session: str = "s2", A=(450.0, 3450.0), B=(3700.0,
              "faixa cinza = banda 3–20 Hz; limiar de proeminência da métrica v2 = 5.", fontsize=8, color=INK2)
     fig.savefig(res / f"{tag}.png", dpi=120, bbox_inches="tight")
     plt.close(fig)
+
+
+def diag_fig(kind: str = "closed"):
+    """Diagnóstico sem ajuste (pré-registro 2): taxas dos MNs, ativação dos grupos e amplitude das
+    juntas relativa à marcha real, em escala log onde necessário."""
+    res = ROOT / "results" / "phase3a"
+    rates = np.load(ROOT / f"runs/phase3a/s2/diag_rates_{kind}.npy").ravel()
+    act = pd.read_csv(res / f"s2_diag_{kind}_activation.csv")
+    d = pd.read_csv(res / f"s2_diag_{kind}.csv")
+    fig, axs = plt.subplots(1, 3, figsize=(13, 4), facecolor=SURF)
+    for ax in axs:
+        _style(ax)
+    ax = axs[0]
+    ax.hist(rates, bins=np.r_[0, np.logspace(-0.5, 2.7, 40)], color="#2a78d6", edgecolor=SURF, lw=0.5)
+    ax.set_xscale("symlog", linthresh=0.3)
+    ax.set_title(f"Taxa por MN de perna, janela A\n(391 MNs × {len(d)} execuções; "
+                 f"{(rates == 0).mean():.0%} em 0 Hz)", fontsize=9, loc="left", color=INK)
+    ax.set_xlabel("Hz", fontsize=8, color=INK2)
+    ax = axs[1]
+    ax.hist(act.mean_act, bins=np.linspace(0, 1, 41), color="#eb6834", edgecolor=SURF, lw=0.5)
+    ax.axvline(0.05, color=INK2, ls="--", lw=1)
+    ax.set_yscale("log")
+    ax.set_title(f"Ativação média por grupo muscular\n(mediana {act.mean_act.median():.4f}; "
+                 f"limiar de 'perto de 0' = 0,05)", fontsize=9, loc="left", color=INK)
+    ax.set_xlabel("ativação (0–1)", fontsize=8, color=INK2)
+    ax = axs[2]
+    cols = [c for c in d.columns if c.endswith("_amp_ratio")]
+    vals = [d[[c for c in cols if f"_{j}_" in c]].stack().to_numpy() for j in ("ThC", "CTr", "FTi")]
+    ax.boxplot(vals, tick_labels=["ThC pitch", "CTr", "FTi"], showfliers=False,
+               medianprops=dict(color="#eb6834"), boxprops=dict(color=INK2), whiskerprops=dict(color=INK2))
+    ax.axhline(1, color="#2a78d6", lw=1)
+    ax.set_yscale("log")
+    ax.set_title("Amplitude das juntas (p95−p5) / marcha real\n(linha azul = igual à real)",
+                 fontsize=9, loc="left", color=INK)
+    fig.tight_layout()
+    fig.savefig(res / "s2" / f"diag_{kind}.png", dpi=130)
+    plt.close(fig)

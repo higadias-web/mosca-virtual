@@ -1,0 +1,3 @@
+Filas de sensibilidade F_SAT 100 e 400 Hz: executadas até o fim (saída 0), registradas como INVÁLIDAS e NÃO analisadas.
+Motivo: o pré-registro exigia um negativo válido do loop fechado; ele saiu inconclusivo e o aparato tinha defeito (juntas sem limite nem rigidez).
+Arquivos preservados em runs/phase3a/s2/closed_fsat*.npz (fora do git). O FILA_OK3 tem um defeito de contagem conhecido (o padrão ^closed_ também casa com closed_fsat).

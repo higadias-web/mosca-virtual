@@ -112,8 +112,10 @@ controlador (a), se usado. Tudo entra em `docs/NON_CONNECTOME.md` quando for imp
 | Sessão | Data | Feito | Hipóteses testadas | Ritmo? |
 |---|---|---|---|---|
 | 1 | 2026-09-23 | Métrica de ritmo (v1 → v2, §7.1); H6: confiabilidade dos transmissores; H2 × H6 em malha aberta (18 condições × 5 sementes); aparato: bola, torque, MN → músculo → junta (sinais de flexão medidos), transdução proprioceptiva (941 sensores); figuras em `results/phase3a/s1/` | H2, H6 (a) e (b) | **Não** (0 de 108 pernas×condições; malha aberta) |
+| 2 | 2026-09-23 | Direção dos proprioceptores por tipo (4 combinações); aferência imposta (marcha gravada) com sinais `verified`, H5 (fundo 5 Hz) e H6-g; ganho muscular fixado por critério (A4); loop fechado com H3 (×1, ×2); diagnóstico sem ajuste; inibição recíproca funcional; sensibilidade F_SAT; §7.2 | H1 (i e ii), H3, H5, H6-g | **Não** (aferência imposta: 0, nem reflexo). **Loop fechado: INCONCLUSIVO** por duas causas: (b) acionamento quase nulo, independente do aparato, e (a) juntas sem limite nem rigidez (§7.2). Sensibilidade F_SAT inválida, não analisada |
 
-Marco da 3ª sessão: ainda pendente (exige o loop proprioceptivo fechado, Sessão 2).
+Marco da 3ª sessão: ainda pendente. O loop fechado da Sessão 2 foi inconclusivo, e a regra para a
+Sessão 3 está proposta em §7.3 (aguarda aprovação).
 
 **Pré-registro (Sessão 2, antes de abrir resultados):** configuração principal para o vídeo =
 loop fechado, G3 (20 DNs de maior acionamento), vnc_scale 1, combinação de direção 00, semente
@@ -215,3 +217,178 @@ v2; `results/phase3a/s1_h2_h6.csv`, `s1_h2_h6_v2.csv`):
 aferência imposta pela cinemática gravada e com loop fechado, e H3 (escala do VNC). Testar também a
 sensibilidade à atribuição flexão/extensão dos proprioceptores. A malha aberta já descarta H2 e H6
 como causa **suficiente**. O marco depende do loop fechado.
+
+
+### 7.2 Sessão 2 (2026-09-23): propriocepção (H1), escala (H3), fundo (H5), glutamato (H6-g)
+
+**Procedimento e desvios, registrados antes do resultado.**
+- **Resultados vistos antes das instruções de bloqueio.** O resumo da primeira aferência imposta e
+  a figura de uma execução do loop fechado com ganho 30 foram abertos antes de o usuário pedir que
+  nada fosse aberto antes do `FILA_OK`. Os dois são declarados aqui.
+- **Ganho muscular (A4).** A primeira fila usou 30 em todas as juntas, sem fonte. Ela foi
+  interrompida e as 40 execuções prontas foram descartadas sem análise
+  (`runs/phase3a/s2_gain30_descartado/`). O novo ganho foi fixado por critério independente no
+  commit e50c4f5, antes de qualquer resultado: p95 do |τ| que o NeuroMechFly precisa para
+  reproduzir a marcha real. A taxa de referência F_SAT = 200 Hz é uma suposição **sem fonte**
+  (commit de3573c).
+- Pré-registros nos commits 87ef624 e de3573c:
+  - regra de inconclusivo;
+  - sensibilidade a F_SAT = 100 e 400 Hz;
+  - fundo da H5 (5 Hz de entrada, extrapolado do flexor da tíbia);
+  - configuração do vídeo.
+- **Fila:** 210/210 execuções (`runs/phase3a/s2/FILA_OK`), sob `systemd-inhibit`, com execução
+  separada da análise. A análise se recusa a rodar sem `FILA_OK` completo.
+- **Métrica congelada:** v2 da Sessão 1, sem mudança.
+
+**Direção dos proprioceptores (item 2 da instrução).**
+- Nenhuma fonte classifica claw/hook por sentido em tipos do MANC, FANC ou BANC. Foram verificados
+  Mamiya et al. 2018, Lee et al. 2025 (FANC, tabela suplementar não publicada em forma utilizável)
+  e Dallmann et al. 2025.
+- Como claw e hook se concentram em dois tipos principais cada (claw SNpp50/51; hook SNpp39/41),
+  a direção foi atribuída **por tipo**, com as 4 combinações enumeradas. A hipótese de que os dois
+  tipos são os dois sentidos **não está verificada**.
+- Ritmo conta só se aparecer em ≥ 3 das 4 combinações.
+
+**H1-i, aferência imposta** (marcha real gravada, ~11 Hz; sinais `verified`; 4 combinações × 5
+sementes; `results/phase3a/s2_imposed*.csv`, `s2_imposed_entrainment.csv`):
+
+| Condição | Geração (≥ 3/4) | Reflexo na freq. imposta | Potência na freq. imposta / mediana do espectro (mediana; p90) |
+|---|---|---|---|
+| Sem DNs | 0 de 6 pernas | 0 | 1,55; 2,82 |
+| Com G3 | 0 | 0 | 1,31; 2,43 |
+| H5 (fundo 5 Hz), sem DNs | 0 | 0 | 1,50; 2,34 |
+| H5, com G3 | 0 | 0 | 1,45; 1,94 |
+| **Controle H5** (só fundo, sem aferência) | 0 | 0 | 1,37; 2,04 |
+| Controle H5 + G3 | 0 | 0 | 1,37; 1,81 |
+| H6-g (glutamato excitatório), sem DNs | 0 | 0 | **2,11; 4,53** |
+| H6-g, com G3 | 0 | 0 | 1,34; 2,16 |
+
+- **Nem reflexo:** os MNs não acompanham a marcha imposta, e a potência na frequência imposta fica
+  igual à do controle sem aferência.
+- **Os sensores carregam o ritmo** (hook da L1 com pico em 11 Hz, proeminência 7,6), mas o caminho
+  de 2 sinapses dos claw até os MNs é inibitório no saldo (−260 mil contra +265 direto).
+- A H6-g sem DNs é o único caso com elevação (p90 4,5). Continua abaixo do limiar e não conta;
+  fica como indício para a Sessão 3.
+- **Limitação da H5 (pré-registrada):** o Poisson é supralimiar no LIF do Shiu. O fundo faz os
+  neurônios dispararem em vez de só despolarizá-los, então não testa bem a "inibição sem o que modular".
+
+**H1-ii + H3, loop fechado:** 3 grupos × 2 escalas × 4 combinações × 5 sementes = 120 execuções.
+**Ritmo que conta: 0 em todas as condições** (janela A: 0/4 combinações em todas as pernas).
+
+**Diagnóstico sem ajuste (pré-registro 2)** (`results/phase3a/s2_diag_closed.json`,
+`s2/diag_closed.png`):
+
+| Medida (janela A, 120 execuções) | Valor |
+|---|---|
+| MNs em 0 Hz | 73 % |
+| Taxa por MN: mediana / p90 | 0 / 22,8 Hz |
+| Ativação média dos grupos musculares: mediana entre execuções (regra) | **0,0016** (p90 dos grupos 0,13) |
+| Grupos saturados (≥ 0,95 em > 50 % do tempo) | 0 % |
+| Amplitude das juntas / marcha real (mediana) | ThC 5,9×; CTr 12,5×; FTi 15,2× |
+
+**O loop fechado é inconclusivo por duas causas independentes:**
+
+**(b) Acionamento quase nulo. Não depende do aparato e sozinho já torna o loop inconclusivo.**
+Com os DNs ligados, a taxa mediana dos MNs é 0 Hz, 73 % ficam parados e a ativação mediana dos
+grupos é 0,0016, 30× abaixo do limite pré-registrado de 0,05. O corpo quase não é acionado, então
+não há movimento gerado pela rede que os proprioceptores possam realimentar.
+*Evidência de que não depende do aparato:* a mesma medida nas execuções em malha aberta da Sessão 1
+(sem corpo; sinais `verified`, 200 Hz, 5 sementes) dá o mesmo quadro:
+
+| Grupo | Malha aberta (S1, sem aparato) | Loop fechado ×1 (S2) | Loop fechado ×2 (S2) |
+|---|---|---|---|
+| G2 | 0,0000 | 0,0000 | 0,0009 |
+| G3 | 0,0541 | 0,0443 | 0,0362 |
+| G4 | 0,0002 | 0,0007 | 0,0028 |
+
+(mediana entre sementes da ativação média dos grupos). G2 e G4 ficam perto de 0 com ou sem corpo.
+O G3 fica na fronteira do limite (0,05) nos dois casos: o aparato baixou pouco (0,054 → 0,044) e não
+criou o problema.
+
+**(a) Defeito do aparato: juntas sem limite nem rigidez.** As juntas giram várias voltas: ThC da L1
+até 46 rad, FTi da L2 até −71 rad, contra 0,4–1,3 rad na marcha real. O vídeo mostra pernas em
+posições impossíveis. Os proprioceptores leram ângulos impossíveis, então o loop fechado não
+testa a H1-ii nem a H3.
+
+*Por que a rigidez e o amortecimento passivos do A2 não atuaram:*
+- Eles vêm de `make_locomotion_fly`: rigidez 0,05 µN·mm/rad e amortecimento 0,06. Nesse corpo, a
+  rigidez efetiva vem dos atuadores de POSIÇÃO (kp = 45 µN·mm/rad, ~900× maior), e a passiva é só
+  um resíduo. Ao trocar por torque puro, tirei esse "mola" sem pôr outra no lugar.
+- Com o ganho de 10–22 µN·mm, uma ativação de apenas 0,13 (p90) dá ~1,3–2,9 µN·mm. O equilíbrio
+  com a rigidez de 0,05 fica a τ/k ≈ 26–58 rad do neutro.
+- O amortecimento só atrasa a chegada; não limita a amplitude.
+- As juntas do `add_joints` do FlyGym não têm `range` (limites). No uso normal os atuadores de
+  posição mantêm as juntas dentro da faixa, e aqui nada as mantinha.
+
+Juntas, as duas causas tornam o **negativo da Sessão 2 inconclusivo**: nem ausência nem presença de
+ritmo no loop fechado foi demonstrada.
+
+**Sensibilidade a F_SAT (100 e 400 Hz) registrada como INVÁLIDA.** O pré-registro exigia um
+negativo válido do loop fechado. Ele saiu inválido e a sensibilidade rodou no mesmo aparato com
+defeito. As duas filas terminaram, mas **não foram analisadas como evidência**. Os arquivos ficam
+em `runs/phase3a/s2/closed_fsat*` e não foram apagados. O contador da fila de sensibilidade
+(`FILA_OK3`) tem um defeito conhecido: o padrão `^closed_` também conta os arquivos `closed_fsat*`.
+Isso não importa, já que ela não será analisada.
+
+**Declaração sobre a figura com ganho 30.** A figura de uma execução do loop fechado (G2, ×1,
+combinação 00, semente 7000, ganho 30) foi vista por volta das 12:30. **F_SAT = 200 Hz já estava
+fixado antes**: está no código desde o commit da Sessão 1 (7f17e7b, 11:50) e não mudou depois. **O
+ganho, sim, foi fixado depois de ver essa figura** (e50c4f5, 12:53). O critério adotado (torque da
+marcha real) não usa nada da figura, mas a ordem fica declarada.
+
+**Hipótese da coativação e como foi testada (item 4 da instrução da Sessão 2).**
+- *Hipótese:* a coativação flexor × extensor da Sessão 1 (r de +0,1 a +0,37) não vem da falta de
+  substrato. Vem de os DNs acionarem em paralelo os pré-motores excitatórios dos DOIS lados, sem um
+  sinal fásico (proprioceptivo) que engaje a inibição recíproca.
+- *Teste estrutural* (`results/phase3a/s2_coactivation_structure.csv`): o substrato de alternância
+  existe. A excitação pré-motora compartilhada entre flexores e extensores é baixa (5–15 % por
+  junta e perna), e a inibição pré-motora é seletiva (0,84–0,89). Os DNs de G3 acionam os dois
+  lados (flexor/extensor de 0,9× a 8×).
+- *Teste funcional* (`results/phase3a/s2_reciprocal_inhibition.csv`): com G3 ligado, acionar os
+  20 pré-motores excitatórios mais seletivos dos flexores e medir a mudança nos extensores.
+  **A inibição recíproca FUNCIONA no modelo:** nas 12 combinações de perna e junta, os flexores sobem
+  2–5× (p. ex. FTi da L1: 5,3 → 26,3 Hz) e os extensores **caem 44–96 %** (FTi da L1: 7,2 → 0,3 Hz;
+  CTr da L1: 16,9 → 2,8 Hz). A média é de 5 sementes por combinação (60 execuções, CSV gravado só
+  ao fim). Leitura: a coativação da Sessão 1 não vem da falta de inibição recíproca, e sim do
+  acionamento paralelo dos dois lados pelos DNs. Falta testar a direção oposta (extensores →
+  flexores).
+- *Loop fechado:* r flexor × extensor da FTi perto de 0 (−0,07 a +0,23), mas com acionamento quase
+  nulo. Não é evidência de alternância.
+
+**Figuras e vídeo** (`results/phase3a/s2/`): `diag_closed.png`; `closed_G3_top20_drive_s1_c00_7000.png`
+(execução pré-registrada: raster, bola e espectros A e B); vídeo WebM/VP9
+`/home/sine/terrario-virtual/results/phase3a/s2/video_closed_G3_top20_drive_s1_c00_7000.webm`
+(5,00 s, 840 × 360, 30 fps, 150 quadros). A reexecução é **idêntica** à da fila: 21.968 spikes de
+MNs, sha256 80d9d5851cb58d26… nas duas.
+
+**Ajustes fora do conectoma nesta sessão:** A1–A8, A5b (direção por tipo), sinal `verified`,
+H5-bg e H6-g (ver `docs/NON_CONNECTOME.md`). Nenhum resultado positivo foi obtido com eles.
+
+### 7.3 Proposta para a Sessão 3 (NÃO executada; aguarda aprovação)
+
+**(a) Validação do aparato antes de qualquer fila.** São 5 testes automáticos, e todos precisam
+passar antes da primeira execução com o LIF:
+1. **Limites:** cada junta ativa ganha um `range` (proposta: faixa da marcha real gravada ± 30 %,
+   ou limites anatômicos da literatura, se houver). Teste: torque máximo por 200 ms não ultrapassa
+   o limite.
+2. **Rigidez e amortecimento passivos com fonte.** Proposta: medições de rigidez passiva de juntas
+   de perna de inseto, se existir fonte para Drosophila; senão, o valor que faz o tempo de relaxação
+   passiva ficar na ordem medida, com fonte a buscar. Teste: sem ativação, a perna volta ao neutro
+   e fica parada (amplitude < 0,05 rad).
+3. **Faixa dinâmica:** com ativação de 0 a 1 em cada grupo, a junta varre de 0 a ~100 % da
+   amplitude da marcha real, sem ultrapassar os limites.
+4. **Réplica da marcha real** com torques equivalentes: os ângulos ficam na faixa real (razão de
+   amplitude de 0,5 a 2).
+5. **Repouso:** 5 s sem estímulo nem ativação, sem drift da bola nem das juntas.
+
+**(b) Se, com o aparato corrigido, a ativação continuar perto de 0.** Definido antes de rodar,
+contando para o marco:
+- Regra: se a mediana da ativação média dos grupos na janela A ficar < 0,05 **em todas** as
+  condições (3 grupos × 2 escalas) do loop fechado corrigido, **o resultado da Sessão 3 é
+  "sem acionamento motor suficiente"**. Isso conta para o marco como **ausência de ritmo com loop
+  proprioceptivo fechado**: a 3a é encerrada, o negativo é documentado (com esta causa) e a 3b segue
+  com o controlador (a).
+- A única exceção seria uma causa de acionamento baixo pré-registrada e testável DENTRO da
+  Sessão 3, sem estourar o prazo do marco. Hoje: a F_SAT sem fonte (200 Hz).
+- Proposta: fixar a F_SAT com fonte antes de rodar. Se não houver fonte, manter 200 Hz e aceitar a
+  regra acima. Nenhum ajuste de ganho ou de F_SAT depois de ver o resultado.
