@@ -59,14 +59,20 @@ def make_neuromuscular_fly(name: str = "fly") -> NeuroMechFly:
 class TetheredBallWorld(_GroundContactMixin, BaseWorld):
     """Tórax fixo (mocap, como flygym.compose.world.TetheredWorld) sobre uma bola livre."""
 
-    def __init__(self, name: str = "bola", ball_z_offset: float = 0.0) -> None:
+    def __init__(self, name: str = "bola", ball_z_offset: float = 0.0, textured: bool = False) -> None:
         super().__init__(name=name)
+        if textured:  # só visual (vídeos): xadrez para enxergar a rotação; não muda a física
+            from flygym.utils.mjcf import add_material, add_texture
+            add_texture(self.mjcf_root, name="bola_xadrez", type="2d", builtin="checker",
+                        width=64, height=64, rgb1=(0.35, 0.35, 0.33), rgb2=(0.75, 0.75, 0.72))
+            add_material(self.mjcf_root, name="bola_xadrez", texture="bola_xadrez", texrepeat=(6, 6))
         pos = (BALL_POS[0], BALL_POS[1], BALL_POS[2] + ball_z_offset)
         body = self.mjcf_root.worldbody.add_body(name="ball", pos=pos)
         body.add_joint(name="ball_joint", type=JOINT_TYPES["ball"])
         self.ball_geom = body.add_geom(name="ball", type=GEOM_TYPES["sphere"],
                                        size=(BALL_RADIUS, 0, 0), mass=BALL_MASS,
-                                       rgba=(0.55, 0.55, 0.52, 1), contype=0, conaffinity=0)
+                                       rgba=(0.55, 0.55, 0.52, 1), contype=0, conaffinity=0,
+                                       **({"material": "bola_xadrez"} if textured else {}))
         self.ground_geoms = [self.ball_geom]
         self.mjcf_root.worldbody.add_light(name="luz", pos=(0, 0, 40), dir=(0, 0, -1),
                                            diffuse=(0.6, 0.6, 0.6), castshadow=False)
@@ -93,11 +99,11 @@ class BallScene:
     ball_vadr: int
 
 
-def build_ball_scene(ball_z_offset: float = 0.0) -> BallScene:
+def build_ball_scene(ball_z_offset: float = 0.0, textured: bool = False) -> BallScene:
     from flygym import Simulation
     from flygym.utils.math import Rotation3D
     fly = make_neuromuscular_fly()
-    world = TetheredBallWorld(ball_z_offset=ball_z_offset)
+    world = TetheredBallWorld(ball_z_offset=ball_z_offset, textured=textured)
     world.add_fly(fly, [0, 0, 0], Rotation3D("quat", [1, 0, 0, 0]))
     sim = Simulation(world)
     jid = mj.mj_name2id(sim.mj_model, mj.mjtObj.mjOBJ_JOINT, "ball_joint")

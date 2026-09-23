@@ -115,6 +115,10 @@ controlador (a), se usado. Tudo entra em `docs/NON_CONNECTOME.md` quando for imp
 
 Marco da 3ª sessão: ainda pendente (exige o loop proprioceptivo fechado, Sessão 2).
 
+**Pré-registro (Sessão 2, antes de abrir resultados):** configuração principal para o vídeo =
+loop fechado, G3 (20 DNs de maior acionamento), vnc_scale 1, combinação de direção 00, semente
+7000. Escolhida por ser o grupo de referência da Sessão 1 e por não usar escala fora do conectoma.
+
 ## 7. Resultados por sessão
 
 ### 7.1 Sessão 1 (2026-09-23): H2 e H6 em malha aberta, aparato
