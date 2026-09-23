@@ -138,13 +138,25 @@ class MotorDrive:
     """Spikes de MNs → ativação de cada grupo muscular (1ª ordem) → torque nas juntas.
 
     ativação: da/dt = (u − a)/τ, u = (spikes do grupo no passo)/(n_MN · dt · F_SAT), a ∈ [0, 1].
-    torque(DOF) = GAIN · Σ_grupos sinal · a, limitado a ±TORQUE_LIMIT.
+    torque(DOF) = GAIN[junta] · Σ_grupos sinal · a, limitado a ±TORQUE_LIMIT.
     τ = 20 ms e F_SAT = 200 Hz: NON-CONNECTOME (ordem de grandeza da contração de músculos de
     perna de Drosophila, Azevedo et al. 2020, eLife, "A size principle for recruitment of Drosophila leg motor
-    neurons"; a calibrar na Sessão 2). GAIN idem.
+    neurons").
+
+    GAIN (A4), fixado na Sessão 2 ANTES de analisar o loop fechado, por critério independente do
+    ritmo: torque que o próprio NeuroMechFly precisa para reproduzir a marcha REAL gravada
+    (flygym_demo MotionSnippet, 330 fps), no procedimento do tutorial 2 do FlyGym 2.1
+    (tutorials/2_replaying_experimental_recordings.ipynb: atuadores de posição kp = 150 µN·mm/rad,
+    chão plano, adesão). Ganho de cada junta = percentil 95 de |τ| em todas as pernas
+    (results/phase3a/gain_calibration_replay.json). Ativação máxima de um grupo muscular = torque
+    que cobre 95 % do que a marcha real exige. A fila anterior usou 30 em todas as juntas, sem
+    fonte, e foi descartada.
     """
 
-    TAU_MS, F_SAT, GAIN = 20.0, 200.0, 30.0
+    TAU_MS, F_SAT = 20.0, 200.0
+    GAIN = {"ThC": 10.0, "CTr": 19.45, "TrF": 15.89, "FTi": 22.39, "TiTa": 12.22}
+    _KEY2JOINT = {"thc_pitch": "ThC", "thc_roll": "ThC", "thc_yaw": "ThC", "ctr_pitch": "CTr",
+                  "trf_roll": "TrF", "fti_pitch": "FTi", "tita_pitch": "TiTa"}
 
     def __init__(self, mnt, dof_order: list[str], flex_sign: dict[str, int]):
         self.dof_index = {d: k for k, d in enumerate(dof_order)}
@@ -152,7 +164,7 @@ class MotorDrive:
         self.groups = []
         for (leg, joint, role), g in groups:
             key, s = ROLE_DOF[(joint, role)]
-            s = s * flex_sign.get(key, 1)
+            s = s * flex_sign.get(key, 1) * self.GAIN[self._KEY2JOINT[key]]
             self.groups.append((np.array(g.h, dtype=np.int64), self.dof_index[dof_name(leg, key)], s))
         self.a = np.zeros(len(self.groups))
         self.lut = {}
@@ -171,5 +183,5 @@ class MotorDrive:
         self.a += (np.clip(u, 0, 1) - self.a) * (dt_ms / self.TAU_MS)
         tq = np.zeros(self.n_dof)
         for k, (_, d, s) in enumerate(self.groups):
-            tq[d] += self.GAIN * s * self.a[k]
+            tq[d] += s * self.a[k]
         return np.clip(tq, -TORQUE_LIMIT, TORQUE_LIMIT)
