@@ -1,0 +1,31 @@
+[project]
+name = "terrario-virtual"
+version = "0.0.0"
+description = "Terrário virtual com organismos dirigidos por conectoma"
+requires-python = "==3.13.*"
+dependencies = [
+    "flygym==2.1.0",
+    "brian2==2.10.1",
+    "numpy>=2.0,<3.0",
+    "scipy",
+    "pandas",
+    "pyarrow",
+    "pyyaml",
+    "psutil",
+    "torch",
+    "cect==0.3.4",
+    "tqdm",
+    "tabulate",
+    "joblib>=1.6.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
