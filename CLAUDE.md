@@ -11,7 +11,7 @@ proprioceptivo fechado → encerrar 3a, documentar, 3b com o controlador (a)).
 **Plano aprovado; Fase 3a em andamento: Sessão 1 concluída (2026-09-23)**, sem ritmo em malha
 aberta (H2, H6). Registro de sessões e resultados em `docs/FASE3_PLANO.md` §6–7. Prazo: 2026-10-07
 ou 6 sessões. A entrega paralela "P" (probóscide) ainda não começou.
-Ao fim de cada fase ou entrega: vídeo de 10–20 s em results/. A cada sessão: figuras em results/phase3a/.
+Ao fim de cada fase ou entrega: vídeo WebM de 10–20 s em results/. A cada sessão: figuras em results/phase3a/.
 Fase 1 aprovada em 2026-09-23; Fase 0 em 2026-09-22 (D-003, D-006, D-008, D-101, D-102, D-104).
 Nenhuma fase começa sem aprovação explícita do usuário, e nenhuma ⚠️ DECISÃO é tomada sem ele.
 
@@ -85,6 +85,9 @@ systemd-inhibit --what=idle:sleep uv run python bench/run_all.py --profiles bala
 - Tudo que não vem do conectoma leva `# NON-CONNECTOME:` no código e uma entrada em `docs/NON_CONNECTOME.md`.
 - Não inventar API, ID de neurônio ou parâmetro: ler o código e os dados reais em `third_party/`
   e citar a origem (arquivo/função) em comentário.
+- **Vídeos: sempre WebM (VP9)** (`terrario/video.py:write_webm`); nada de MP4/H.264, que o Fedora
+  não toca sem codecs extras. Ao fim de cada fase ou entrega: vídeo de 10–20 s em results/.
+- Métrica de ritmo da 3a (`terrario/vnc/rhythm.py`, v2) **congelada**: mudar só com aprovação do usuário.
 - Unidades físicas: mm, s (padrão do FlyGym; gravidade −9810 mm/s²). Modelo neural: ms, mV.
 
 ## Pendências

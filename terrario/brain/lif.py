@@ -193,6 +193,19 @@ class ShiuLIF:
             self.rate_hz = np.concatenate([self.rate_hz, np.array(new_r)])
         self.rfc_steps[self.tgt] = 0
 
+    def poisson_slots(self, idx) -> np.ndarray:
+        """Posições de `idx` no vetor de alvos de Poisson (chama set_poisson com 0 Hz se preciso).
+        Com elas, `set_rates` atualiza as taxas a cada passo de sincronização sem laço em Python."""
+        idx = np.atleast_1d(np.asarray(idx, dtype=np.int64))
+        new = idx[~np.isin(idx, self.tgt)]
+        if len(new):
+            self.set_poisson(new, 0.0)
+        pos = {int(t): k for k, t in enumerate(self.tgt)}
+        return np.array([pos[int(i)] for i in idx], dtype=np.int64)
+
+    def set_rates(self, slots: np.ndarray, rate_hz) -> None:
+        self.rate_hz[slots] = rate_hz
+
     def silence(self, idx) -> None:
         """model.py:silence: zera todas as sinapses de SAÍDA dos neurônios `idx`."""
         idx = np.atleast_1d(np.asarray(idx, dtype=np.int64))

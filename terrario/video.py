@@ -1,7 +1,7 @@
 """Vídeos curtos das cenas (requisito: 10–20 s ao fim de cada fase ou entrega, em results/).
 
-Renderização com mujoco.Renderer (EGL) e gravação com flygym.utils.video.write_video_from_frames
-(imageio + ffmpeg do imageio-ffmpeg). Cada quadro pode juntar várias câmeras lado a lado e uma
+Renderização com mujoco.Renderer (EGL). Gravação SEMPRE em WebM/VP9 (padrão do projeto, CLAUDE.md:
+o Fedora não toca H.264 sem codecs extras), com o ffmpeg do pacote imageio-ffmpeg. Cada quadro pode juntar várias câmeras lado a lado e uma
 legenda de texto.
 """
 
@@ -44,6 +44,22 @@ class Recorder:
         self.frames.append(frame)
 
     def save(self, path: Path) -> Path:
-        from flygym.utils.video import write_video_from_frames
-        write_video_from_frames(Path(path), self.frames, fps=self.fps)
-        return Path(path)
+        return write_webm(Path(path), self.frames, self.fps)
+
+
+def write_webm(path: Path, frames: list[np.ndarray], fps: int = 30, crf: int = 32) -> Path:
+    """Grava quadros RGB uint8 em WebM (VP9). Dimensões arredondadas para pares (yuv420p)."""
+    import imageio_ffmpeg
+
+    path = Path(path).with_suffix(".webm")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    h, w = frames[0].shape[:2]
+    h2, w2 = h - h % 2, w - w % 2
+    wr = imageio_ffmpeg.write_frames(str(path), (w2, h2), fps=fps, codec="libvpx-vp9",
+                                     pix_fmt_out="yuv420p", macro_block_size=1,
+                                     output_params=["-b:v", "0", "-crf", str(crf), "-row-mt", "1"])
+    wr.send(None)
+    for f in frames:
+        wr.send(np.ascontiguousarray(f[:h2, :w2]))
+    wr.close()
+    return path

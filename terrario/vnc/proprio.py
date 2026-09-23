@@ -10,11 +10,19 @@ Funções dos três subtipos do órgão cordotonal femoral: Mamiya, Gurung & Tut
 "Neural coding of leg proprioception in Drosophila" (claw: posição, com subgrupos de flexão e de
 extensão e limiares em faixas; hook: direção; club: movimento/vibração).
 
-NON-CONNECTOME (tudo): as curvas de ajuste, as taxas máximas e, principalmente, QUAL neurônio é de
-flexão ou de extensão e qual é o seu limiar. O BANC não anota isso por neurônio; a atribuição é
-pseudoaleatória e reprodutível (semente fixa, metade de cada sentido, limiares espalhados na faixa
-da junta). A Sessão 2 testa a sensibilidade a essa atribuição (outras sementes).
-Na mosca real a fração de cada subgrupo não é necessariamente 1/2.
+NON-CONNECTOME (tudo): as curvas de ajuste, as taxas máximas e QUAL neurônio é de flexão ou de
+extensão, e qual é o seu limiar.
+
+Atribuição de direção (Sessão 2, 2026-09-23): verificamos MANC, FANC e literatura (Mamiya et al.
+2018; Lee et al. 2025, Nature, FANC; Dallmann et al. 2025): claw e hook têm subgrupos de flexão e de
+extensão, mas nenhuma fonte liga esses subgrupos a tipos celulares do MANC/BANC. O BANC tipa os
+sensores pelos tipos do MANC, e cada subtipo se concentra em DOIS tipos principais:
+  claw: SNpp50 (99) e SNpp51 (44); hook: SNpp39 (81) e SNpp41 (46)
+Hipótese de trabalho (não verificada): os dois tipos principais são os dois sentidos. Por isso a
+direção é atribuída POR TIPO, e o sentido de cada tipo principal é ENUMERADO (bits `combo`,
+4 combinações claw × hook). Tipos minoritários, placas de pelos (junta e sentido por tipo) e
+limiares (espalhados na faixa da junta, por neurônio) vêm do sorteio `seed`. Um ritmo só conta se
+aparecer na maioria das atribuições (pedido do usuário, 2026-09-23).
 """
 
 from __future__ import annotations
@@ -43,7 +51,9 @@ def _leg(sub: str, side: str) -> str | None:
 
 
 class Proprioception:
-    def __init__(self, meta, hidx, jdof_order: list[str], seed: int = 0):
+    MAJOR = {"claw": ("SNpp50", "SNpp51"), "hook": ("SNpp39", "SNpp41")}
+
+    def __init__(self, meta, hidx, jdof_order: list[str], seed: int = 0, combo: tuple = (0, 0)):
         """meta: banc.load_meta(); hidx(banc_ids) → índices no conectoma; jdof_order: nomes dos
         DOFs na ordem de Simulation.get_joint_angles."""
         rng = np.random.default_rng(seed)
@@ -55,24 +65,36 @@ class Proprioception:
                           ("hair", "_hair_plate_neuron"),
                           ("cs", "campaniform_sensillum_neuron")]:
             x = meta[sub.str.endswith(pat) & sub.str.contains("_leg_")]
-            for bid, s, side in zip(x["banc_888_id"], sub[x.index], x["side"]):
+            for bid, s, side, ct in zip(x["banc_888_id"], sub[x.index], x["side"], x["cell_type"]):
                 leg = _leg(s, side)
                 if leg:
-                    rows.append((int(bid), kind, leg))
+                    rows.append((int(bid), kind, leg, str(ct)))
         ids = [r[0] for r in rows]
         h = hidx(ids)
         keep = [k for k, v in enumerate(h) if v >= 0]
         self.h = np.array([h[k] for k in keep], dtype=np.int64)
         self.kind = np.array([rows[k][1] for k in keep])
         self.leg = np.array([rows[k][2] for k in keep])
+        self.ctype = np.array([rows[k][3] for k in keep])
         n = len(self.h)
-        self.direction = rng.choice([-1.0, 1.0], n)       # flexão (−) ou extensão (+) do ângulo
+        # direção e junta POR TIPO celular (sentido: −1 flexão, +1 extensão do ângulo)
+        type_dir, type_dof = {}, {}
+        for kind in ("claw", "hook", "hair"):
+            types = sorted(set(self.ctype[self.kind == kind]))
+            for t in types:
+                type_dir[(kind, t)] = rng.choice([-1.0, 1.0])
+                type_dof[(kind, t)] = "thc_pitch" if rng.random() < 0.5 else "ctr_pitch"
+        for bit, kind in zip(combo, ("claw", "hook")):
+            a, b = self.MAJOR[kind]
+            type_dir[(kind, a)] = -1.0 if bit == 0 else 1.0
+            type_dir[(kind, b)] = -type_dir[(kind, a)]
+        self.direction = np.array([type_dir.get((k, t), 1.0) for k, t in zip(self.kind, self.ctype)])
         self.dof = np.empty(n, dtype=object)
         for k in range(n):
             if self.kind[k] in ("claw", "hook", "club"):
                 self.dof[k] = "fti_pitch"
             elif self.kind[k] == "hair":
-                self.dof[k] = "thc_pitch" if rng.random() < 0.5 else "ctr_pitch"
+                self.dof[k] = type_dof[("hair", self.ctype[k])]
             else:
                 self.dof[k] = None
         self.theta = np.array([rng.uniform(*_R[d][lg[1]]) if d else 0.0

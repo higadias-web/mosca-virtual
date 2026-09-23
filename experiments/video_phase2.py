@@ -40,7 +40,7 @@ def main(sim_s: float = 3.0):
             surf = " ".join(f"{o}:{SURFACES[s]}" for o, s in zip(TASTE_ORGANS[:6], f.taste_surface[:6]))
             rec.maybe_capture(f"Fase 2 | t = {f.t:5.2f} s (0,25x) | {surf} | "
                               f"fermento {f.odor[:, fer].mean():.3f} | pernas: CPG de teste do FlyGym")
-    out = rec.save(ROOT / "results" / "phase2" / "fase2_travessia.mp4")
+    out = rec.save(ROOT / "results" / "phase2" / "fase2_travessia.webm")
     print(out, len(rec.frames), "quadros")
 
 

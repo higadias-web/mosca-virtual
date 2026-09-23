@@ -207,3 +207,65 @@ def spectra_v2(cond: str, session: str = "s1", seeds=range(5000, 5005), t_ms: fl
     fig.savefig(res / f"spectrum_v2_{cond}.png", dpi=130)
     plt.close(fig)
     return out
+
+
+def closed_loop_fig(tag: str, session: str = "s2", A=(450.0, 3450.0), B=(3700.0, 5700.0)):
+    """Loop fechado: raster dos MNs por perna/junta com as janelas A (DNs ligados) e B (desligados),
+    velocidade da bola e espectros de Welch (v2) de cada perna nas duas janelas."""
+    from terrario.vnc.rhythm import welch_peak
+    d = ROOT / "runs" / "phase3a" / session
+    res = ROOT / "results" / "phase3a" / session
+    res.mkdir(parents=True, exist_ok=True)
+    mnt = pd.read_csv(ROOT / "runs/phase3a/s1/leg_mn_table.csv")
+    z = np.load(d / f"{tag}.npz")
+    fig = plt.figure(figsize=(12, 9), facecolor=SURF)
+    gs = fig.add_gridspec(3, 6, height_ratios=[3, 0.8, 1.4], hspace=0.45)
+    ax = fig.add_subplot(gs[0, :])
+    _style(ax)
+    pos = {h: k for k, h in enumerate(mnt.h)}
+    y = np.array([pos[i] for i in z["i"]])
+    ax.axvspan(*A, color="#2a78d6", alpha=0.07, lw=0)
+    ax.axvspan(*B, color=GRID, alpha=0.6, lw=0)
+    ax.scatter(z["t"], y, s=2, c=[JOINT_COLOR.get(j, INK2) for j in mnt.joint.to_numpy()[y]],
+               marker="|", linewidths=0.7)
+    for leg in LEGS:
+        rows = np.where(mnt.leg.to_numpy() == leg)[0]
+        ax.axhline(rows.min() - 0.5, color=INK2, lw=0.5)
+        ax.text(-60, rows.mean(), leg.upper(), ha="right", va="center", fontsize=9, color=INK, fontweight="bold")
+    ax.set_ylim(len(mnt), -1)
+    ax.set_yticks([])
+    ax.set_xlim(0, B[1])
+    ax.text(A[0] + 20, -8, "A: DNs ligados (após o pulso)", fontsize=8, color=INK2)
+    ax.text(B[0] + 20, -8, "B: DNs desligados", fontsize=8, color=INK2)
+    handles = [plt.Line2D([], [], color=c, marker="|", ls="", markersize=10, label=j) for j, c in JOINT_COLOR.items()]
+    ax.legend(handles=handles, loc="upper right", bbox_to_anchor=(1, 1.12), ncol=5, frameon=False, fontsize=8)
+    ax.set_title(f"MNs de perna, loop fechado: {tag}", loc="left", fontsize=11, color=INK, pad=18)
+    axb = fig.add_subplot(gs[1, :])
+    _style(axb)
+    tb = np.arange(len(z["ball"])) * 5.0
+    axb.plot(tb, np.linalg.norm(z["ball"], axis=1), color="#2a78d6", lw=1)
+    axb.set_xlim(0, B[1])
+    axb.set_ylabel("|ω| bola (rad/s)", fontsize=8, color=INK2)
+    axb.set_xlabel("tempo (ms)", fontsize=8, color=INK2)
+    for k, leg in enumerate(LEGS):
+        a2 = fig.add_subplot(gs[2, k])
+        _style(a2)
+        mem = mnt[mnt.leg == leg].h.to_numpy()
+        proms = {}
+        for win, col, lab in ((A, "#2a78d6", "A"), (B, "#eb6834", "B")):
+            w = welch_peak(z["i"], z["t"], mem, *win)
+            proms[lab] = w.get("prominence") or 0.0
+            if w.get("welch") is not None:
+                a2.plot(w["freqs"][1:], w["welch"][1:], color=col, lw=1.2)
+        a2.axvspan(*BAND_HZ, color=GRID, alpha=0.5, lw=0)
+        a2.set_yscale("log")
+        a2.yaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
+        a2.tick_params(axis="y", labelsize=6)
+        a2.set_xlim(0, 40)
+        a2.set_title(f"{leg.upper()}  proem. A {proms['A']:.1f} · B {proms['B']:.1f}",
+                     fontsize=8, loc="left", color=INK)
+        a2.set_xlabel("Hz", fontsize=7, color=INK2)
+    fig.text(0.01, 0.005, "Espectros: azul = janela A (DNs ligados), laranja = janela B (DNs desligados); "
+             "faixa cinza = banda 3–20 Hz; limiar de proeminência da métrica v2 = 5.", fontsize=8, color=INK2)
+    fig.savefig(res / f"{tag}.png", dpi=120, bbox_inches="tight")
+    plt.close(fig)
