@@ -88,6 +88,31 @@ Detalhes:
 
 Conclusão: flutuação estatística, sem sinal de diferença de semântica em nenhum neurônio.
 
+### Excesso agregado de |z| > 3 (todas as figuras)
+
+Somando as quatro figuras: **37 casos com |z| > 3 em 8.189 pares, contra ~22 esperados** sob a
+aproximação gaussiana (P(X ≥ 37) ≈ 0,002 sob Poisson). Isoladamente, cada figura parecia só
+levemente acima do esperado, mas o conjunto passa do acaso.
+
+**Hipótese: o excesso vem do próprio teste, não da simulação.** O z usa uma aproximação
+gaussiana que é otimista em dois pontos, e ambos inflam |z| do mesmo jeito nas duas direções:
+1. **Desvio-padrão populacional.** Tanto o publicado (`utils.get_rate` usa `np.std`, ddof = 0)
+   quanto o nosso usam o desvio de 30 trials sem a correção de Bessel. Isso subestima o erro-padrão
+   por um fator √(29/30), e o limiar efetivo cai de 3 para 2,95.
+2. **Erro-padrão estimado, não conhecido.** O erro-padrão vem de duas amostras de 30 trials. A
+   estatística correta segue uma t de Student com ~58 graus de liberdade, que tem caudas mais
+   pesadas que a normal. Contagens de Poisson baixas, discretas e assimétricas pesam na mesma direção.
+
+Refazendo só a conta do esperado (sem simular nada), com o limiar efetivo de 2,95 e a t(58):
+**37,5 casos esperados, contra 37 observados** (P(X ≥ 37) = 0,56). Só a correção de ddof leva o
+esperado a 26,1; a t(58) explica o resto. Outros sinais apontam para o mesmo lado: os casos estão
+espalhados em neurônios e condições diferentes, os sinais são mistos (14+/10− na 1D, 5+/3− na 1F),
+a média dos z é ~0 e a taxa total difere em no máximo ±0,3 %. Um erro de semântica produziria
+viés com sinal consistente, concentrado nos mesmos neurônios.
+
+Para análises futuras, o critério deve usar ddof = 1 e a t de Student (ou um teste exato
+para contagens de Poisson), em vez de z gaussiano com limiar 3.
+
 ## 4. Confirmação na v783 (D-003)
 
 Fig. 1D refeita na v783. Nela existem 20 dos 21 GRNs de açúcar; o ID 720575940620900446 não existe.
