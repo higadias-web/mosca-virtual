@@ -37,6 +37,8 @@ Formato: **D-NNN — título** · status · data. "Aprovada" só depois de confi
   Ou seja, **existem posições 3D utilizáveis** para o painel.
 - Proposta para a Fase 1: comparar com os números do artigo **na v630**, que é o que foi
   publicado, e depois mostrar que as mesmas respostas aparecem na v783.
+- Resultado (Fase 1): reproduzido na v630. Na v783 a resposta alimentar se mantém (mesmo limiar
+  e saturação do MN9, 3–9 Hz abaixo, com 20 em vez de 21 GRNs estimulados).
 
 ## D-004 — Motor LIF próprio em numba (conjunto ativo), e não Brian2 · Técnica · 2026-09-22
 - Resultado completo em `docs/BENCHMARK.md`. Resumo (cérebro inteiro, 1 s simulado, estímulo de açúcar):
@@ -56,6 +58,9 @@ Formato: **D-NNN — título** · status · data. "Aprovada" só depois de confi
   num binário, sem devolver o controle ao Python a cada passo de sincronização.
 - Riscos: o custo do conjunto ativo cresce com a atividade (muitos sentidos ligados ao mesmo
   tempo). Isso será remedido na Fase 3 com o acoplamento sensorial real.
+- Fase 1: promovido a `terrario/brain/lif.py` (`ShiuLIF`), idêntico spike a spike ao Brian2
+  (teste determinístico) e com as Figs. 1D/1E/1F/3A do artigo reproduzidas
+  (`docs/FASE1_RELATORIO.md`).
 
 ## D-005 — Renderização headless: EGL · Técnica · 2026-09-22
 - `MUJOCO_GL=egl` funciona na Intel UHD (Mesa 26). OSMesa só via `mesa-compat-libOSMesa`
