@@ -164,7 +164,9 @@ class MotorDrive:
     _KEY2JOINT = {"thc_pitch": "ThC", "thc_roll": "ThC", "thc_yaw": "ThC", "ctr_pitch": "CTr",
                   "trf_roll": "TrF", "fti_pitch": "FTi", "tita_pitch": "TiTa"}
 
-    def __init__(self, mnt, dof_order: list[str], flex_sign: dict[str, int]):
+    def __init__(self, mnt, dof_order: list[str], flex_sign: dict[str, int], f_sat: float | None = None):
+        if f_sat is not None:
+            self.F_SAT = float(f_sat)  # sensibilidade da Sessão 2 (100/400 Hz); padrão 200 Hz
         self.dof_index = {d: k for k, d in enumerate(dof_order)}
         groups = mnt.groupby(["leg", "joint", "role"])
         self.groups = []

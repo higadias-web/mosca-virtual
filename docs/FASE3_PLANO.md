@@ -119,6 +119,25 @@ Marco da 3ª sessão: ainda pendente (exige o loop proprioceptivo fechado, Sess�
 loop fechado, G3 (20 DNs de maior acionamento), vnc_scale 1, combinação de direção 00, semente
 7000. Escolhida por ser o grupo de referência da Sessão 1 e por não usar escala fora do conectoma.
 
+**Pré-registro 2 (Sessão 2, antes de abrir resultados; pedido do usuário):**
+1. *Diagnóstico sem ajuste do loop fechado* (janela A, todas as execuções):
+   - distribuição das taxas por MN de perna;
+   - ativação muscular por grupo, recalculada dos spikes com a mesma dinâmica de `MotorDrive`
+     (τ = 20 ms, F_SAT);
+   - amplitude das juntas (percentis 5–95) comparada com a marcha real gravada (MotionSnippet),
+     por perna, em ThC pitch, CTr e FTi.
+
+   Regra de inconclusivo, fixada agora:
+   - ativação "perto de 0" = mediana da ativação média dos grupos < 0,05;
+   - "saturada" = mais da metade dos grupos com ativação ≥ 0,95 em mais da metade do tempo.
+
+   Em qualquer um dos dois casos, um negativo é marcado como **inconclusivo**. A amplitude entra
+   no relatório; ela não reclassifica sozinha.
+2. *Sensibilidade à taxa de referência (F_SAT)*: se o loop fechado der negativo, rodar a combinação 00
+   com as 5 sementes a **F_SAT = 100 Hz e 400 Hz**, nos mesmos 3 grupos × 2 escalas (60 execuções),
+   dentro do prazo da Sessão 2. Só testa se o negativo se mantém. Ritmo que apareça só a 100 ou
+   400 Hz **não conta como positivo**: vira hipótese para a Sessão 3.
+
 ## 7. Resultados por sessão
 
 ### 7.1 Sessão 1 (2026-09-23): H2 e H6 em malha aberta, aparato

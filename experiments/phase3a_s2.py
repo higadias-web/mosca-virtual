@@ -43,7 +43,9 @@ _ST = {}
 
 
 KIND_MODE = {"imposed": "verified", "closed": "verified", "imposed_h5": "verified",
-             "control_h5": "verified", "imposed_gluexc": "verified_gluexc"}
+             "control_h5": "verified", "imposed_gluexc": "verified_gluexc",
+             "closed_fsat100": "verified", "closed_fsat400": "verified"}
+F_SAT_OF = {"closed_fsat100": 100.0, "closed_fsat400": 400.0}  # pré-registro 2 (sensibilidade)
 BG_RATE = 5.0  # H5 (docs/NON_CONNECTOME.md, H5-bg), fixado antes de rodar
 
 
@@ -97,7 +99,9 @@ def _job(job):
     kw = dict(dn_idx=dn_idx, dn_rate=rate, seed=seed, proprio_seed=seed, combo=combo)
     if kind in ("imposed_h5", "control_h5"):
         kw.update(bg_idx=_ST["bg"], bg_rate=BG_RATE, sensory=(kind == "imposed_h5"))
-    if kind != "closed":
+    if kind in F_SAT_OF:
+        kw.update(f_sat=F_SAT_OF[kind])
+    if not kind.startswith("closed"):
         from terrario.vnc.apparatus import make_neuromuscular_fly
         jd = [d.name for d in make_neuromuscular_fly().get_jointdofs_order()]
         q, _ = imposed_angles(jd)
@@ -139,7 +143,9 @@ def main():
     groups = json.load(open(S1 / "dn_groups.json"))
     groups["none"] = []
     combos = COMBOS
-    if args.kind != "closed":
+    if args.kind in F_SAT_OF:
+        combos = [(0, 0)]
+    if not args.kind.startswith("closed"):
         gsel = args.groups or ["none", "G3_top20_drive"]
         scales = args.scales or [1.0]
         if args.kind == "control_h5":
@@ -164,7 +170,7 @@ def main():
         z = np.load(OUT / f"{kind}_{g}_s{s:g}_c{cb[0]}{cb[1]}_{sd}.npz")
         res.setdefault((g, s, cb), []).append((z["i"], z["t"], z["ball"]))
     mnt = pd.read_csv(S1 / "leg_mn_table.csv")
-    imp = args.kind != "closed"
+    imp = not args.kind.startswith("closed")
     fimp = imposed_freqs() if imp else {}
     win_a = (250.0, 4000.0) if imp else A
     rows = []

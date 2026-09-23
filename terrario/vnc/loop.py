@@ -32,7 +32,7 @@ KICK_LEGS = ("lf", "rm", "lh")
 
 def run_loop(conn, meta, mnt, hidx, *, dn_idx, dn_rate, t_on_ms, t_off_ms, total_ms,
              seed=0, proprio_seed=0, combo=(0, 0), kick_ms=50.0, imposed=None, record_hz=200,
-             bg_idx=None, bg_rate=0.0, sensory=True):
+             bg_idx=None, bg_rate=0.0, sensory=True, f_sat=None):
     """bg_idx/bg_rate: fundo de Poisson tônico (H5), com refratário normal nesses neurônios.
     sensory=False: proprioceptores em 0 Hz (controle sem aferência)."""
     t_wall = time.perf_counter()
@@ -42,7 +42,7 @@ def run_loop(conn, meta, mnt, hidx, *, dn_idx, dn_rate, t_on_ms, t_off_ms, total
     jdofs = [d.name for d in fly.get_jointdofs_order()]
     adofs = [d.name for d in fly.get_actuated_jointdofs_order(ActuatorType.MOTOR)]
     pr = Proprioception(meta, hidx, jdofs, seed=proprio_seed, combo=combo)
-    md = MotorDrive(mnt, adofs, FLEX_SIGN)
+    md = MotorDrive(mnt, adofs, FLEX_SIGN, f_sat=f_sat)
     dn_slots = brain.poisson_slots(dn_idx)
     pr_slots = brain.poisson_slots(pr.h)
     if bg_idx is not None and len(bg_idx):
