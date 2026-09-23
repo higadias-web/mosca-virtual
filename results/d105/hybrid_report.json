@@ -1,0 +1,28 @@
+{
+ "n_fw": 138639,
+ "n_vnc": 22232,
+ "n_bridge_banc": 3699,
+ "n_bridge_matched": 2373,
+ "n_bridge_unmatched": 1326,
+ "n_total": 162197,
+ "edges": 17704565,
+ "banc_syn_used": 9531490.0,
+ "banc_syn_bridge_bridge_skipped": 836434.0,
+ "banc_syn_vnc_to_brainonly_dropped": 11227.0,
+ "bridge_sign_disagreements": 197,
+ "vnc_scale": 1.0,
+ "matched_by_class": {
+  "descending": 1148,
+  "ascending": 1078,
+  "sensory_ascending": 138,
+  "sensory_descending": 8,
+  "ascending_visceral_circulatory": 1
+ },
+ "bridge_by_class": {
+  "ascending": 1849,
+  "descending": 1316,
+  "sensory_ascending": 516,
+  "sensory_descending": 13,
+  "ascending_visceral_circulatory": 5
+ }
+}

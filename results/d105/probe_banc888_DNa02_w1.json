@@ -1,0 +1,70 @@
+{
+ "50.0": {
+  "dn_n": 2,
+  "total_spikes": 283,
+  "n_active_end": 5853,
+  "mn": {
+   "front_leg_motor_neuron": {
+    "n": 139,
+    "active": 0,
+    "mean_rate_hz": 0.0
+   },
+   "hind_leg_motor_neuron": {
+    "n": 126,
+    "active": 0,
+    "mean_rate_hz": 0.0
+   },
+   "middle_leg_motor_neuron": {
+    "n": 126,
+    "active": 1,
+    "mean_rate_hz": 0.047619047619047616
+   }
+  }
+ },
+ "100.0": {
+  "dn_n": 2,
+  "total_spikes": 732,
+  "n_active_end": 6461,
+  "mn": {
+   "front_leg_motor_neuron": {
+    "n": 139,
+    "active": 0,
+    "mean_rate_hz": 0.0
+   },
+   "hind_leg_motor_neuron": {
+    "n": 126,
+    "active": 0,
+    "mean_rate_hz": 0.0
+   },
+   "middle_leg_motor_neuron": {
+    "n": 126,
+    "active": 1,
+    "mean_rate_hz": 0.12698412698412698
+   }
+  }
+ },
+ "200.0": {
+  "dn_n": 2,
+  "total_spikes": 2508,
+  "n_active_end": 12674,
+  "mn": {
+   "front_leg_motor_neuron": {
+    "n": 139,
+    "active": 5,
+    "mean_rate_hz": 0.15827338129496402,
+    "peak_hz": 45.0,
+    "peak_power_ratio": 4.059623597623041
+   },
+   "hind_leg_motor_neuron": {
+    "n": 126,
+    "active": 0,
+    "mean_rate_hz": 0.0
+   },
+   "middle_leg_motor_neuron": {
+    "n": 126,
+    "active": 1,
+    "mean_rate_hz": 0.05555555555555555
+   }
+  }
+ }
+}

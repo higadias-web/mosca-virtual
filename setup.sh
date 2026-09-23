@@ -24,7 +24,7 @@ uv python install "$(cat .python-version)"
 uv sync --frozen
 
 # ---------------------------------------------------------------- 3. repositórios de referência
-# Versões fixadas por commit (ver docs/DECISIONS.md, D-010). Só leitura e dados.
+# Versões fixadas por commit (ver docs/DECISIONS.md, D-007). Só leitura e dados.
 mkdir -p third_party
 clone_at() {  # clone_at <url> <dir> <commit>
     local url=$1 dir=third_party/$2 rev=$3
@@ -43,6 +43,25 @@ clone_at https://github.com/flyconnectome/flywire_annotations.git flywire_annota
 clone_at https://github.com/openworm/c302.git                   c302                   6cd861f
 clone_at https://github.com/openworm/ConnectomeToolbox.git      ConnectomeToolbox      b9c0b4a
 clone_at https://github.com/mwinding/connectome_tools.git       connectome_tools       bfdc691
+# BANC (D-105): só documentação e tabelas pequenas (data/synapse_capture). ~2,8 GB; opcional.
+if [[ ${BANC_REPO:-1} == 1 ]]; then
+    clone_at https://github.com/htem/BANC-project.git           BANC-project           e31a2e2
+fi
+
+# ---------------------------------------------------------------- 3b. dados do BANC v888 (D-105)
+# Harvard Dataverse doi:10.7910/DVN/7WTH1N, versão 3 (2026-07-01). Só os arquivos usados
+# (~0,8 GB). ?format=original devolve o arquivo como depositado.
+mkdir -p data/banc
+dv_get() {  # dv_get <id> <nome>
+    [[ -s data/banc/$2 ]] || curl -sfL -o "data/banc/$2" \
+        "https://dataverse.harvard.edu/api/access/datafile/$1?format=original"
+}
+dv_get 14033740 banc_888_meta.feather
+dv_get 13992792 banc_888_edgelist_simple_v2.feather
+dv_get 13918810 banc_888_edgelist_simple_v3.feather
+dv_get 13994485 banc_fafb_reviewed_matches.csv.gz
+dv_get 13994489 banc_manc_reviewed_matches.csv.gz
+dv_get 13916443 banc_problem_regions.csv
 
 # ---------------------------------------------------------------- 4. checagens rápidas
 export MUJOCO_GL=egl PYOPENGL_PLATFORM=egl
