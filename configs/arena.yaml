@@ -1,0 +1,74 @@
+# Arena do terrário (Fase 2). Unidades: mm (padrão do FlyGym). Eixo x: solo (−) → paisagem (+).
+# Tudo aqui é NON-CONNECTOME (ambiente); ver docs/NON_CONNECTOME.md.
+# Formas: "ellipsoid" (centro, semi-eixos), "sphere" (centro, raio).
+# Um sólido é enterrado no chão (centro com z < semi-eixo z) para virar calota com borda suave.
+
+arena:
+  half_size: [40.0, 30.0]      # piso de 80 × 60 mm
+  wall_height: 15.0            # paredes de vidro (colidem; transparentes)
+
+# Zonas do piso (plano z = 0). A superfície de um contato com o piso é decidida pela posição (x, y).
+zones:
+  soil_x_max: -4.0             # x < −4: solo úmido; x >= −4: piso da paisagem
+  bacteria_colony: {center: [-22.0, -8.0], radius: 6.0}   # colônia de bactérias no solo
+
+# Sólidos que colidem com a mosca (cada um vira um geom do chão com pares de contato próprios)
+solids:
+  fruit:        # fatia de banana em decomposição, encostada no solo (borda fruta–solo)
+    surface: fruit
+    shape: ellipsoid
+    center: [7.0, 4.0, -1.5]
+    radii: [11.0, 11.0, 4.0]
+    rgba: [0.93, 0.86, 0.55, 1.0]
+  yeast:        # colônia de fermento na superfície da fruta (casca fina que aflora ~0,15 mm)
+    surface: yeast
+    shape: ellipsoid
+    center: [9.0, 6.0, 2.12]    # topo 0,15 mm acima da fruta em (9, 6)
+    radii: [3.5, 3.5, 0.4]
+    rgba: [0.97, 0.95, 0.88, 1.0]
+  water:        # gotícula (calota)
+    surface: water
+    shape: sphere
+    center: [24.0, 16.0, -0.6]
+    radius: 1.5
+    rgba: [0.6, 0.8, 1.0, 0.55]
+  pebble_1: {surface: stone, shape: ellipsoid, center: [27.0, -4.0, -0.4], radii: [3.0, 2.2, 1.6], rgba: [0.55, 0.53, 0.5, 1]}
+  pebble_2: {surface: stone, shape: ellipsoid, center: [33.0, 8.0, -0.3], radii: [2.0, 1.6, 1.2], rgba: [0.62, 0.6, 0.57, 1]}
+  pebble_3: {surface: stone, shape: ellipsoid, center: [19.0, -20.0, -0.5], radii: [3.6, 2.8, 1.8], rgba: [0.5, 0.49, 0.47, 1]}
+  moss:         # tufo de musgo (um corpo macio e baixo; os filamentos são só visuais)
+    surface: moss
+    shape: ellipsoid
+    center: [31.0, -18.0, -0.2]
+    radii: [5.0, 4.0, 1.0]
+    rgba: [0.28, 0.45, 0.2, 1]
+  mound_soil:   # relevo suave
+    surface: floor
+    shape: ellipsoid
+    center: [-26.0, 14.0, -0.6]
+    radii: [9.0, 7.0, 1.4]
+    rgba: [0.36, 0.26, 0.18, 1]
+  mound_land:
+    surface: floor
+    shape: ellipsoid
+    center: [20.0, 4.0, -0.5]
+    radii: [8.0, 9.0, 1.1]
+    rgba: [0.72, 0.66, 0.55, 1]
+
+# Campos do ambiente (NON-CONNECTOME). Odor: difusão 2D com decaimento, no plano do piso.
+odor:
+  cell_mm: 0.5
+  diffusion_mm2_s: 10.0        # ordem de grandeza de voláteis em ar parado (~0,1 cm²/s)
+  decay_1_s: 0.05              # perda (ventilação/paredes); comprimento √(D/k) ≈ 14 mm
+  dt_s: 0.01                   # passo do campo (D-006)
+  sources:                     # canais por FONTE (a química e os ORNs são da Fase 3)
+    fruta:     {solid: fruit, rate: 1.0}
+    fermento:  {solid: yeast, rate: 3.0}
+    bacterias: {disk: bacteria_colony, rate: 1.0}
+
+temperature:                   # gradiente linear em x (termotaxia das minhocas, Fase 5)
+  t0_c: 22.0
+  grad_c_per_mm: 0.05          # 20 °C no solo (x = −40) a 24 °C na paisagem (x = +40)
+
+light:                         # ciclo dia/noite (intensidade relativa 0..1)
+  period_s: 600.0
+  night_level: 0.05

@@ -1,0 +1,5 @@
+FLAT {"bench": "flygym", "vision_hz": 0.0, "sim_s": 2.0, "timestep": 0.0001, "build_s": 0.20718837100139353, "wall_per_sim_s": 2.248346391999803, "vision_share": 0.0, "displacement_mm": 28.11296169065133, "peak_rss_mb": 296.20703125, "n_qpos": 73, "n_geom": 70}
+TERR dense phys 3.07
+TERR sparse phys 2.87
+TERR sensors {'wall_per_sim_s': 3.3771133219997864, 'physics_per_sim_s': 3.2221149894146945, 'sensors_env_per_sim_s': 0.14982582842058037, 'log_bytes_per_sim_s': 234520.8, 'path_mm': 48.715418919269794, 'max_height_mm': 2.8618062187599773, 'end_xy': [21.07, 8.65]}
+TERR vision100 7.29 4.21

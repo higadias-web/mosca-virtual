@@ -4,9 +4,12 @@ Simulação de terrário com animais dirigidos só pelo conectoma: sensores → 
 A especificação completa, com regras de trabalho, fases e critérios, está em `docs/SPEC.md`. Leia antes de mudar qualquer coisa.
 
 ## Fase atual
-**Fase 1 concluída, aguardando aprovação** (2026-09-23). O Shiu et al. 2024 foi reproduzido
-(Figs. 1D/1E/1F/3A na v630, confirmado na v783): ver `docs/FASE1_RELATORIO.md`.
-**Não iniciar a Fase 2 sem aprovação.** A Fase 0 foi aprovada em 2026-09-22 (D-003, D-006, D-008, D-101, D-102, D-104).
+**Fase 2 aprovada** (2026-09-23). Decididas: **D-105 = (c)** FlyWire 783 no cérebro + cordão do
+BANC; **D-106**: Fase 3 em 3a (bolinha, marcha pelo cordão) e 3b (terrário). Prazo da 3a: 6 sessões
+ou 2 semanas (o que vier primeiro); marco na 3ª sessão (sem ritmo nos MNs de perna com loop
+proprioceptivo fechado → encerrar 3a, documentar, 3b com o controlador (a)).
+**Plano da Fase 3 em `docs/FASE3_PLANO.md`, aguardando aprovação. Não começar a 3a antes.**
+Fase 1 aprovada em 2026-09-23; Fase 0 em 2026-09-22 (D-003, D-006, D-008, D-101, D-102, D-104).
 Nenhuma fase começa sem aprovação explícita do usuário, e nenhuma ⚠️ DECISÃO é tomada sem ele.
 
 ## Estrutura
@@ -14,6 +17,8 @@ Nenhuma fase começa sem aprovação explícita do usuário, e nenhuma ⚠️ DE
 docs/SPEC.md             especificação (do usuário)
 docs/FASE0_RELATORIO.md  relatório da Fase 0: premissas corrigidas, ⚠️ decisões com opções
 docs/FASE1_RELATORIO.md  relatório da Fase 1: reprodução do Shiu et al. 2024
+docs/FASE2_RELATORIO.md  relatório da Fase 2: arena, sensores, custo
+docs/D105_CONECTOMA.md   ⚠️ D-105/D-106: FlyWire × BANC × híbrido, com benchmark e revalidação
 docs/BENCHMARK.md        medições desta máquina e dimensionamento de episódios
 docs/DECISIONS.md        decisões técnicas (D-0xx técnicas, D-1xx pendentes)
 docs/NON_CONNECTOME.md   tudo que é engenharia, e não conectoma
@@ -22,10 +27,18 @@ setup.sh                 recria o ambiente do zero (idempotente, sem sudo)
 pyproject.toml, uv.lock  dependências fixadas (Python 3.13 via uv)
 terrario/brain/flywire.py  conectoma FlyWire v630/v783 (formato do Shiu), cache CSR em data/cache
 terrario/brain/lif.py    motor LIF de produção (ShiuLIF): conjunto ativo exato, Poisson, silêncio, checkpoint
+terrario/brain/banc.py   BANC v888 (cérebro + VNC) no formato do Shiu; cache em data/cache
+terrario/brain/hybrid.py FlyWire 783 + VNC do BANC (pontes DN/AN pareadas por tipo e lado)
+terrario/brain/connectomes.py  load("783" | "banc888" | "banc888v3" | "fw783+bancvnc")
+terrario/world/          arena do terrário (FlyGym 2.1 BaseWorld) e campos (odor 2D, temperatura, luz)
+terrario/body/           cena (build_scene), sensores da mosca (1 kHz), gravação Parquet (200 Hz)
+configs/arena.yaml       disposição da arena (mm)
 tests/                   pytest (inclui comparação determinística spike a spike com o Brian2)
-experiments/             Fase 1: shiu_repro.py (experimentos), compare_shiu.py, fila noturna
+experiments/             Fase 1: shiu_repro.py, compare_shiu.py, fila noturna; Fase 2: phase2_demo.py;
+                         D-105: connectome_eval.py (bench/fig1d/probe), compare_d105.py
 tools/remote_zip.py      extrai arquivos de um zip remoto por HTTP Range
 results/phase1/          comparações (*_compare.json) e log da fila, versionados
+results/phase2/, results/d105/  resumos, imagem da arena, benchmarks e comparações (versionados)
 runs/                    saídas brutas das simulações (fora do git)
 data/                    caches e dados baixados (fora do git)
 bench/                   benchmarks da Fase 0 (protótipos, não são o motor final)
@@ -47,6 +60,9 @@ export MUJOCO_GL=egl PYOPENGL_PLATFORM=egl
 uv run pytest                                # testes
 uv run python -m experiments.shiu_repro fig1d --version 630 --workers 10   # executar como módulo, da raiz
 uv run python -m experiments.compare_shiu fig1d
+uv run python -m experiments.phase2_demo --sim-s 2.5 --render          # travessia no terrário
+uv run python -m experiments.connectome_eval fig1d --version fw783+bancvnc --workers 10
+uv run python -m experiments.compare_d105
 uv run python bench/bench_brain.py --engine numba-active --sim-ms 1000
 systemd-inhibit --what=idle:sleep uv run python bench/run_all.py --profiles balanced performance
 ```
@@ -67,11 +83,20 @@ systemd-inhibit --what=idle:sleep uv run python bench/run_all.py --profiles bala
 - Unidades físicas: mm, s (padrão do FlyGym; gravidade −9810 mm/s²). Modelo neural: ms, mV.
 
 ## Pendências
-- Aprovação da Fase 1; em seguida, Fase 2 (FlyGym na arena do terrário, com os sensores gerando dados).
+- Aprovação do plano da Fase 3 (`docs/FASE3_PLANO.md`). Registrar cada sessão da 3a no plano (contagem do prazo).
 - Fase 3: obter os IDs sensoriais nas anotações da v783 (não herdar a lista v630 do artigo; 1 dos 21 GRNs de açúcar não existe na v783).
+- Fase 3: dar juntas e atuadores à probóscide (o corpo de locomoção padrão não tem); MN9 → probóscide.
+- Fase 3a (se aprovada): bola simulada (o FlyGym 2.1 não tem), mapeamento MN → músculo → torque
+  (o BANC anota o músculo-alvo de cada MN de perna), transdução proprioceptiva.
 - D-103 (larva) fica para a Fase 8.
 
 ## Riscos conhecidos
+- **BANC não reproduz a Fig. 1D** (GRNs de açúcar com 15× menos sinapses de saída que no FlyWire);
+  compensar `w_syn` globalmente deixa a rede autossustentada. Ver D-105.
+- **Marcha pelo VNC não é garantida**: com os parâmetros do Shiu, DNs de marcha quase não ativam
+  MNs de perna (BANC e híbrido). É a pergunta da Fase 3a.
+- **Híbrido costura dois animais**: 87 % dos DNs e 58 % dos ANs pareados; o BANC tem ~0,5× as
+  sinapses do FlyWire por par de neurônios.
 - **Física com múltiplos animais num MjModel**: custo superlinear com o Jacobiano esparso
   automático do MuJoCo; usar `mjJAC_DENSE` (medido). Minhoca com contatos por cápsula é cara (~1,2 s/s);
   a variante planar com arrasto (RFT) custa ~0,23 s/s, mas é numericamente rígida (regime sobreamortecido).
@@ -80,4 +105,6 @@ systemd-inhibit --what=idle:sleep uv run python bench/run_all.py --profiles bala
 - **Neurônios de C. elegans são majoritariamente graduados** (não disparam): o LIF não é adequado (D-102).
 - **Neurônios exclusivos do macho não têm posição 3D** nos dados do OpenWorm (D-104).
 - **VNC larval**: cobertura publicada ainda a confirmar na Fase 8.
-- Visão da mosca é cara (8–22 s/s adicionais); desligada por padrão.
+- Visão da mosca é cara (8–22 s/s adicionais; +4,2 s/s a 100 Hz no terrário); desligada por padrão.
+- Terrário: 798 pares de contato com o relevo (+36 % na física da mosca, 3,4 s/s com sensores).
+- O NeuroMechFly não voa: a mosca chega à fruta andando (registrado na SPEC).

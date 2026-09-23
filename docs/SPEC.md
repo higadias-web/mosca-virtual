@@ -12,10 +12,13 @@ atividade cerebral de cada animal e replay completo.
 ## Elenco (fixo; ver "Regra de harmonia")
 | Animal | Conectoma | Papel no terrário |
 |---|---|---|
-| 1 Drosophila adulta | FlyWire v783 (cérebro) + modelo LIF de Shiu et al. 2024 | Explora, pousa na fruta, se alimenta |
+| 1 Drosophila adulta | FlyWire v783 (cérebro) + modelo LIF de Shiu et al. 2024; cordão nervoso ventral do BANC por correspondência (D-105) | Explora, chega à fruta andando, se alimenta |
 | 1 larva de Drosophila | Cérebro larval (Winding et al. 2023, Science) | Vive e se alimenta na fruta e no fermento |
 | 1 C. elegans hermafrodita | Cook et al. 2019 (hermafrodita adulto) | Rasteja no solo úmido e na colônia de bactérias |
 | 1 C. elegans macho | Cook et al. 2019 (macho adulto) | Idem, com circuitos próprios do macho |
+
+A mosca chega à fruta **andando**: o corpo (NeuroMechFly, FlyGym 2.1) não voa, então não há
+pouso (decidido em 2026-09-23, na aprovação da Fase 2).
 
 Ambiente vivo (sem neurônios, NON-CONNECTOME): colônia de fermento na fruta e
 colônia de bactérias no solo, com crescimento e consumo.
@@ -142,6 +145,21 @@ Sistema: Fedora 44 KDE, nativo (sem WSL, sem VM).
   ⚠️ DECISÃO: (a) DNs → comandos de alto nível num controlador FlyGym;
   (b) integrar o conectoma do VNC até os motoneurônios; (c) híbrido.
   Considerar o custo computacional de cada opção nesta máquina.
+  (D-101, aprovada na Fase 0: híbrido, começando por (a).)
+- Conectoma de cérebro + cordão (atualizado em 2026-09-23): o **BANC** (Bates, Phelps,
+  Kim, Yang et al., "Distributed control circuits across a brain-and-cord connectome",
+  Nature 2026; código github.com/htem/BANC-project; dados no Harvard Dataverse
+  doi:10.7910/DVN/7WTH1N, no flywire.ai e no Codex) une cérebro e VNC da mesma mosca.
+  Referência relacionada, não dependência: arXiv 2602.17997 (FlyGM), que usa o FlyWire
+  v783 como grafo de um controlador treinado por imitação + RL.
+  D-105 (aprovada em 2026-09-23: opção (c)). Opções avaliadas: (a) FlyWire 783 + controlador; (b) BANC inteiro
+  (cérebro + cordão); (c) FlyWire no cérebro + cordão do BANC por correspondência entre
+  datasets. Para cada uma: benchmark nesta máquina (RAM, tempo por trial, quantos workers
+  cabem), revalidação (refazer a Fig. 1D no BANC e comparar com o FlyWire), cobertura de
+  revisão dos circuitos de alimentação e locomoção e impacto da lâmina ausente na visão.
+  Levantamento e recomendação em docs/D105_CONECTOMA.md.
+- Qualquer troca de conectoma do cérebro exige refazer a Fig. 1D do Shiu e comparar com o
+  resultado da Fase 1 antes de usar.
 
 ### Larva de Drosophila
 - Cérebro: conectoma larval de Winding et al. 2023 (Science). Verificar o
@@ -184,10 +202,10 @@ tocam nas bordas:
 
 | Zona | Elementos | Habitante natural |
 |---|---|---|
-| Fruta | Fatia de fruta em decomposição (ex.: banana) com colônia de fermento na superfície | Larva (dentro/sobre a fruta); mosca pousa para se alimentar |
+| Fruta | Fatia de fruta em decomposição (ex.: banana) com colônia de fermento na superfície | Larva (dentro/sobre a fruta); mosca chega andando para se alimentar |
 | Solo úmido | Substrato tipo ágar/solo com colônia de bactérias, gradiente químico | C. elegans |
 | Borda fruta–solo | Bactérias também crescem na fruta que encosta no solo | Zona de encontro de todos |
-| Paisagem | Pedrinhas, um pedaço de musgo, uma gotícula de água, relevo suave | Mosca (caminha e pousa) |
+| Paisagem | Pedrinhas, um pedaço de musgo, uma gotícula de água, relevo suave | Mosca (caminha) |
 
 - Gradiente de temperatura suave (termotaxia das minhocas via AFD) e ciclo de
   luz dia/noite.
@@ -207,7 +225,9 @@ tocam nas bordas:
 - Mosca adulta: olfato (antena → ORNs correspondentes), gustação (contato com
   alimento → GRNs de açúcar), mecanossensação (tarsos/corpo) e, no perfil
   `completo`, visão (olhos compostos do FlyGym → fotorreceptores). Identificar
-  os neurônios pelas anotações do FlyWire.
+  os neurônios pelas anotações do FlyWire. Se a visão vier de um dataset sem
+  lâmina (BANC), R1–R6 não existem e a entrada vai direto para L1–L3, com uma
+  "lâmina virtual" NON-CONNECTOME (D-105).
 - Larva: olfato (órgão dorsal → ORNs larvais), gustação e mecanossensação
   (contato com fruta, com outros animais e com obstáculos). Identificar pelas
   anotações do conectoma larval.
@@ -278,7 +298,16 @@ replay.
 1. Reproduzir um resultado do Shiu et al. 2024 (ex.: ativação de GRNs de
    açúcar prevendo a atividade relacionada à alimentação) de forma isolada.
 2. FlyGym rodando na arena do terrário, com os sensores gerando dados.
-3. Loop fechado da mosca adulta (após a ⚠️ DECISÃO do VNC).
+3. Loop fechado da mosca adulta: cérebro FlyWire 783 + cordão do BANC (D-105, opção (c)).
+   Dividida em duas subfases (D-106, aprovada em 2026-09-23; plano em docs/FASE3_PLANO.md):
+   3a. Mosca presa sobre bolinha virtual: validar a marcha gerada pelo cordão
+       nervoso (DNs → VNC → motoneurônios → juntas, com propriocepção pelos
+       neurônios sensoriais do VNC). Prazo: 6 sessões de trabalho ou 2 semanas, o
+       que vier primeiro. Marco: se até a 3ª sessão nenhum estímulo de DN gerar
+       atividade rítmica nos MNs de perna com o loop proprioceptivo fechado, a 3a
+       é encerrada, o resultado negativo é documentado e a 3b segue com DNs →
+       controlador FlyGym (opção (a)).
+   3b. Mosca livre no terrário, em malha fechada com os sensores da Fase 2.
 4. Um C. elegans hermafrodita isolado: conectoma + corpo simplificado. Validar
    a ondulação e a reversão ao toque anterior. Se falhar, reportar e propor o
    Plano B. Depois, repetir com o macho.
@@ -299,6 +328,10 @@ replay.
   comparação qualitativa entre macho e hermafrodita documentada.
 - Mosca adulta: marcha estável no terreno; mudança de comportamento com
   estímulo olfativo/gustativo, sem regra programada.
+- Fase 3a: na bolinha, alternância rítmica flexor/extensor por perna,
+  coordenação entre pernas (trípode/tetrápode), bola girando para a frente com DNs de
+  marcha e virada lateralizada com DNs de virada; silenciar os DNs ou a propriocepção
+  muda ou elimina a marcha. Faixas numéricas fixadas pela literatura antes de começar.
 - Larva: locomoção peristáltica reconhecível; resposta a gradiente de odor
   (quimiotaxia) se emergir; documentar se não emergir.
 - Teste de ablação para cada animal: zerar os neurônios sensoriais relevantes

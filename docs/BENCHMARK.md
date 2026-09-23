@@ -149,3 +149,34 @@ da velocidade real). Ver o relatório da Fase 0 para as alternativas.
   no máximo ~12 % de ganho. A física domina e é um único `mj_step`. Separar as minhocas num
   MjModel/processo próprio perderia o contato físico mosca–minhoca (a SPEC pede interação física).
 - **Conclusão: um processo só**, por enquanto. Reavaliar na Fase 5 com o cenário real.
+
+## 9. Fase 2: mosca no terrário (2026-09-23)
+
+Perfil Desempenho, na tomada, máquina ociosa, 1 processo (`experiments/phase2_demo.py`,
+`results/phase2/bench_raw.txt`).
+
+| Configuração | s/s |
+|---|---|
+| Chão plano (referência; Fase 0: 2,31) | 2,25 |
+| Terrário, só física, Jacobiano denso / esparso | 3,07 / 2,87 |
+| Terrário + sensores (1 kHz) + campos + gravação (200 Hz) | **3,38** (sensores e campos: 0,15) |
+| Idem + visão a 100 Hz | 7,29 |
+
+O relevo e os sólidos acrescentam 798 pares de contato (+36 % na física). Log: 235 kB por segundo
+simulado (zstd), ou seja, 5 GB em ~5,9 h simuladas.
+
+## 10. D-105: conectomas candidatos (2026-09-23)
+
+Um processo, açúcar a 200 Hz, 1 s em chamadas de 1 ms, mediana de 3 trials
+(`experiments/connectome_eval.py bench`, `results/d105/bench.jsonl`).
+
+| Conectoma | Neurônios | Arestas | s/s | RAM de pico | Processos pela RAM |
+|---|---|---|---|---|---|
+| FlyWire 783 | 138.639 | 15,1 M | 0,68 | 0,66 GB | 19 |
+| BANC v888 (v2) | 155.858 | 11,4 M | 0,05 (sinal não se propaga) | 0,56 GB | 22 |
+| BANC v888, `w_syn` × 1,9 | idem | idem | 11,6 (atividade autossustentada) | ~0,6 GB | 22 |
+| FlyWire 783 + VNC do BANC | 162.197 | 17,7 M | 0,89 | 0,73 GB | 17 |
+
+Na prática, o limite é a CPU (10 processos, como na Fase 1). Fig. 1D completa (600 trials, 10
+processos): v783 3,8 min (Fase 1); híbrido 8,7 min, mas dividindo a CPU com os testes da Fase 2.
+Análise em `docs/D105_CONECTOMA.md`.

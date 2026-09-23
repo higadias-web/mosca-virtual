@@ -1,7 +1,7 @@
 # O que NÃO vem do conectoma
 
 Tudo que é engenharia, e não biologia, aparece aqui e no código com `# NON-CONNECTOME:`.
-Fase atual: 0. Ainda não há código de simulação. As entradas marcadas como *planejado*
+Fase atual: 2 (concluída, aguardando aprovação). As entradas marcadas como *planejado*
 são previsões a confirmar nas fases seguintes.
 
 ## Já existente (Fase 0: só benchmark, nada entra no modelo)
@@ -11,6 +11,27 @@ são previsões a confirmar nas fases seguintes.
 | Onda senoidal de acionamento do proxy de minhoca | `bench/bench_worm.py`, `bench/bench_full.py` | só gera carga de contato para medir custo; não será usada |
 | Rede densa aleatória de 400 unidades (proxy de minhoca) | idem | só carga de CPU |
 | CPG de caminhada do FlyGym (`flygym_demo.complex_terrain.CPGController`) | `bench/bench_flygym.py`, `bench/bench_full.py` | só carga de contato; a ligação DN → corpo é ⚠️ DECISÃO |
+
+## Fase 2: ambiente e sensores (já no código)
+
+| Item | Onde | Observação |
+|---|---|---|
+| Arena inteira: geometria, cores, zonas do piso, paredes, atrito padrão do FlyGym | `configs/arena.yaml`, `terrario/world/terrarium.py` | cenário, não biologia |
+| Pares de contato também na probóscide (`c_rostrum`, `c_haustellum`) | `terrario/world/terrarium.py:CONTACT_SEGMENTS` | o preset do FlyGym não inclui; necessário para o labelo tocar o alimento |
+| Rótulo de superfície por posição no piso (solo, colônia, piso da paisagem) | `TerrariumWorld.floor_surface_at` | mapa de zonas |
+| Campo de odor 2D: difusão D = 10 mm²/s, decaimento k = 0,05 /s, fontes uniformes na pegada, início em regime estacionário, mesmo valor em qualquer altura | `terrario/world/fields.py:OdorField` | física simplificada; canais por fonte (a química é da Fase 3) |
+| Gradiente de temperatura linear em x; ciclo de luz cossenoidal | `fields.py:Temperature`, `Light` | ambiente |
+| Amostragem de odor e temperatura no funículo (E/D) | `terrario/body/sensors.py` | o FlyGym 2.x não tem olfato (D-002) |
+| Gustação = superfície tocada pelos tarsos 1–5 de cada perna e pelo haustelo, com força normal | `sensors.py:_contacts` | só o estímulo físico; a taxa dos GRNs é da Fase 3 |
+| CPG de caminhada do FlyGym usado como **arnês de teste** | `experiments/phase2_demo.py`, `tests/test_world.py` | só para passar pelas superfícies; não é o controle do animal |
+
+## D-105 (avaliação dos conectomas; `terrario/brain/banc.py`, `hybrid.py`)
+
+| Item | Onde | Observação |
+|---|---|---|
+| BANC: sinal pela previsão de transmissor do neurônio (GABA, glutamato **e histamina** → −1; demais → +1) | `terrario/brain/banc.py` | mesma regra do Shiu; a histamina não existia nas previsões do FlyWire |
+| BANC: `w_syn` do Shiu multiplicado por 1,9 (variante de teste) | `experiments/connectome_eval.py --wscale` | compensa a menor captura de sinapses do BANC; não é dado |
+| Híbrido: costura de dois animais (cérebro FlyWire + VNC BANC); pareamento de DNs/ANs por (tipo, lado), arbitrário dentro de tipos com vários membros; sinal do FlyWire nas pontes | `terrario/brain/hybrid.py` | toda a ponte é engenharia |
 
 ## Planejado (a confirmar por fase)
 

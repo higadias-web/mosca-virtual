@@ -1,0 +1,96 @@
+{
+ "name": "walk_soil_fruit_landscape",
+ "sim_s": 2.5,
+ "build_s": 0.34549025900196284,
+ "wall_per_sim_s": 3.3771133219997864,
+ "physics_per_sim_s": 3.2221149894146945,
+ "sensors_env_per_sim_s": 0.14982582842058037,
+ "vision_hz": 0.0,
+ "jacobian": "dense",
+ "nv": 72,
+ "npair": 798,
+ "start_xy": [
+  -13.44,
+  5.02
+ ],
+ "end_xy": [
+  21.07,
+  8.65
+ ],
+ "path_mm": 48.715418919269794,
+ "max_height_mm": 2.8618062187599773,
+ "surfaces_by_organ": {
+  "lf": [
+   "soil",
+   "floor",
+   "fruit",
+   "floor"
+  ],
+  "lm": [
+   "soil",
+   "floor",
+   "fruit",
+   "floor"
+  ],
+  "lh": [
+   "soil",
+   "floor",
+   "fruit",
+   "floor"
+  ],
+  "rf": [
+   "soil",
+   "floor",
+   "fruit",
+   "yeast",
+   "fruit",
+   "yeast",
+   "fruit",
+   "floor"
+  ],
+  "rm": [
+   "soil",
+   "floor",
+   "fruit",
+   "yeast",
+   "fruit",
+   "floor"
+  ],
+  "rh": [
+   "soil",
+   "floor",
+   "fruit",
+   "floor"
+  ],
+  "labellum": []
+ },
+ "stance_fraction_by_leg": {
+  "lf": 0.65,
+  "lm": 0.71,
+  "lh": 0.89,
+  "rf": 0.6,
+  "rm": 0.62,
+  "rh": 0.86
+ },
+ "odor_channels": [
+  "fruta",
+  "fermento",
+  "bacterias"
+ ],
+ "odor_start": [
+  0.00445,
+  0.0107,
+  0.00652
+ ],
+ "odor_end": [
+  0.00713,
+  0.02568,
+  0.00058
+ ],
+ "antenna_temp_start_end": [
+  21.352898973094128,
+  23.078342525019107
+ ],
+ "log_bytes_per_sim_s": 234520.8,
+ "n_rows": 500
+}
