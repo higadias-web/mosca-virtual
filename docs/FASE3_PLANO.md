@@ -113,6 +113,7 @@ controlador (a), se usado. Tudo entra em `docs/NON_CONNECTOME.md` quando for imp
 |---|---|---|---|---|
 | 1 | 2026-09-23 | Métrica de ritmo (v1 → v2, §7.1); H6: confiabilidade dos transmissores; H2 × H6 em malha aberta (18 condições × 5 sementes); aparato: bola, torque, MN → músculo → junta (sinais de flexão medidos), transdução proprioceptiva (941 sensores); figuras em `results/phase3a/s1/` | H2, H6 (a) e (b) | **Não** (0 de 108 pernas×condições; malha aberta) |
 | 2 | 2026-09-23 | Direção dos proprioceptores por tipo (4 combinações); aferência imposta (marcha gravada) com sinais `verified`, H5 (fundo 5 Hz) e H6-g; ganho muscular fixado por critério (A4); loop fechado com H3 (×1, ×2); diagnóstico sem ajuste; inibição recíproca funcional; sensibilidade F_SAT; §7.2 | H1 (i e ii), H3, H5, H6-g | **Não** (aferência imposta: 0, nem reflexo). **Loop fechado: INCONCLUSIVO** por duas causas: (b) acionamento quase nulo, independente do aparato, e (a) juntas sem limite nem rigidez (§7.2). Sensibilidade F_SAT inválida, não analisada |
+| 3 | 2026-09-23 | (em andamento) Pré-registro §7.4 (marco em taxa; A2' com rigidez de Wang et al. 2025); T1 (saldo E/I na H6-g) e T2 (inibição recíproca E → F); validação do aparato implementada, **não rodada** (tolerâncias aguardam aprovação) | — (T1/T2 são estruturais/malha aberta) | pendente |
 
 Marco da 3ª sessão: ainda pendente. O loop fechado da Sessão 2 foi inconclusivo. A Sessão 3 foi aprovada com
 ajustes, e a regra do marco (em taxa) e o pré-registro estão em §7.4.
@@ -496,3 +497,35 @@ falhar, **nenhuma fila roda**, e a falha é relatada sem ajuste do critério.
     os flexores caírem ≥ 25 % em pelo menos 9 dos 12 pares, com os extensores subindo. Os limiares
     25 % e 9/12 são **escolha sem fonte**. Um par com flexores em 0 Hz antes do estímulo é "não
     avaliável" e conta contra.
+
+### 7.5 Sessão 3: resultados (parcial; a validação do aparato aguarda aprovação das tolerâncias)
+
+**T1, saldo E/I proprioceptor → MN** (`experiments/phase3a_s3_ei.py`, `results/phase3a/s3_ei_balance.csv`;
+agregado nas 6 pernas, alvo = todos os MNs da perna):
+
+| Classe | 1 sinapse (ambos os modos) | 2 sinapses, `verified` | 2 sinapses, `gluexc` (H6-g) |
+|---|---|---|---|
+| claw | +0,996 | −0,52 | −0,21 |
+| hook | +1,000 | −0,52 | −0,22 |
+| club | +1,000 | −0,49 | −0,25 |
+| placas de pelos | +0,98 | −0,49 | **+0,12** |
+| campaniformes | +0,88 | −0,20 | **+0,17** |
+
+- **Leitura pré-registrada: NÃO cumprida para claw e hook.** O saldo de 2 sinapses fica menos negativo
+  com glutamato excitatório (de −0,52 para −0,21/−0,22), mas continua negativo em 11 de 12 pares
+  perna × classe. A única exceção é o claw da L1: +0,03.
+- Achado fora da leitura pré-registrada, que vale só como hipótese: com a H6-g, as placas de pelos e
+  os campaniformes passam a saldo positivo nos caminhos de 2 sinapses. Na aferência imposta da Sessão
+  2, as placas de pelos eram acionadas e os campaniformes ficavam em 0 (sem força de contato). Essa é
+  uma via possível para a elevação da H6-g sem DNs. A H6-g continua sem base documentada.
+- A via direta (1 sinapse) é excitatória e pequena. O saldo negativo vem dos interneurônios. As somas
+  de 1 e de 2 sinapses não são comparáveis em escala (produto de contagens).
+
+**T2, inibição recíproca extensores → flexores** (`experiments/phase3a_recip.py --direction E2F`,
+`results/phase3a/s3_reciprocal_inhibition_E2F.csv`; 60 execuções, sementes 9000–9004):
+- **Funciona pelo critério pré-registrado: 11 de 12 pares** (critério ≥ 9). Os extensores sobem de
+  15 % a 1.700 % e os flexores caem de 35 % a 61 %.
+- A exceção é a FTi da L1 (flexores −14 %).
+- Com a Sessão 2 (flexores → extensores: 12 de 12, com os extensores caindo 44–96 %), a inibição
+  recíproca é funcional **nos dois sentidos**. O efeito é assimétrico: os extensores inibem os flexores
+  menos do que o contrário.
