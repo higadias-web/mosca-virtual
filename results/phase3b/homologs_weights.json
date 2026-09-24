@@ -1,0 +1,198 @@
+{
+ "direct_weights": {
+  "PS013_left->DNa02_left": 178.0,
+  "PS013_left->DNa02_right": 0.0,
+  "PS013_right->DNa02_left": 0.0,
+  "PS013_right->DNa02_right": 162.0,
+  "DNae005_left->DNa02_left": 196.0,
+  "DNae005_left->DNa02_right": 0.0,
+  "DNae005_right->DNa02_left": 0.0,
+  "DNae005_right->DNa02_right": 240.0,
+  "LAL081_left->DNa02_left": 93.0,
+  "LAL081_left->DNa02_right": 0.0,
+  "LAL081_right->DNa02_left": 0.0,
+  "LAL081_right->DNa02_right": 99.0
+ },
+ "active_inputs_odor100": {
+  "DNa02_left": {
+   "rate": 52.4,
+   "n_presyn": 742,
+   "n_presyn_active": 143,
+   "E_total": 53029.00000000001,
+   "I_total": 36532.4,
+   "net": 16496.600000000006,
+   "top_inhibitory": [
+    {
+     "type": "AOTU019",
+     "side": "right",
+     "nt": "gaba",
+     "rate": 81.0,
+     "weight": -121.0,
+     "contribution": -9801.0
+    },
+    {
+     "type": "CB0083",
+     "side": "right",
+     "nt": "gaba",
+     "rate": 46.8,
+     "weight": -80.0,
+     "contribution": -3744.0
+    },
+    {
+     "type": "LAL051",
+     "side": "left",
+     "nt": "glutamate",
+     "rate": 48.4,
+     "weight": -70.0,
+     "contribution": -3388.0
+    },
+    {
+     "type": "CB0677",
+     "side": "right",
+     "nt": "gaba",
+     "rate": 38.0,
+     "weight": -70.0,
+     "contribution": -2660.0
+    },
+    {
+     "type": "CB0527",
+     "side": "left",
+     "nt": "gaba",
+     "rate": 29.0,
+     "weight": -67.0,
+     "contribution": -1943.0
+    },
+    {
+     "type": "LAL112",
+     "side": "left",
+     "nt": "gaba",
+     "rate": 167.8,
+     "weight": -11.0,
+     "contribution": -1845.8000000000002
+    },
+    {
+     "type": "LAL112",
+     "side": "left",
+     "nt": "gaba",
+     "rate": 167.4,
+     "weight": -7.0,
+     "contribution": -1171.8
+    },
+    {
+     "type": "CB0527",
+     "side": "right",
+     "nt": "gaba",
+     "rate": 17.2,
+     "weight": -68.0,
+     "contribution": -1169.6
+    },
+    {
+     "type": "PS049",
+     "side": "left",
+     "nt": "gaba",
+     "rate": 3.2,
+     "weight": -353.0,
+     "contribution": -1129.6000000000001
+    },
+    {
+     "type": "MBON32",
+     "side": "right",
+     "nt": "gaba",
+     "rate": 108.6,
+     "weight": -10.0,
+     "contribution": -1086.0
+    }
+   ]
+  },
+  "DNa02_right": {
+   "rate": 1.2,
+   "n_presyn": 751,
+   "n_presyn_active": 125,
+   "E_total": 43453.799999999996,
+   "I_total": 57839.8,
+   "net": -14386.000000000007,
+   "top_inhibitory": [
+    {
+     "type": "AOTU019",
+     "side": "left",
+     "nt": "gaba",
+     "rate": 126.0,
+     "weight": -216.0,
+     "contribution": -27216.0
+    },
+    {
+     "type": "MBON32",
+     "side": "left",
+     "nt": "gaba",
+     "rate": 164.6,
+     "weight": -40.0,
+     "contribution": -6584.0
+    },
+    {
+     "type": "CB0083",
+     "side": "left",
+     "nt": "gaba",
+     "rate": 35.6,
+     "weight": -91.0,
+     "contribution": -3239.6
+    },
+    {
+     "type": "LAL051",
+     "side": "right",
+     "nt": "glutamate",
+     "rate": 22.8,
+     "weight": -130.0,
+     "contribution": -2964.0
+    },
+    {
+     "type": "LAL112",
+     "side": "right",
+     "nt": "gaba",
+     "rate": 173.8,
+     "weight": -13.0,
+     "contribution": -2259.4
+    },
+    {
+     "type": "LAL123",
+     "side": "left",
+     "nt": "glutamate",
+     "rate": 81.8,
+     "weight": -22.0,
+     "contribution": -1799.6
+    },
+    {
+     "type": "CB0527",
+     "side": "left",
+     "nt": "gaba",
+     "rate": 29.0,
+     "weight": -47.0,
+     "contribution": -1363.0
+    },
+    {
+     "type": "CB0677",
+     "side": "left",
+     "nt": "gaba",
+     "rate": 39.2,
+     "weight": -33.0,
+     "contribution": -1293.6000000000001
+    },
+    {
+     "type": "CB0865",
+     "side": "left",
+     "nt": "gaba",
+     "rate": 27.8,
+     "weight": -44.0,
+     "contribution": -1223.2
+    },
+    {
+     "type": "MBON31",
+     "side": "right",
+     "nt": "gaba",
+     "rate": 91.6,
+     "weight": -13.0,
+     "contribution": -1190.8
+    }
+   ]
+  }
+ }
+}

@@ -513,3 +513,16 @@ e, quando houver opção, parâmetro com fonte.
 de PS013, DNae005 e LAL081 (E e D) em DNa02 E e D; e, com os spikes do odor bilateral a 100 Hz (§K),
 as entradas ativas (peso × taxa) sobre DNa02 D e E, com as somas excitatória e inibitória e as 10
 maiores inibitórias sobre o DNa02 D. É descritivo, sem critério.
+
+## O. Etapa B: resultado (2026-09-24). Relatório em `docs/FASE3B_ETAPA_B_RELATORIO.md`
+- `RATES_OK` 380/380, análise só com a fila completa.
+- **Critérios:**
+  - (a) DNp09 excitado: **não** (0 Hz em todas as taxas, inclusive vin5);
+  - (b) viés do DNa02 E em todas as taxas: **sim** (50–55 Hz contra 0–1 Hz; p = 0,002);
+  - (c) algum DN distingue o lado: **não**;
+  - (d) regime na faixa sem fonte (≤ 3,1 %): **não** (6,1–6,2 % em todas as taxas).
+- **Real × embaralhados:** o conectoma real entra num regime alto de tudo ou nada já a 20 Hz (~470 mil
+  spikes); os embaralhados ficam em ~0,1–0,3 %.
+- **Homólogos:** pesos simétricos; o saldo no DNa02 D é negativo, com a maior inibição vinda do AOTU019 E
+  (descritivo, sem teste causal).
+- **Desvio:** a fila levou ~30 min, contra os 15 estimados.
