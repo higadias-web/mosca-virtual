@@ -7,6 +7,8 @@ A especificação completa, com regras de trabalho, fases e critérios, está em
 - **O comportamento deve vir da mosca.** Todo elemento fora do conectoma deve ser o mínimo necessário,
   ter justificativa e estar registrado em `docs/NON_CONNECTOME.md`. Sempre que houver opção, preferir
   parâmetro com fonte a parâmetro escolhido por nós.
+- **Correções do modelo:** só por critérios fisiológicos da literatura (lobo antenal, células de Kenyon como na
+  mosca real), nunca pelo comportamento; uma mudança de cada vez. Ablações diagnósticas não são correções.
 - **Nenhum vídeo até a mosca chegar à fruta sozinha**, por critério pré-registrado. Até lá, só figuras de
   diagnóstico. (Substitui a regra anterior de vídeo ao fim de cada fase ou entrega.)
 

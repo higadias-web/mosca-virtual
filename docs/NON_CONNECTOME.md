@@ -4,6 +4,11 @@
 > do conectoma deve ser **o mínimo necessário**, ter **justificativa** e estar **registrado aqui**. Sempre
 > que houver opção, **preferir parâmetro com fonte** a parâmetro escolhido por nós. Nenhum vídeo até a
 > mosca chegar à fruta sozinha, por critério pré-registrado; até lá, só figuras de diagnóstico.
+>
+> **Correções do modelo (usuário, 2026-09-24):** qualquer correção futura do modelo oficial só será aprovada
+> por **critérios fisiológicos da literatura** (p. ex., o lobo antenal e as células de Kenyon se comportando
+> como na mosca real), **nunca pelo comportamento da mosca**. **Uma mudança de cada vez.** Ablações
+> diagnósticas não são correções e não entram no modelo oficial.
 
 Tudo que é engenharia, e não biologia, aparece aqui e no código com `# NON-CONNECTOME:`.
 Fase atual: 2 (concluída, aguardando aprovação). As entradas marcadas como *planejado*

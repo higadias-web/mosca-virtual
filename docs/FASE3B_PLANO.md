@@ -587,3 +587,54 @@ interfere no conectoma.
   (Yaksi & Wilson 2010).
 - APL não disparador na mosca (Amin et al. 2020) e disparando a ~340 Hz no modelo (L2).
 - Opções O0–O6 listadas; **nada foi corrigido**.
+
+## R. Etapa D: ablações diagnósticas (pré-registro, commitado antes de rodar)
+
+**Não são correções: o modelo oficial não muda.** As sinapses são zeradas numa cópia do conectoma, só dentro
+de `experiments/phase3b_ablation.py`. Sem corpo, sem interface, sem vídeo.
+
+**R0. O que os terminais dos ORNs recebem na mosca real** (fontes lidas antes de definir B):
+- Olsen SR, Wilson RI 2008, *Nature* 452:956–960: "a substantial portion of this inter-glomerular inhibition
+  acts at a presynaptic locus, and our results imply this is mediated by both GABAA and GABAB receptors on
+  the same nerve terminal". Os terminais dos ORNs recebem **inibição GABAérgica pré-sináptica**.
+- Horne JA et al. 2018, *eLife* 7:e37550 (glomérulo VA1v): "ORNs are predominantly presynaptic" (razão
+  pré/pós de 3,9 ± 0,6 nos ipsilaterais), e "some ORN synapses are made between an ORN and its neighbouring
+  olfactory receptor neurons".
+- **Nenhuma fonte lida mostra que entradas excitatórias nos terminais façam o ORN inteiro disparar.** A
+  hipótese de B (um modelo de neurônio pontual transforma sinapses no terminal em excitação do ORN inteiro,
+  inclusive dos que não recebem odor) continua **hipótese**.
+- No modelo: os ORNs recebem 95.001 sinapses excitatórias (76 % de LNs, 20 % de outros ORNs, 4 % de PNs) e
+  66.477 inibitórias.
+
+**R1. Conjuntos** (definidos no código antes de rodar):
+- **A (eLN → PN):** eLN = LN do lobo antenal (`cell_class == ALLN`) com saída excitatória no modelo (sinal do
+  arquivo do Shiu) e `known_nt` que não seja GABA, glutamato ou octopamina. São **148 eLNs**; a ablação remove
+  **18.618 arestas (142.287 sinapses)** de eLN para PN.
+- **B (entradas excitatórias nos ORNs):** toda sinapse de peso > 0 que chega a um ORN (`ORN_*`): **51.695
+  arestas (95.001 sinapses)**.
+- **C:** A + B.
+- **Achado registrado à parte:** 18 LNs são excitatórios no modelo mas têm `known_nt` GABA, glutamato ou
+  octopamina na anotação (p. ex., 12 com "gaba, MIP; acetylcholine-negative"). É um erro de sinal do modelo
+  para esses neurônios. **Não é corrigido aqui.**
+
+**R2. Condições:**
+- A, B e C: sem odor, vinagre a 0,1 % (7/0 Hz), 0,5 % (16/11) e 5 % (42/22) (Faucher et al. 2013), com o
+  odor ligado em [0, 200) ms e observação até 1000 ms.
+- Intacto: persistência a 0,1 % e 0,5 % (novas); a 5 % vem da Etapa C.
+- 10 sementes pareadas; **140 execuções novas**.
+
+**R3. Critérios (fixados agora):**
+- **A atividade volta ao basal?** Basal = sem odor (0 spikes, sem atividade de fundo). "Volta ao basal" se a
+  mediana da razão [taxa da rede em 400–1000 ms] / [taxa em 100–200 ms] for **≤ 0,01**. "Persistente" se
+  **≥ 0,10**; entre os dois, "parcial".
+- **A resposta cresce com a dose?** Total de spikes durante o odor (0–200 ms): as medianas crescem
+  0,1 % < 0,5 % < 5 %, **e** o Wilcoxon pareado de cada passo dá **p < 0,025** (Bonferroni para 2 passos).
+- **Fração de neurônios ativos durante o odor (0–200 ms):** relatada no total e por classe (células de Kenyon,
+  PNs, LNs), comparada com o limite de 3,14 % da Etapa B (sem fonte). É descritiva.
+
+**R4. Estimativa de tempo:** as execuções em regime alto custaram ~100 s cada (Etapa C: 40 em 430 s com 10
+processos). Aqui são até ~110 em regime alto + 30 controles baratos ≈ **10–20 min**, e menos se as
+ablações apagarem o regime.
+
+**R5. Propostas pedidas (nada rodado com elas):** referência olfativa para reprodução e resposta sobre
+ligações elétricas nos conectomas. Ver `docs/FASE3B_ETAPA_D_RELATORIO.md`.

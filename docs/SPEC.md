@@ -341,6 +341,14 @@ replay.
    depois benchmark com o elenco completo e, se viável e aprovado, entrada no
    terrário e no painel.
 
+### Extensão depois da Fase 8 (registrada em 2026-09-24; nenhum trabalho agora)
+9. **Voo** da mosca adulta. Corpo candidato: **flybody** (Vaxenburg R, Siwanowicz I, Merel J, Robie AA, Morrow C,
+   Novati G, Stefanidi Z, Both GJ, Card GM, Reiser MB, Botvinick MM, Branson KM, Tassa Y, Turaga SC, "Whole-body
+   physics simulation of fruit fly locomotion", *Nature* 643:1312–1320, 2025, doi:10.1038/s41586-025-09029-4).
+   Mesmo princípio do projeto: **o controle vem do conectoma**, sem controlador treinado por aprendizado por
+   reforço (o flybody original usa controladores treinados por reforço, o que aqui não vale). Só começa com a
+   aprovação do usuário, depois da Fase 8.
+
 ## Critérios de validação (por fase)
 - Resultados reproduzidos comparados numericamente com o artigo do Shiu.
 - C. elegans: frequência e comprimento de onda da ondulação em faixa plausível
