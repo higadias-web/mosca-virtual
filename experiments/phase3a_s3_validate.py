@@ -54,8 +54,32 @@ OUT = ROOT / "results/phase3a"
 LIMIT = "std2dt"  # §7.8; trocado por --limit direct_dt só na alternativa única
 
 
+# Instabilidade = falha (§7.10, condição do usuário): NaN/Inf no estado, qualquer aviso do MuJoCo de
+# aceleração/velocidade/posição inválida ou "huge" (mjWARN_BADQACC, BADQVEL, BADQPOS; o MuJoCo reinicia o
+# estado sozinho nesses casos, então só o contador de avisos mostra) em QUALQUER teste, ou energia
+# crescendo sem entrada no teste (b), reprova a tentativa, mesmo que (c) passe.
+SCENES: list = []
+INSTAB: dict = {}
+
+
+def _audit(test: str):
+    import mujoco as mj
+    for sc in SCENES:
+        d = sc.sim.mj_data
+        w = {n: int(d.warning[getattr(mj.mjtWarning, n)].number)
+             for n in ("mjWARN_BADQACC", "mjWARN_BADQVEL", "mjWARN_BADQPOS")}
+        finite = bool(np.isfinite(d.qpos).all() and np.isfinite(d.qvel).all() and np.isfinite(d.qacc).all())
+        rec = INSTAB.setdefault(test, dict(n_scenes=0, warnings={k: 0 for k in w}, nonfinite=0))
+        rec["n_scenes"] += 1
+        for k, v in w.items():
+            rec["warnings"][k] += v
+        rec["nonfinite"] += int(not finite)
+    SCENES.clear()
+
+
 def _scene(offset=0.0):
     sc = build_ball_scene(ball_z_offset=offset, passive="wang2025", limit=LIMIT)
+    SCENES.append(sc)
     fly = sc.fly
     jd = [d.name for d in fly.get_jointdofs_order()]
     ad = [d.name for d in fly.get_actuated_jointdofs_order(ActuatorType.MOTOR)]
@@ -115,14 +139,18 @@ def test_a():
                              frac_tau_over_gain=float((np.abs(tau[:, c]) > gain[key]).mean())))
     df = pd.DataFrame(rows)
     df.to_csv(OUT / "s3_validation_a.csv", index=False)
+    _audit("a")
     ok = bool(((df.ratio_open - 1).abs() <= TOL["X"]).all())
     return dict(passed=ok, ratio_open_min=float(df.ratio_open.min()), ratio_open_max=float(df.ratio_open.max()),
                 ratio_open_median=float(df.ratio_open.median()), n_outside=int(((df.ratio_open - 1).abs() > TOL["X"]).sum()))
 
 
 def test_b():
+    import mujoco as mj
     sc, jd, ad = _scene()
+    sc.sim.mj_model.opt.enableflags |= mj.mjtEnableBit.mjENBL_ENERGY  # d.energy = (potencial, cinética)
     aidx = np.array([jd.index(n) for n in ad])
+    E0, Emax_rise = None, 0.0
     dt = sc.sim.mj_model.opt.timestep
     n, n0 = int(TOL["Z_s"] / dt), int(TOL["settle_s"] / dt)
     zero = np.zeros(len(ad))
@@ -132,6 +160,9 @@ def test_b():
         sc.sim.step()
         if k == n0:
             q0 = np.asarray(sc.sim.get_joint_angles(sc.fly.name))[aidx].copy()
+            E0 = float(sc.sim.mj_data.energy.sum())
+        if k > n0 and k % 100 == 0:  # energia total a cada 10 ms, sem entrada
+            Emax_rise = max(Emax_rise, float(sc.sim.mj_data.energy.sum()) - E0)
         if k > n0:
             if k % 10 == 0:
                 q = np.asarray(sc.sim.get_joint_angles(sc.fly.name))[aidx]
@@ -140,7 +171,15 @@ def test_b():
             ball += float(np.linalg.norm(w)) * BALL_RADIUS * dt
     pd.DataFrame(dict(dof=ad, drift_max=dmax)).to_csv(OUT / "s3_validation_b.csv", index=False)
     ok = bool(dmax.max() < TOL["Y"] and ball < TOL["ball_mm"])
-    return dict(passed=ok, drift_max=float(dmax.max()), drift_worst_dof=ad[int(dmax.argmax())], ball_mm=ball)
+    # energia crescendo sem entrada: E(t) − E(0,5 s) > 1e-3 g·mm²/s² (= nJ) em algum ponto de 0,5 a 5,7 s.
+    # Tolerância absoluta (ESCOLHA, fixada antes de rodar): |E| é dominada pela gravidade (~2,8e3 nJ), então
+    # uma tolerância relativa seria frouxa; 1e-3 nJ ≈ energia cinética de ~1e-5 g (massa de uma perna) a
+    # ~14 mm/s, ~40× a cinética da cena parada (2,5e-5 nJ).
+    energy_rise = bool(Emax_rise > 1e-3)
+    INSTAB["b_energy"] = dict(E_0p5s=E0, max_rise=Emax_rise, rising=energy_rise)
+    _audit("b")
+    return dict(passed=ok, drift_max=float(dmax.max()), drift_worst_dof=ad[int(dmax.argmax())], ball_mm=ball,
+                energy_E0=E0, energy_max_rise=Emax_rise)
 
 
 def _groups(ad):
@@ -150,7 +189,7 @@ def _groups(ad):
     return [(nm, d, s) for nm, (_, d, s) in zip(names, md.groups)]
 
 
-def _hold(tq_vec, ms, jd, ad, offset=-5.0):
+def _hold(tq_vec, ms, jd, ad, offset=-5.0, d_target=None):
     sc, _, _ = _scene(offset)
     aidx = np.array([jd.index(n) for n in ad])
     rng = _ranges(sc, ad)
@@ -159,17 +198,25 @@ def _hold(tq_vec, ms, jd, ad, offset=-5.0):
     viol, tail = 0.0, []
     steps = int(ms * 10)
     viol_step = 0.0  # descritivo: pico a cada passo de 0,1 ms (o critério usa 1 kHz, como sensores e rede)
+    vt = np.zeros(steps)  # violação do DOF do grupo a cada passo (0 se dentro da faixa)
     for k in range(steps):
         sc.sim.set_actuator_inputs(sc.fly.name, ActuatorType.MOTOR, tq_vec)
         sc.sim.step()
         qs = np.asarray(sc.sim.get_joint_angles(sc.fly.name))[aidx]
         viol_step = max(viol_step, float(np.max(np.maximum(lo - qs, qs - hi))))
+        if d_target is not None:
+            vt[k] = max(0.0, lo[d_target] - qs[d_target], qs[d_target] - hi[d_target])
         if k % 10 == 0:
             q = np.asarray(sc.sim.get_joint_angles(sc.fly.name))[aidx]
             viol = max(viol, float(np.max(np.maximum(lo - q, q - hi))))
             if k >= steps - 500:
                 tail.append(q)
     _hold.last_step_viol = viol_step
+    # §7.10: impacto = pico por passo nos primeiros 50 ms; sustentação = média por passo em 100–200 ms
+    _hold.impact_peak = float(vt[:500].max())
+    _hold.impact_t_ms = float(vt[:500].argmax() / 10)
+    _hold.sustain_mean = float(vt[1000:2000].mean())
+    _audit("cd")
     return viol, np.mean(tail, 0)
 
 
@@ -183,14 +230,17 @@ def test_c_d():
         for a in (0.2, 0.4, 0.6, 0.8, 1.0):
             tq = np.zeros(len(ad))
             tq[d] = np.clip(s * a, -TORQUE_LIMIT, TORQUE_LIMIT)
-            v, qf = _hold(tq, TOL["limit_ms"], jd, ad)
+            v, qf = _hold(tq, TOL["limit_ms"], jd, ad, d_target=d)
             viols.append(v)
             vsteps.append(_hold.last_step_viol)
+            if a == 1.0:
+                imp, imp_t, sus = _hold.impact_peak, _hold.impact_t_ms, _hold.sustain_mean
             finals.append(np.sign(s) * (qf[d] - q_rest[d]))
         f = np.array(finals)
         mono = bool(np.all(np.diff(f) >= -TOL["mono"]) and f[-1] > 0)
         rows.append(dict(group=name, dof=ad[d], viol_act1=viols[-1], viol_max=max(viols), monotonic=mono,
                          viol_step_act1=vsteps[-1], viol_step_max=max(vsteps),
+                         impact_peak_act1=imp, impact_t_ms_act1=imp_t, sustain_mean_act1=sus,
                          **{f"dq_{a}": x for a, x in zip((0.2, 0.4, 0.6, 0.8, 1.0), f)}))
     df = pd.DataFrame(rows)
     df.to_csv(OUT / "s3_validation_cd.csv", index=False)
@@ -315,6 +365,7 @@ def test_e():
                              max_prominence=max((p["prominence"] or 0) for p in r2["per_seed"])))
     df = pd.DataFrame(rows)
     df.to_csv(OUT / "s3_validation_e.csv", index=False)
+    _audit("e")
     return dict(passed=bool(not df.positive.any()), n_positive=int(df.positive.sum()), n_tests=len(df),
                 max_prominence_angle=float(df[df.signal == "angle"].max_prominence.max()),
                 max_prominence_proprio=float(df[df.signal == "proprio"].max_prominence.max()),
@@ -332,7 +383,11 @@ def main():
     res = dict(tol=TOL, limit=LIMIT, a=test_a(), b=test_b())
     res["c"], res["d"] = test_c_d()
     res["e"] = test_e()
-    res["all_passed"] = all(res[k]["passed"] for k in "abcde")
+    _audit("cd")
+    unstable = bool(any(sum(r["warnings"].values()) or r["nonfinite"] for k, r in INSTAB.items() if k != "b_energy")
+                    or INSTAB.get("b_energy", {}).get("rising", False))
+    res["instability"] = dict(INSTAB, unstable=unstable)
+    res["all_passed"] = all(res[k]["passed"] for k in "abcde") and not unstable
     json.dump(res, open(OUT / f"s3_validation_{LIMIT}.json", "w"), indent=1, ensure_ascii=False)
     print(json.dumps(res, indent=1, ensure_ascii=False))
 

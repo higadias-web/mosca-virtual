@@ -735,3 +735,42 @@ outras leituras ficam a ≥ 62×). A fonte é preprint. "Sustentar" **não** foi
 - Pelo teto de §7.8.1, sobra **uma única** alternativa, "direct_dt", já fixada no commit 8aa281e.
   **Não foi rodada: aguarda a revisão do usuário.** Se ela falhar, a 3a encerra como "não testável com
   este aparato no prazo".
+
+### 7.10 Sessão 3: última tentativa ("direct_dt"), condições e fila (2026-09-23, commitadas antes de rodar)
+
+Autorizada pelo usuário. A tentativa usa a alternativa fixada em §7.8.1: solref = (−10⁸; −2×10⁴),
+solimp (0,95; 0,99; 0,001; 0,5; 2). Y não muda. A validação inteira, (a)–(e), é refeita.
+
+**1. Instabilidade = falha**, mesmo que (c) passe (`experiments/phase3a_s3_validate.py`, `_audit`).
+Qualquer um destes reprova a tentativa:
+- NaN ou Inf em qpos, qvel ou qacc;
+- qualquer aviso `mjWARN_BADQACC`, `BADQVEL` ou `BADQPOS` do MuJoCo, em qualquer cena de qualquer
+  teste. O MuJoCo reinicia o estado sozinho nesses casos, então é o contador de avisos que mostra;
+- energia crescendo sem entrada no teste (b): E(t) − E(0,5 s) > 10⁻³ nJ em algum ponto, amostrado a
+  cada 10 ms. A tolerância absoluta é **escolha**: |E| é dominada pela gravidade (~2,8×10³ nJ), então
+  uma tolerância relativa seria frouxa demais. 10⁻³ nJ ≈ energia cinética de uma massa de perna
+  (~10⁻⁵ g) a ~14 mm/s.
+
+**2. Explicação da causa sem rodar de novo.** Por grupo, com ativação 1, no DOF do grupo e a cada
+passo de 0,1 ms:
+- **pico no impacto** = violação máxima nos primeiros 50 ms, e o instante dela;
+- **violação média na sustentação** = média em 100–200 ms.
+
+**3. Se falhar:** a 3a encerra como **"loop fechado não testável com este aparato no prazo"**, com
+relatório em `docs/FASE3A_RELATORIO.md`. O relatório separa o que ficou demonstrado (aferência imposta
+negativa nas 3 variantes, acionamento dos MNs quase nulo, inibição recíproca nos dois sentidos,
+coativação vinda dos DNs) do que ficou sem teste (o loop fechado). Depois, parar para revisão.
+
+**4. Se passar:** roda o loop fechado principal como pré-registrado (`experiments/phase3a_s3.py`).
+- **"Combinação pooled"** (definição do usuário): a mesma regra das 4 combinações (0/4 ausência;
+  ≥ 3/4 ritmo; 1–2/4 ausência para o marco, registrada como hipótese). **Não** há rodízio entre
+  sementes; a leitura provisória de §7.8.3 fica substituída.
+- **k/16:** só G3, escala 1, 4 combinações × 5 sementes (20 execuções). Vale só como hipótese.
+- Principal: 120 execuções (G2/G3/G4 × ×1/×2 × 4 combinações × 5 sementes).
+- Ritmo que conta numa combinação, como na Sessão 2: v2 na janela A (DNs ligados) e não na janela B
+  (DNs desligados).
+- Fila:
+  - `systemd-inhibit`, com esperas pelo PID ou pela linha final do log, sem timeout curto;
+  - `--check` conta os `.npz` por tipo, com regex exata por tipo (sem o defeito do `FILA_OK3` da
+    Sessão 2), e grava `FILA_OK`;
+  - `--analyze` se recusa a rodar sem as contagens completas dos dois tipos. Nenhuma análise parcial.
