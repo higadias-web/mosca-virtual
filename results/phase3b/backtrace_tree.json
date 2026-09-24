@@ -1,0 +1,919 @@
+{
+ "idx": 92992,
+ "root_id": 720575940629327659,
+ "cell_type": "DNa02",
+ "side": "left",
+ "super_class": "descending",
+ "top_nt": "acetylcholine",
+ "rate": 52.4,
+ "top_inhibitory": [
+  {
+   "idx": 104365,
+   "root_id": 720575940631517251,
+   "cell_type": "AOTU019",
+   "side": "right",
+   "super_class": "central",
+   "top_nt": "gaba",
+   "rate": 81.0,
+   "weight": -121.0,
+   "contribution": -9801.0
+  },
+  {
+   "idx": 131149,
+   "root_id": 720575940641904525,
+   "cell_type": "CB0083",
+   "side": "right",
+   "super_class": "central",
+   "top_nt": "gaba",
+   "rate": 46.8,
+   "weight": -80.0,
+   "contribution": -3744.0
+  },
+  {
+   "idx": 58569,
+   "root_id": 720575940623067389,
+   "cell_type": "LAL051",
+   "side": "left",
+   "super_class": "central",
+   "top_nt": "glutamate",
+   "rate": 48.4,
+   "weight": -70.0,
+   "contribution": -3388.0
+  }
+ ],
+ "inputs": [
+  {
+   "idx": 45803,
+   "root_id": 720575940620842111,
+   "cell_type": "PS013",
+   "side": "left",
+   "super_class": "central",
+   "top_nt": "acetylcholine",
+   "rate": 45.8,
+   "top_inhibitory": [
+    {
+     "idx": 92427,
+     "root_id": 720575940629204674,
+     "cell_type": "CB0540",
+     "side": "left",
+     "super_class": "central",
+     "top_nt": "gaba",
+     "rate": 38.0,
+     "weight": -28.0,
+     "contribution": -1064.0
+    },
+    {
+     "idx": 104365,
+     "root_id": 720575940631517251,
+     "cell_type": "AOTU019",
+     "side": "right",
+     "super_class": "central",
+     "top_nt": "gaba",
+     "rate": 81.0,
+     "weight": -6.0,
+     "contribution": -486.0
+    },
+    {
+     "idx": 4937,
+     "root_id": 720575940607667723,
+     "cell_type": "LAL142",
+     "side": "left",
+     "super_class": "central",
+     "top_nt": "gaba",
+     "rate": 70.6,
+     "weight": -6.0,
+     "contribution": -423.59999999999997
+    }
+   ],
+   "inputs": [
+    {
+     "idx": 61926,
+     "root_id": 720575940623650055,
+     "cell_type": "CB0359",
+     "side": "left",
+     "super_class": "central",
+     "top_nt": "acetylcholine",
+     "rate": 38.6,
+     "top_inhibitory": [
+      {
+       "idx": 117221,
+       "root_id": 720575940635202204,
+       "cell_type": "VES041",
+       "side": "right",
+       "super_class": "central",
+       "top_nt": "gaba",
+       "rate": 60.0,
+       "weight": -42.0,
+       "contribution": -2520.0
+      },
+      {
+       "idx": 81321,
+       "root_id": 720575940627253604,
+       "cell_type": "VES041",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "gaba",
+       "rate": 80.6,
+       "weight": -27.0,
+       "contribution": -2176.2
+      },
+      {
+       "idx": 20399,
+       "root_id": 720575940614441834,
+       "cell_type": "LAL099",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "gaba",
+       "rate": 58.0,
+       "weight": -19.0,
+       "contribution": -1102.0
+      }
+     ],
+     "inputs": [
+      {
+       "idx": 51609,
+       "root_id": 720575940621828443,
+       "cell_type": "MBON12",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 154.8,
+       "weight": 45.0,
+       "contribution": 6966.000000000001
+      },
+      {
+       "idx": 96808,
+       "root_id": 720575940630075703,
+       "cell_type": "MBON12",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 162.8,
+       "weight": 14.0,
+       "contribution": 2279.2000000000003
+      },
+      {
+       "idx": 93113,
+       "root_id": 720575940629354087,
+       "cell_type": "CB1245",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 110.8,
+       "weight": 14.0,
+       "contribution": 1551.2
+      }
+     ],
+     "weight": 91.0,
+     "contribution": 3512.6
+    },
+    {
+     "idx": 102222,
+     "root_id": 720575940631097462,
+     "cell_type": "LAL023",
+     "side": "left",
+     "super_class": "central",
+     "top_nt": "acetylcholine",
+     "rate": 85.0,
+     "top_inhibitory": [
+      {
+       "idx": 4937,
+       "root_id": 720575940607667723,
+       "cell_type": "LAL142",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "gaba",
+       "rate": 70.6,
+       "weight": -159.0,
+       "contribution": -11225.4
+      },
+      {
+       "idx": 81321,
+       "root_id": 720575940627253604,
+       "cell_type": "VES041",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "gaba",
+       "rate": 80.6,
+       "weight": -10.0,
+       "contribution": -806.0
+      },
+      {
+       "idx": 117221,
+       "root_id": 720575940635202204,
+       "cell_type": "VES041",
+       "side": "right",
+       "super_class": "central",
+       "top_nt": "gaba",
+       "rate": 60.0,
+       "weight": -8.0,
+       "contribution": -480.0
+      }
+     ],
+     "inputs": [
+      {
+       "idx": 60448,
+       "root_id": 720575940623387786,
+       "cell_type": "SMP177",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 181.8,
+       "weight": 60.0,
+       "contribution": 10908.0
+      },
+      {
+       "idx": 37974,
+       "root_id": 720575940619134789,
+       "cell_type": "SMP177",
+       "side": "right",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 178.0,
+       "weight": 52.0,
+       "contribution": 9256.0
+      },
+      {
+       "idx": 136387,
+       "root_id": 720575940648570244,
+       "cell_type": "LHPV5e3",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 131.0,
+       "weight": 37.0,
+       "contribution": 4847.0
+      }
+     ],
+     "weight": 41.0,
+     "contribution": 3485.0
+    },
+    {
+     "idx": 90690,
+     "root_id": 720575940628876292,
+     "cell_type": "LAL023",
+     "side": "left",
+     "super_class": "central",
+     "top_nt": "acetylcholine",
+     "rate": 79.2,
+     "top_inhibitory": [
+      {
+       "idx": 4937,
+       "root_id": 720575940607667723,
+       "cell_type": "LAL142",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "gaba",
+       "rate": 70.6,
+       "weight": -202.0,
+       "contribution": -14261.199999999999
+      },
+      {
+       "idx": 120390,
+       "root_id": 720575940636489140,
+       "cell_type": "LHCENT3",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "gaba",
+       "rate": 203.2,
+       "weight": -2.0,
+       "contribution": -406.4
+      },
+      {
+       "idx": 120115,
+       "root_id": 720575940636348152,
+       "cell_type": "CRE008,CRE010",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "glutamate",
+       "rate": 129.8,
+       "weight": -2.0,
+       "contribution": -259.6
+      }
+     ],
+     "inputs": [
+      {
+       "idx": 60448,
+       "root_id": 720575940623387786,
+       "cell_type": "SMP177",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 181.8,
+       "weight": 57.0,
+       "contribution": 10362.6
+      },
+      {
+       "idx": 37974,
+       "root_id": 720575940619134789,
+       "cell_type": "SMP177",
+       "side": "right",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 178.0,
+       "weight": 39.0,
+       "contribution": 6942.0
+      },
+      {
+       "idx": 89673,
+       "root_id": 720575940628695043,
+       "cell_type": "CRE011",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 180.2,
+       "weight": 32.0,
+       "contribution": 5766.4
+      }
+     ],
+     "weight": 36.0,
+     "contribution": 2851.2000000000003
+    }
+   ],
+   "weight": 178.0,
+   "contribution": 8152.4
+  },
+  {
+   "idx": 6882,
+   "root_id": 720575940609097429,
+   "cell_type": "DNae005",
+   "side": "left",
+   "super_class": "descending",
+   "top_nt": "acetylcholine",
+   "rate": 19.2,
+   "top_inhibitory": [
+    {
+     "idx": 131149,
+     "root_id": 720575940641904525,
+     "cell_type": "CB0083",
+     "side": "right",
+     "super_class": "central",
+     "top_nt": "gaba",
+     "rate": 46.8,
+     "weight": -52.0,
+     "contribution": -2433.6
+    },
+    {
+     "idx": 93222,
+     "root_id": 720575940629377132,
+     "cell_type": "LAL112",
+     "side": "left",
+     "super_class": "central",
+     "top_nt": "gaba",
+     "rate": 167.4,
+     "weight": -8.0,
+     "contribution": -1339.2
+    },
+    {
+     "idx": 10781,
+     "root_id": 720575940611207922,
+     "cell_type": "VES018",
+     "side": "left",
+     "super_class": "central",
+     "top_nt": "gaba",
+     "rate": 70.8,
+     "weight": -16.0,
+     "contribution": -1132.8
+    }
+   ],
+   "inputs": [
+    {
+     "idx": 86469,
+     "root_id": 720575940628136347,
+     "cell_type": "CB0316",
+     "side": "left",
+     "super_class": "central",
+     "top_nt": "acetylcholine",
+     "rate": 20.0,
+     "top_inhibitory": [
+      {
+       "idx": 10781,
+       "root_id": 720575940611207922,
+       "cell_type": "VES018",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "gaba",
+       "rate": 70.8,
+       "weight": -101.0,
+       "contribution": -7150.799999999999
+      },
+      {
+       "idx": 76768,
+       "root_id": 720575940626498566,
+       "cell_type": "CB0492",
+       "side": "right",
+       "super_class": "central",
+       "top_nt": "gaba",
+       "rate": 24.0,
+       "weight": -126.0,
+       "contribution": -3024.0
+      },
+      {
+       "idx": 16613,
+       "root_id": 720575940613189785,
+       "cell_type": "PLP051",
+       "side": "right",
+       "super_class": "central",
+       "top_nt": "gaba",
+       "rate": 16.6,
+       "weight": -61.0,
+       "contribution": -1012.6000000000001
+      }
+     ],
+     "inputs": [
+      {
+       "idx": 116022,
+       "root_id": 720575940634773951,
+       "cell_type": "AL-AST1",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 174.4,
+       "weight": 73.0,
+       "contribution": 12731.2
+      },
+      {
+       "idx": 53559,
+       "root_id": 720575940622182569,
+       "cell_type": "LHCENT11",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 74.8,
+       "weight": 59.0,
+       "contribution": 4413.2
+      },
+      {
+       "idx": 69071,
+       "root_id": 720575940624959496,
+       "cell_type": "LT86",
+       "side": "left",
+       "super_class": "visual_projection",
+       "top_nt": "acetylcholine",
+       "rate": 14.2,
+       "weight": 193.0,
+       "contribution": 2740.6
+      }
+     ],
+     "weight": 279.0,
+     "contribution": 5580.0
+    },
+    {
+     "idx": 133198,
+     "root_id": 720575940644494752,
+     "cell_type": "DNbe007",
+     "side": "left",
+     "super_class": "descending",
+     "top_nt": "acetylcholine",
+     "rate": 91.4,
+     "top_inhibitory": [
+      {
+       "idx": 19329,
+       "root_id": 720575940614113682,
+       "cell_type": "vLN25",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "glutamate",
+       "rate": 111.0,
+       "weight": -26.0,
+       "contribution": -2886.0
+      },
+      {
+       "idx": 16613,
+       "root_id": 720575940613189785,
+       "cell_type": "PLP051",
+       "side": "right",
+       "super_class": "central",
+       "top_nt": "gaba",
+       "rate": 16.6,
+       "weight": -161.0,
+       "contribution": -2672.6000000000004
+      },
+      {
+       "idx": 122871,
+       "root_id": 720575940637602650,
+       "cell_type": "vLN25",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "glutamate",
+       "rate": 90.4,
+       "weight": -29.0,
+       "contribution": -2621.6000000000004
+      }
+     ],
+     "inputs": [
+      {
+       "idx": 116022,
+       "root_id": 720575940634773951,
+       "cell_type": "AL-AST1",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 174.4,
+       "weight": 72.0,
+       "contribution": 12556.800000000001
+      },
+      {
+       "idx": 90204,
+       "root_id": 720575940628789525,
+       "cell_type": "PLP096",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 44.0,
+       "weight": 178.0,
+       "contribution": 7832.0
+      },
+      {
+       "idx": 69071,
+       "root_id": 720575940624959496,
+       "cell_type": "LT86",
+       "side": "left",
+       "super_class": "visual_projection",
+       "top_nt": "acetylcholine",
+       "rate": 14.2,
+       "weight": 293.0,
+       "contribution": 4160.599999999999
+      }
+     ],
+     "weight": 29.0,
+     "contribution": 2650.6000000000004
+    },
+    {
+     "idx": 78527,
+     "root_id": 720575940626818085,
+     "cell_type": "PVLP141",
+     "side": "right",
+     "super_class": "central",
+     "top_nt": "acetylcholine",
+     "rate": 43.6,
+     "top_inhibitory": [
+      {
+       "idx": 37128,
+       "root_id": 720575940618932763,
+       "cell_type": "PVLP010",
+       "side": "right",
+       "super_class": "central",
+       "top_nt": "glutamate",
+       "rate": 50.8,
+       "weight": -46.0,
+       "contribution": -2336.7999999999997
+      },
+      {
+       "idx": 6128,
+       "root_id": 720575940608545219,
+       "cell_type": "AVLP080",
+       "side": "right",
+       "super_class": "central",
+       "top_nt": "gaba",
+       "rate": 58.2,
+       "weight": -39.0,
+       "contribution": -2269.8
+      },
+      {
+       "idx": 22959,
+       "root_id": 720575940615189465,
+       "cell_type": "MZ_lv2PN",
+       "side": "right",
+       "super_class": "central",
+       "top_nt": "gaba",
+       "rate": 135.6,
+       "weight": -10.0,
+       "contribution": -1356.0
+      }
+     ],
+     "inputs": [
+      {
+       "idx": 24792,
+       "root_id": 720575940615723314,
+       "cell_type": "PVLP076",
+       "side": "right",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 85.6,
+       "weight": 145.0,
+       "contribution": 12412.0
+      },
+      {
+       "idx": 114148,
+       "root_id": 720575940633984924,
+       "cell_type": "LHAV1a1",
+       "side": "right",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 151.4,
+       "weight": 15.0,
+       "contribution": 2271.0
+      },
+      {
+       "idx": 62192,
+       "root_id": 720575940623707575,
+       "cell_type": "M_l2PN3t18",
+       "side": "right",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 178.0,
+       "weight": 9.0,
+       "contribution": 1602.0
+      }
+     ],
+     "weight": 60.0,
+     "contribution": 2616.0
+    }
+   ],
+   "weight": 196.0,
+   "contribution": 3763.2
+  },
+  {
+   "idx": 3745,
+   "root_id": 720575940606726834,
+   "cell_type": "LAL081",
+   "side": "left",
+   "super_class": "central",
+   "top_nt": "acetylcholine",
+   "rate": 40.0,
+   "top_inhibitory": [
+    {
+     "idx": 127326,
+     "root_id": 720575940639542691,
+     "cell_type": "mALD4",
+     "side": "right",
+     "super_class": "central",
+     "top_nt": "gaba",
+     "rate": 56.4,
+     "weight": -149.0,
+     "contribution": -8403.6
+    },
+    {
+     "idx": 5565,
+     "root_id": 720575940608144732,
+     "cell_type": "CB0677",
+     "side": "right",
+     "super_class": "central",
+     "top_nt": "gaba",
+     "rate": 38.0,
+     "weight": -37.0,
+     "contribution": -1406.0
+    },
+    {
+     "idx": 20399,
+     "root_id": 720575940614441834,
+     "cell_type": "LAL099",
+     "side": "left",
+     "super_class": "central",
+     "top_nt": "gaba",
+     "rate": 58.0,
+     "weight": -9.0,
+     "contribution": -522.0
+    }
+   ],
+   "inputs": [
+    {
+     "idx": 89673,
+     "root_id": 720575940628695043,
+     "cell_type": "CRE011",
+     "side": "left",
+     "super_class": "central",
+     "top_nt": "acetylcholine",
+     "rate": 180.2,
+     "top_inhibitory": [
+      {
+       "idx": 98925,
+       "root_id": 720575940630496374,
+       "cell_type": "MBON05",
+       "side": "right",
+       "super_class": "central",
+       "top_nt": "glutamate",
+       "rate": 261.2,
+       "weight": -169.0,
+       "contribution": -44142.799999999996
+      },
+      {
+       "idx": 103708,
+       "root_id": 720575940631381212,
+       "cell_type": "LHPV9b1",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "glutamate",
+       "rate": 83.2,
+       "weight": -472.0,
+       "contribution": -39270.4
+      },
+      {
+       "idx": 125271,
+       "root_id": 720575940638642502,
+       "cell_type": "LHPD5a1",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "glutamate",
+       "rate": 82.2,
+       "weight": -114.0,
+       "contribution": -9370.800000000001
+      }
+     ],
+     "inputs": [
+      {
+       "idx": 60448,
+       "root_id": 720575940623387786,
+       "cell_type": "SMP177",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 181.8,
+       "weight": 292.0,
+       "contribution": 53085.600000000006
+      },
+      {
+       "idx": 86882,
+       "root_id": 720575940628210887,
+       "cell_type": "LHPV10b1",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 162.2,
+       "weight": 260.0,
+       "contribution": 42172.0
+      },
+      {
+       "idx": 123598,
+       "root_id": 720575940637902938,
+       "cell_type": "MBON35",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 115.8,
+       "weight": 355.0,
+       "contribution": 41109.0
+      }
+     ],
+     "weight": 37.0,
+     "contribution": 6667.4
+    },
+    {
+     "idx": 88385,
+     "root_id": 720575940628455942,
+     "cell_type": "CRE011",
+     "side": "right",
+     "super_class": "central",
+     "top_nt": "acetylcholine",
+     "rate": 206.2,
+     "top_inhibitory": [
+      {
+       "idx": 93604,
+       "root_id": 720575940629450106,
+       "cell_type": "LHPV9b1",
+       "side": "right",
+       "super_class": "central",
+       "top_nt": "glutamate",
+       "rate": 52.4,
+       "weight": -438.0,
+       "contribution": -22951.2
+      },
+      {
+       "idx": 12845,
+       "root_id": 720575940612011377,
+       "cell_type": "LHPD5a1",
+       "side": "right",
+       "super_class": "central",
+       "top_nt": "glutamate",
+       "rate": 87.4,
+       "weight": -104.0,
+       "contribution": -9089.6
+      },
+      {
+       "idx": 132236,
+       "root_id": 720575940643309197,
+       "cell_type": "MBON01",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "glutamate",
+       "rate": 73.8,
+       "weight": -80.0,
+       "contribution": -5904.0
+      }
+     ],
+     "inputs": [
+      {
+       "idx": 37974,
+       "root_id": 720575940619134789,
+       "cell_type": "SMP177",
+       "side": "right",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 178.0,
+       "weight": 388.0,
+       "contribution": 69064.0
+      },
+      {
+       "idx": 47684,
+       "root_id": 720575940621164720,
+       "cell_type": "MBON05",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 236.6,
+       "weight": 198.0,
+       "contribution": 46846.799999999996
+      },
+      {
+       "idx": 32529,
+       "root_id": 720575940617853986,
+       "cell_type": "LHPV10b1",
+       "side": "right",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 175.6,
+       "weight": 241.0,
+       "contribution": 42319.6
+      }
+     ],
+     "weight": 19.0,
+     "contribution": 3917.7999999999997
+    },
+    {
+     "idx": 76427,
+     "root_id": 720575940626425682,
+     "cell_type": "LAL030b",
+     "side": "left",
+     "super_class": "central",
+     "top_nt": "acetylcholine",
+     "rate": 65.0,
+     "top_inhibitory": [
+      {
+       "idx": 85547,
+       "root_id": 720575940627980955,
+       "cell_type": "LAL131b",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "glutamate",
+       "rate": 72.4,
+       "weight": -112.0,
+       "contribution": -8108.800000000001
+      },
+      {
+       "idx": 66483,
+       "root_id": 720575940624452548,
+       "cell_type": "CRE048",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "glutamate",
+       "rate": 121.2,
+       "weight": -9.0,
+       "contribution": -1090.8
+      },
+      {
+       "idx": 64506,
+       "root_id": 720575940624117245,
+       "cell_type": "MBON01",
+       "side": "right",
+       "super_class": "central",
+       "top_nt": "glutamate",
+       "rate": 200.0,
+       "weight": -3.0,
+       "contribution": -600.0
+      }
+     ],
+     "inputs": [
+      {
+       "idx": 60448,
+       "root_id": 720575940623387786,
+       "cell_type": "SMP177",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 181.8,
+       "weight": 24.0,
+       "contribution": 4363.200000000001
+      },
+      {
+       "idx": 3826,
+       "root_id": 720575940606762686,
+       "cell_type": "M_l2PNl20",
+       "side": "left",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 220.0,
+       "weight": 17.0,
+       "contribution": 3740.0
+      },
+      {
+       "idx": 37974,
+       "root_id": 720575940619134789,
+       "cell_type": "SMP177",
+       "side": "right",
+       "super_class": "central",
+       "top_nt": "acetylcholine",
+       "rate": 178.0,
+       "weight": 18.0,
+       "contribution": 3204.0
+      }
+     ],
+     "weight": 26.0,
+     "contribution": 1690.0
+    }
+   ],
+   "weight": 93.0,
+   "contribution": 3720.0
+  }
+ ]
+}

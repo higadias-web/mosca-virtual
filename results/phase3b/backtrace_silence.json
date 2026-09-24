@@ -1,0 +1,205 @@
+{
+ "level1": [
+  45803,
+  6882,
+  3745
+ ],
+ "intact": {
+  "1000": {
+   "DNa02_left": 49.0,
+   "DNa02_right": 2.0,
+   "DNa01_left": 18.0,
+   "DNa01_right": 13.0,
+   "total_spikes": 491339
+  },
+  "1001": {
+   "DNa02_left": 51.0,
+   "DNa02_right": 2.0,
+   "DNa01_left": 17.0,
+   "DNa01_right": 6.0,
+   "total_spikes": 492448
+  },
+  "1002": {
+   "DNa02_left": 49.0,
+   "DNa02_right": 0.0,
+   "DNa01_left": 20.0,
+   "DNa01_right": 6.0,
+   "total_spikes": 491803
+  },
+  "1003": {
+   "DNa02_left": 60.0,
+   "DNa02_right": 0.0,
+   "DNa01_left": 23.0,
+   "DNa01_right": 8.0,
+   "total_spikes": 491394
+  },
+  "1004": {
+   "DNa02_left": 53.0,
+   "DNa02_right": 2.0,
+   "DNa01_left": 21.0,
+   "DNa01_right": 8.0,
+   "total_spikes": 493169
+  }
+ },
+ "conditions": {
+  "top1..1": {
+   "silenced": [
+    45803
+   ],
+   "per_seed": {
+    "1000": {
+     "DNa02_left": 31.0,
+     "DNa02_right": 0.0,
+     "DNa01_left": 18.0,
+     "DNa01_right": 10.0,
+     "total_spikes": 491029
+    },
+    "1001": {
+     "DNa02_left": 35.0,
+     "DNa02_right": 2.0,
+     "DNa01_left": 21.0,
+     "DNa01_right": 8.0,
+     "total_spikes": 491933
+    },
+    "1002": {
+     "DNa02_left": 39.0,
+     "DNa02_right": 1.0,
+     "DNa01_left": 20.0,
+     "DNa01_right": 10.0,
+     "total_spikes": 492148
+    },
+    "1003": {
+     "DNa02_left": 35.0,
+     "DNa02_right": 0.0,
+     "DNa01_left": 17.0,
+     "DNa01_right": 6.0,
+     "total_spikes": 491648
+    },
+    "1004": {
+     "DNa02_left": 37.0,
+     "DNa02_right": 0.0,
+     "DNa01_left": 22.0,
+     "DNa01_right": 8.0,
+     "total_spikes": 493397
+    }
+   },
+   "rel_drop": [
+    0.36734693877551017,
+    0.3137254901960784,
+    0.20408163265306123,
+    0.41666666666666663,
+    0.30188679245283023
+   ],
+   "rel_drop_median": 0.3137254901960784,
+   "n_seeds_drop50": 0,
+   "QUEDA": false
+  },
+  "top1..2": {
+   "silenced": [
+    45803,
+    6882
+   ],
+   "per_seed": {
+    "1000": {
+     "DNa02_left": 30.0,
+     "DNa02_right": 0.0,
+     "DNa01_left": 19.0,
+     "DNa01_right": 12.0,
+     "total_spikes": 492382
+    },
+    "1001": {
+     "DNa02_left": 30.0,
+     "DNa02_right": 1.0,
+     "DNa01_left": 20.0,
+     "DNa01_right": 5.0,
+     "total_spikes": 492739
+    },
+    "1002": {
+     "DNa02_left": 27.0,
+     "DNa02_right": 4.0,
+     "DNa01_left": 16.0,
+     "DNa01_right": 10.0,
+     "total_spikes": 492055
+    },
+    "1003": {
+     "DNa02_left": 25.0,
+     "DNa02_right": 3.0,
+     "DNa01_left": 18.0,
+     "DNa01_right": 8.0,
+     "total_spikes": 492149
+    },
+    "1004": {
+     "DNa02_left": 28.0,
+     "DNa02_right": 1.0,
+     "DNa01_left": 23.0,
+     "DNa01_right": 5.0,
+     "total_spikes": 490299
+    }
+   },
+   "rel_drop": [
+    0.3877551020408163,
+    0.4117647058823529,
+    0.44897959183673475,
+    0.5833333333333333,
+    0.4716981132075472
+   ],
+   "rel_drop_median": 0.44897959183673475,
+   "n_seeds_drop50": 1,
+   "QUEDA": false
+  },
+  "top1..3": {
+   "silenced": [
+    45803,
+    6882,
+    3745
+   ],
+   "per_seed": {
+    "1000": {
+     "DNa02_left": 11.0,
+     "DNa02_right": 0.0,
+     "DNa01_left": 4.0,
+     "DNa01_right": 6.0,
+     "total_spikes": 490886
+    },
+    "1001": {
+     "DNa02_left": 13.0,
+     "DNa02_right": 1.0,
+     "DNa01_left": 8.0,
+     "DNa01_right": 6.0,
+     "total_spikes": 493075
+    },
+    "1002": {
+     "DNa02_left": 11.0,
+     "DNa02_right": 0.0,
+     "DNa01_left": 7.0,
+     "DNa01_right": 7.0,
+     "total_spikes": 490457
+    },
+    "1003": {
+     "DNa02_left": 17.0,
+     "DNa02_right": 5.0,
+     "DNa01_left": 11.0,
+     "DNa01_right": 8.0,
+     "total_spikes": 491033
+    },
+    "1004": {
+     "DNa02_left": 15.0,
+     "DNa02_right": 1.0,
+     "DNa01_left": 10.0,
+     "DNa01_right": 8.0,
+     "total_spikes": 491181
+    }
+   },
+   "rel_drop": [
+    0.7755102040816326,
+    0.7450980392156863,
+    0.7755102040816326,
+    0.7166666666666667,
+    0.7169811320754718
+   ],
+   "rel_drop_median": 0.7450980392156863,
+   "n_seeds_drop50": 5,
+   "QUEDA": true
+  }
+ }
+}

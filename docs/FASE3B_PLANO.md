@@ -368,3 +368,42 @@ Cada etapa exige a anterior completa (`ODOR_OK`, `tree_OK.json`, `SIL_OK`).
   verificado**, e ele fica fora da regra de curva até haver fonte.
 - **A magnitude taxa → encurtamento do passo não tem fonte**: Yang et al. 2023 só dão o sentido.
   Registrado no NON_CONNECTOME.md (B-mag).
+
+## L. S1: resultado do recuo e do silenciamento (2026-09-23)
+
+`results/phase3b/backtrace_tree.json`, `backtrace_silence.json`; spikes em `runs/phase3b/backtrace/`
+(`ODOR_OK` 5/5, `SIL_OK` 15/15).
+
+**Árvore (resumo; contribuição = peso × taxa)**, a partir do DNa02 esquerdo (52,4 Hz com odor):
+
+| Nível 1 (principais) | Taxa | Peso | Principais entradas (nível 2 → nível 3) |
+|---|---|---|---|
+| **PS013 E** (central, ACh) | 45,8 Hz | +178 | CB0359 E (← MBON12 E, CB1245 E); LAL023 E ×2 (← SMP177 E/D, LHPV5e3 E, CRE011 E) |
+| **DNae005 E** (descendente, ACh) | 19,2 Hz | +196 | CB0316 E (← AL-AST1 E, LHCENT11 E, LT86 E); DNbe007 E; PVLP141 D (← PVLP076 D, LHAV1a1 D) |
+| **LAL081 E** (central, ACh) | 40,0 Hz | +93 | CRE011 E e D (← SMP177, LHPV10b1, MBON35, MBON05); LAL030b E |
+
+- Maiores inibitórios diretos do DNa02 E: AOTU019 D (−121), CB0083 D (−80), LAL051 E (−70).
+- Os três principais do nível 1 ficam do lado **esquerdo**. Mais acima aparecem neurônios dos dois
+  lados, com taxas altas (MBONs, SMP177, CRE011, LHPV10b1, de 110 a 240 Hz).
+- Com odor, a rede inteira fica muito ativa: ~4,9×10⁵ spikes em 1 s, ~3,5 Hz em média por neurônio.
+
+**Silenciamento cumulativo do nível 1** (5 sementes pareadas; critério: queda mediana ≥ 50 % e ≥ 50 % em ≥ 4/5):
+
+| Silenciados | DNa02 E (mediana) | Queda mediana | Sementes com ≥ 50 % | QUEDA |
+|---|---|---|---|---|
+| — (intacto) | 51 Hz | — | — | — |
+| PS013 E | 35 Hz | 31 % | 0/5 | não |
+| + DNae005 E | 28 Hz | 45 % | 1/5 | não |
+| + LAL081 E | 13 Hz | **75 %** | **5/5** | **sim** |
+
+- Descritivos: o DNa02 direito fica em 0–2 Hz em todas as condições. O DNa01 esquerdo só cai
+  (20 → 8 Hz) quando o LAL081 E é silenciado. O total de spikes da rede não muda (±0,2 %).
+
+**Leitura (dentro do que o teste mostra):**
+- A ativação do DNa02 esquerdo **não depende de um único neurônio**. Ela vem de uma **convergência de
+  pelo menos três entradas do lado esquerdo** (PS013, DNae005, LAL081): nenhuma sozinha passa do
+  critério, e as três juntas passam.
+- A assimetria esquerda/direita aparece perto do DN, nessas entradas do lado esquerdo. Não foi testado
+  se os homólogos do lado direito (PS013 D, LAL081 D, DNae005 D) estão ativos e pouco ligados ao DNa02
+  D, ou se estão calados; isso ficou fora do teto desta sessão.
+- O critério foi aplicado uma vez, sem novas sementes.
