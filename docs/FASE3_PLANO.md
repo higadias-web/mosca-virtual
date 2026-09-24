@@ -113,7 +113,7 @@ controlador (a), se usado. Tudo entra em `docs/NON_CONNECTOME.md` quando for imp
 |---|---|---|---|---|
 | 1 | 2026-09-23 | Métrica de ritmo (v1 → v2, §7.1); H6: confiabilidade dos transmissores; H2 × H6 em malha aberta (18 condições × 5 sementes); aparato: bola, torque, MN → músculo → junta (sinais de flexão medidos), transdução proprioceptiva (941 sensores); figuras em `results/phase3a/s1/` | H2, H6 (a) e (b) | **Não** (0 de 108 pernas×condições; malha aberta) |
 | 2 | 2026-09-23 | Direção dos proprioceptores por tipo (4 combinações); aferência imposta (marcha gravada) com sinais `verified`, H5 (fundo 5 Hz) e H6-g; ganho muscular fixado por critério (A4); loop fechado com H3 (×1, ×2); diagnóstico sem ajuste; inibição recíproca funcional; sensibilidade F_SAT; §7.2 | H1 (i e ii), H3, H5, H6-g | **Não** (aferência imposta: 0, nem reflexo). **Loop fechado: INCONCLUSIVO** por duas causas: (b) acionamento quase nulo, independente do aparato, e (a) juntas sem limite nem rigidez (§7.2). Sensibilidade F_SAT inválida, não analisada |
-| 3 | 2026-09-23 | (em andamento) Pré-registro §7.4 e §7.6 (marco pela métrica congelada; A2' com Wang et al. 2025); T1 e T2; checagem da unidade (**leitura mN·m/° caiu**: m* = 2,5 contra 40); validação: (a), (b) e (e) passaram, **(c) e (d) falharam** (limites macios do MuJoCo não seguram); nenhuma fila (§7.7) | — | pendente (validação falhou) |
+| 3 | 2026-09-23 | (em andamento) Pré-registros §7.4, §7.6 e §7.8; T1 e T2; checagem da unidade (a leitura mN·m/° caiu; mantida pela opção (i)); validação 1 (limite padrão): (c)/(d) falharam; validação 2 ("std2dt"): (a), (b) e (e) passaram, **(c)/(d) falharam** (31/66, até 0,22 rad); falta a alternativa única "direct_dt" (§7.9); nenhuma fila | — | pendente (validação falhou 2×) |
 
 Marco da 3ª sessão: ainda pendente. O loop fechado da Sessão 2 foi inconclusivo. A Sessão 3 foi aprovada com
 ajustes, e a regra do marco (em taxa) e o pré-registro estão em §7.4.
@@ -714,3 +714,24 @@ outras leituras ficam a ≥ 62×). A fonte é preprint. "Sustentar" **não** foi
   sobre essas 5 sementes.
 - **O marco é decidido só pelo valor principal.** Ritmo que apareça só em k/16 vira hipótese, não
   positivo.
+
+### 7.9 Sessão 3: validação com limites "std2dt" (2026-09-23). FALHOU em (c)/(d); nenhuma fila
+
+`results/phase3a/s3_validation_std2dt/`:
+
+| Teste | Resultado | Números |
+|---|---|---|
+| (a) Réplica com torques | **passou** | razão de 0,95 a 1,00 (mediana 0,99); 0 de 18 fora de ±35 % |
+| (b) Repouso | **passou** | deriva máxima 0,003 rad; bola 0,015 mm |
+| (c) Limites | **FALHOU** | **31 de 66** grupos acima de Y = 0,05 rad (lido a 1 kHz); máximo 0,217 rad (FTi flexor da R1). Antes: 66 de 66, até 36,6 rad |
+| (d) Faixa dinâmica | **FALHOU** (por (c)) | 0 de 66 não monotônicos |
+| (e) Controle negativo mecânico, com batentes rígidos | **passou** | 0 positivos em 66; proeminência máxima 5,7 (ângulos, sem reprodutibilidade) e 5,7 (proprioceptores, sem reprodutibilidade) |
+
+- O batente agora segura a junta: as violações caíram de dezenas de rad para ≤ 0,22 rad. Ainda passam
+  de Y.
+- **A estimativa analítica do erro estático errou por mais de 10×** (previsão ≤ 0,012 rad). Em 8
+  dos 66 grupos, o pico lido a 1 kHz é igual ao pico a cada passo, então parte da violação dura mais
+  que o impacto. A causa exata não foi investigada (isso seria nova execução).
+- Pelo teto de §7.8.1, sobra **uma única** alternativa, "direct_dt", já fixada no commit 8aa281e.
+  **Não foi rodada: aguarda a revisão do usuário.** Se ela falhar, a 3a encerra como "não testável com
+  este aparato no prazo".
