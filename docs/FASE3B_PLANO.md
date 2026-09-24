@@ -526,3 +526,53 @@ maiores inibitórias sobre o DNa02 D. É descritivo, sem critério.
 - **Homólogos:** pesos simétricos; o saldo no DNa02 D é negativo, com a maior inibição vinda do AOTU019 E
   (descritivo, sem teste causal).
 - **Desvio:** a fila levou ~30 min, contra os 15 estimados.
+
+## P. Etapa C: o regime de atividade alta (pré-registro, commitado antes de rodar)
+
+Sem corpo, sem interface, sem vídeo. `experiments/phase3b_regime.py`.
+
+**P0. Correção da leitura de Faucher et al. 2013, Fig. 2C** (releitura ampliada, 3,76 px/Hz):
+- a 0,5 %, fêmeas, ab1A ≈ **16 Hz** e ab1B ≈ **11 Hz** (em §N estava ~12/9);
+- a 0,1 % há **um único ponto** por neurônio, sem separação por sexo: ab1A ≈ **7 Hz** e ab1B ≈ **0 Hz**;
+- os pontos de 5 % (42/22) e de 50 % (88/42) se confirmam;
+- existem pontos com fonte abaixo de 20 Hz, então **não** foram acrescentados os 5 e 10 Hz sem fonte.
+
+**P1. Condições** (odor sempre bilateral, ORNs de DM1+VA2; 10 sementes pareadas, 1000–1009):
+- **Persistência:** vinagre a 5 % (42/22 Hz) em [0, 200) ms, depois desligado até 1000 ms. Conectoma real
+  e 5 embaralhados.
+- **Dose:** vinagre a 0,1 % (7/0 Hz) e a 0,5 % (16/11 Hz), contínuos por 1 s. Conectoma real e 5
+  embaralhados. O vinagre a 5 % contínuo e o sem odor são **reaproveitados da Etapa B** (mesmo código,
+  mesma ordem de chamadas, mesmas sementes).
+  - Nota: a 0,1 %, os ORNs de VA2 entram como alvos de Poisson a 0 Hz, o que, pela convenção do Shiu,
+    zera o refratário deles (sem outra consequência).
+- **Causal:** vinagre a 5 % contínuo com o **AOTU019 esquerdo silenciado** (sinapses de saída zeradas,
+  como `model.py:silence`). Só o conectoma real. Pareado com o vinagre a 5 % da Etapa B.
+- Total: **190 execuções novas** (real 40, embaralhados 150). Spikes de todos os neurônios salvos;
+  `REGIME_OK` com a contagem; análise separada.
+
+**P2. Critérios (fixados agora):**
+- **Persistência:** a atividade "se mantém sozinha" se a mediana entre as sementes da razão [taxa de
+  spikes da rede em 400–1000 ms] / [taxa em 100–200 ms] for **≥ 0,10** (escolha, sem fonte). Descritivos:
+  instante do último spike e spikes em 900–1000 ms.
+- **Limiar e resposta graduada:**
+  - uma semente está em **"estado alto"** se a fração ativa for ≥ 3,14 % (o limite (d) da Etapa B, sem
+    fonte);
+  - **existe limiar** se alguma dose baixa (0,1 % ou 0,5 %) tiver ≤ 2/10 sementes em estado alto **e** o
+    vinagre a 5 % tiver ≥ 8/10;
+  - **graduada abaixo do limiar** se, com as duas doses baixas abaixo do limiar, o total de spikes a 0,1 %
+    for menor que a 0,5 %;
+  - uma dose com 3–7 sementes em estado alto é registrada como **"mista"** (sinal de biestabilidade).
+- **Causal:** o AOTU019 esquerdo **contribui** para o silêncio do DNa02 direito se a mediana do aumento
+  pareado do DNa02 D for **≥ 5 Hz** e o Wilcoxon der **p < 0,05**. Descritivo: o viés some se o DNa02 D
+  chegar a ≥ 50 % do DNa02 E.
+
+**P3. Estimativa de tempo:**
+- na Etapa B (380 execuções, 10 processos, ~30 min), o custo foi dominado pelas 130 execuções do
+  conectoma real em regime alto (~14 s de parede por execução com 10 processos). As 250 dos embaralhados
+  foram baratas;
+- aqui: 40 do real (a persistência deve ser mais barata se a atividade cair) + 150 dos embaralhados + 6
+  inicializações de pool ≈ **10–15 min**. O log agora grava o tempo por conectoma.
+
+**P4. Regra da causa:** se a causa apontar para uma limitação conhecida do modelo, **nada é corrigido**.
+A limitação é descrita com fonte, e as opções são listadas com prós, contras e o quanto cada uma
+interfere no conectoma.

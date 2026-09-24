@@ -180,3 +180,13 @@ Um processo, açúcar a 200 Hz, 1 s em chamadas de 1 ms, mediana de 3 trials
 Na prática, o limite é a CPU (10 processos, como na Fase 1). Fig. 1D completa (600 trials, 10
 processos): v783 3,8 min (Fase 1); híbrido 8,7 min, mas dividindo a CPU com os testes da Fase 2.
 Análise em `docs/D105_CONECTOMA.md`.
+
+## Custo do LIF no regime de atividade alta (Fase 3b, 2026-09-24)
+
+O custo do cérebro depende da atividade (conjunto ativo). Com odor nos ORNs de DM1+VA2, o conectoma real
+entra num regime alto (~6 % dos neurônios ativos, ~4,7×10⁵ spikes em 1 s) **qualquer que seja a taxa dos
+ORNs entre 20 e 100 Hz**. Nesse regime, **o custo da fila dobra**: a Etapa B (380 execuções de 1 s, 10
+processos, perfil Desempenho) levou ~30 min, contra os ~15 min estimados pela fila anterior. As taxas
+baixas não custaram menos, porque a rede entra no mesmo regime. Os embaralhados (0,1–0,3 % ativos) são
+baratos. Para estimar uma fila, conte as execuções do conectoma real com odor como as caras
+(~14 s de parede por execução com 10 processos).
