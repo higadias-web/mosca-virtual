@@ -399,11 +399,48 @@ Cada etapa exige a anterior completa (`ODOR_OK`, `tree_OK.json`, `SIL_OK`).
 - Descritivos: o DNa02 direito fica em 0–2 Hz em todas as condições. O DNa01 esquerdo só cai
   (20 → 8 Hz) quando o LAL081 E é silenciado. O total de spikes da rede não muda (±0,2 %).
 
-**Leitura (dentro do que o teste mostra):**
-- A ativação do DNa02 esquerdo **não depende de um único neurônio**. Ela vem de uma **convergência de
-  pelo menos três entradas do lado esquerdo** (PS013, DNae005, LAL081): nenhuma sozinha passa do
-  critério, e as três juntas passam.
-- A assimetria esquerda/direita aparece perto do DN, nessas entradas do lado esquerdo. Não foi testado
-  se os homólogos do lado direito (PS013 D, LAL081 D, DNae005 D) estão ativos e pouco ligados ao DNa02
-  D, ou se estão calados; isso ficou fora do teto desta sessão.
+**Leitura (corrigida na revisão do usuário, 2026-09-23):**
+- **As três juntas passam o critério** (PS013 E + DNae005 E + LAL081 E: queda de 75 %, 5/5). Só o PS013 E
+  foi silenciado sozinho (31 %, não passa). **A contribuição isolada de DNae005 e de LAL081 não foi
+  medida**: o desenho cumulativo não a separa. A frase anterior, "convergência, não neurônio único",
+  foi retirada porque o teste não sustenta essa conclusão.
+- **A ordem do silenciamento estava no pré-registro** (commit c41fbba, §K passo 3 e o cabeçalho do
+  script): cumulativo top1; top1+2; top1+2+3, na ordem de contribuição (peso × taxa) calculada no passo 2,
+  sem escolha manual.
+- **A queda mede a contribuição TOTAL numa rede recorrente**, e não só a sinapse direta desses neurônios
+  no DNa02 E. Silenciar um neurônio remove também o efeito dele em qualquer caminho que chega ao DNa02 E,
+  inclusive através dos outros nós da árvore.
 - O critério foi aplicado uma vez, sem novas sementes.
+
+## M. S1: homólogos direitos e nível de atividade, só com spikes já salvos (2026-09-23)
+
+`results/phase3b/homologs_activity.json`, a partir de `runs/phase3b/backtrace/odor_s*.npz` (odor bilateral,
+conectoma real, 5 sementes). Nenhuma simulação nova.
+
+**(a) Os homólogos direitos estão ativos com odor bilateral:**
+
+| Tipo | Esquerdo (mediana) | Direito (mediana) |
+|---|---|---|
+| PS013 | 46 Hz | 19 Hz |
+| DNae005 | 19 Hz | 17 Hz |
+| LAL081 | 40 Hz | 45 Hz |
+
+O DNa02 D fica em 0–2 Hz mesmo com esses homólogos ativos. Então a assimetria não vem de os
+homólogos direitos estarem calados; o que a produz fica em aberto (p. ex., a ligação deles com o DNa02 D
+ou uma inibição maior sobre ele). Nada disso foi testado.
+
+**(b) Nível de atividade da rede:**
+- **Conectoma real**, com odor bilateral: **~4,92×10⁵ spikes em 1 s** (491.339–493.169 entre as
+  sementes), com **6,2 % dos neurônios ativos** (~8.600 de 138.639). Os ativos disparam, em média, ~57 Hz.
+- **Embaralhados: não é possível responder sem simulação nova.** A fila de lateralidade (§H) gravou
+  só as taxas das células de DN (`laterality_runs.csv`), não os spikes de todos os neurônios. Fica
+  como pendência.
+
+**Limitações registradas:**
+- **Regime de atividade muito alto:** com os ORNs de DM1+VA2 a 100 Hz (taxa **sem fonte**, B-odor),
+  a rede entra num regime em que ~6 % dos neurônios disparam a ~57 Hz em média. **O caminho
+  identificado (PS013/DNae005/LAL081 → DNa02 E) pode depender desse regime.**
+- **A sensibilidade à taxa dos ORNs fica como pendência, não executada.**
+- **A queda na ablação mede a contribuição total na rede recorrente** (ver §L).
+- **A ausência de lado pode vir do modelo de estímulo, e a inibição não é detectável sem atividade
+  espontânea** (§J5).
