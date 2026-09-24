@@ -1,5 +1,10 @@
 # O que NÃO vem do conectoma
 
+> **Princípios do projeto (usuário, 2026-09-23):** o comportamento deve vir da mosca. Todo elemento fora
+> do conectoma deve ser **o mínimo necessário**, ter **justificativa** e estar **registrado aqui**. Sempre
+> que houver opção, **preferir parâmetro com fonte** a parâmetro escolhido por nós. Nenhum vídeo até a
+> mosca chegar à fruta sozinha, por critério pré-registrado; até lá, só figuras de diagnóstico.
+
 Tudo que é engenharia, e não biologia, aparece aqui e no código com `# NON-CONNECTOME:`.
 Fase atual: 2 (concluída, aguardando aprovação). As entradas marcadas como *planejado*
 são previsões a confirmar nas fases seguintes.
@@ -62,6 +67,8 @@ obter um resultado (critério da aprovação de 2026-09-23).
 | B-odor | **Modelo de odor:** fruta fermentada = Poisson nos ORNs de DM1 e VA2 (os dois lados, 135 neurônios), a **100 Hz (SEM FONTE**; é a convenção de estímulo do Shiu). Na C4, a relação concentração do campo → taxa dos ORNs também é **sem fonte** (a definir antes da C4) | `experiments/phase3b_viability.py` | a escolha dos glomérulos tem fonte: Semmelhack & Wang 2009 (*Nature*), vinagre de maçã → DM1/VA2 necessários e suficientes para a atração |
 | B-filtro | **Filtro da taxa dos DNs antes do CPG:** exponencial com τ_r = 100 ms, amostrado a cada 10 ms (**SEM FONTE**) | (interface, ainda não implementada) | só se a viabilidade passar |
 | B-ganho | **Critério de ganho:** estímulo direto de um grupo a **100 Hz (SEM FONTE)** → \|δ\| = 1 (o passo real gravado); ganhos g_f, g_t, g_b, r_ref e limiar do MDN fixados uma vez | (interface) | sem ajuste depois do teste sensorial |
+| B-vin5 | **Taxa dos ORNs COM FONTE** (condição de referência da Etapa B): ORN_DM1 42 Hz e ORN_VA2 22 Hz = aumento sobre a taxa espontânea de ab1A/ab1B para vinagre de maçã a 5 %, fêmeas (Faucher, Hilker & de Bruyne 2013, *PLoS ONE* 8:e56361, Fig. 2C, leitura visual ±3 spikes/s). **Sem fonte:** a concentração (5 %), a curva das fêmeas e a leitura da figura | `experiments/phase3b_rates.py` | substitui os 100 Hz sem fonte como referência; 20/50/100 Hz ficam como varredura |
+| B-reg | **Faixa do regime de atividade: SEM FONTE.** Fração ativa ≤ 10× a do regime validado da Fase 1 (0,31 % → 3,1 %) | idem | critério (d) de §N |
 | B-10Hz | Limiar **descritivo** de 10 Hz na viabilidade (≈ \|δ\| 0,1 pelo B-ganho, ~1,4 mm/s): **sem fonte**. Estava em §F1 como descritivo antes de rodar, mas a leitura "relevante para mover a mosca" depende do B-ganho (sem fonte). Retirado da conclusão | `experiments/phase3b_viability.py` | não decide nada |
 | B-lat | Critério "carrega lado": diferença mínima ipsi − contra de **2 Hz (sem fonte)**; Wilcoxon, α = 0,05/4 | `experiments/phase3b_laterality.py` | FASE3B_PLANO §H |
 | B-mag | **Magnitude** taxa do DNa02 → encurtamento do passo ipsilateral (g_t, r_ref): **SEM FONTE**. Yang et al. 2023 (preprint bioRxiv v2, PMC10614758) dão só o **sentido** (curva ipsilateral; encurta o passo do lado de dentro). DNa01: sentido **não verificado** (Rayshubskiy et al. 2025, *eLife*, não o afirma explicitamente); fora da regra de curva | (interface) | FASE3B_PLANO §J1, §K |

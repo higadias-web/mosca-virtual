@@ -3,6 +3,13 @@
 Simulação de terrário com animais dirigidos só pelo conectoma: sensores → neurônios → músculos.
 A especificação completa, com regras de trabalho, fases e critérios, está em `docs/SPEC.md`. Leia antes de mudar qualquer coisa.
 
+## Princípios do projeto (usuário, 2026-09-23; valem para todas as fases)
+- **O comportamento deve vir da mosca.** Todo elemento fora do conectoma deve ser o mínimo necessário,
+  ter justificativa e estar registrado em `docs/NON_CONNECTOME.md`. Sempre que houver opção, preferir
+  parâmetro com fonte a parâmetro escolhido por nós.
+- **Nenhum vídeo até a mosca chegar à fruta sozinha**, por critério pré-registrado. Até lá, só figuras de
+  diagnóstico. (Substitui a regra anterior de vídeo ao fim de cada fase ou entrega.)
+
 ## Fase atual
 **Fase 2 aprovada** (2026-09-23). Decididas: **D-105 = (c)** FlyWire 783 no cérebro + cordão do
 BANC; **D-106**: Fase 3 em 3a (bolinha, marcha pelo cordão) e 3b (terrário). Prazo da 3a: 6 sessões
@@ -14,7 +21,7 @@ acionamento dos MNs quase nulo, inibição recíproca nos dois sentidos. O apara
 3× (impacto > Y). **Encerramento aprovado** (2026-09-23), vídeo em results/phase3a/video_fechamento_3a.webm.
 **Fase 3b: plano APROVADO (2026-09-23, ajustes em §F). S1 CONCLUÍDA (sem corpo; `docs/FASE3B_S1_RELATORIO.md`):**
 odor → DNa01/02 (específico), DNp09/MDN não excitados, nenhum DN carrega lado (DNa02 E fixo). **Interface NÃO construída; S2 aguarda decisão do usuário.** A entrega paralela "P" (probóscide) ainda não começou.
-Ao fim de cada fase ou entrega: vídeo WebM de 10–20 s em results/. A cada sessão: figuras em results/phase3a/.
+Vídeos: só depois que a mosca chegar à fruta sozinha (princípio acima). A cada sessão: figuras de diagnóstico em results/.
 Fase 1 aprovada em 2026-09-23; Fase 0 em 2026-09-22 (D-003, D-006, D-008, D-101, D-102, D-104).
 Nenhuma fase começa sem aprovação explícita do usuário, e nenhuma ⚠️ DECISÃO é tomada sem ele.
 
@@ -93,7 +100,7 @@ systemd-inhibit --what=idle:sleep uv run python bench/run_all.py --profiles bala
 - Não inventar API, ID de neurônio ou parâmetro: ler o código e os dados reais em `third_party/`
   e citar a origem (arquivo/função) em comentário.
 - **Vídeos: sempre WebM (VP9)** (`terrario/video.py:write_webm`); nada de MP4/H.264, que o Fedora
-  não toca sem codecs extras. Ao fim de cada fase ou entrega: vídeo de 10–20 s em results/.
+  não toca sem codecs extras. Nenhum vídeo até a mosca chegar à fruta sozinha (princípio do projeto).
 - Métrica de ritmo da 3a (`terrario/vnc/rhythm.py`, v2) **congelada**: mudar só com aprovação do usuário.
 - Unidades físicas: mm, s (padrão do FlyGym; gravidade −9810 mm/s²). Modelo neural: ms, mV.
 

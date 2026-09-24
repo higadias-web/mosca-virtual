@@ -8,8 +8,8 @@ Pré-registros, desvios e números completos em `docs/FASE3B_PLANO.md` §F–§M
 ## 1. Resumo
 - **Viabilidade (§F1): cumprida, e específica (§H, V1).** O odor de fruta fermentada (ORNs de DM1 e VA2)
   ativa o grupo DNa01/02 em 20,75 Hz contra 0 Hz sem odor (10/10 sementes). No conectoma embaralhado
-  com graus preservados, o efeito cai para 0 Hz (mediana de 5 embaralhamentos), então depende do
-  cabeamento específico.
+  com graus preservados, o efeito cai para **≤ 0,5 Hz** nos 5 embaralhamentos (mediana 0), então depende
+  do cabeamento específico.
 - **O grupo principal da C4, o DNp09, não é excitado pelo odor** (0 Hz), e o MDN também não. Na
   interface aprovada, o avanço vem só do DNp09, então o odor sozinho **não faria a mosca andar**.
 - **Nenhum DN carrega o lado do odor (§H, V2).** A resposta é assimétrica e **fixa**: o DNa02 esquerdo
@@ -44,7 +44,7 @@ Odor = Poisson a 100 Hz nos ORNs de DM1 e VA2. 1 s por execução.
 | MDN (4) | 0 Hz | 0 Hz | 1 | não |
 | DNa01/02 (4) | 20,75 Hz | 0 Hz | 0,002 | **sim** |
 
-Especificidade (V1): 20,75 Hz no real contra 0; 0,5; 0; 0; 0 Hz nos 5 embaralhados → **passa**
+Especificidade (V1): 20,75 Hz no real contra ≤ 0,5 Hz nos 5 embaralhados (0; 0,5; 0; 0; 0) → **passa**
 (limite de ≤ 50 %).
 
 ### 3.2 Lateralidade (V2)
@@ -95,7 +95,8 @@ em 0 Hz em todas as condições.
 | Sentido do DNa01 | **não verificado** | Rayshubskiy, Holtz, Bates, Vanderbeck, Serratosa Capdevila, Rockwell e Wilson, *eLife* 2025 (10.7554/eLife.102230): só a correlação com a diferença D − E das taxas, sem a convenção de sinal no trecho lido |
 | `side = left` é o lado esquerdo da mosca | verificada | documentação do `fafbseg` ("the official `side` labels … are biologically correct"), com base em Schlegel P, Yin Y, Bates AS, Dorkenwald S, … Jefferis GSXE, "Whole-brain annotation and multi-connectome cell typing of Drosophila", *Nature* 634:139–152 (2024) |
 | `side` nos ORNs = lado de entrada do nervo | verificada | README de `flywire_annotations` (commit 8587524, versão ≥ 3.1.0, materialização 783) |
-| DNp09 inicia a marcha para a frente; MDN, a ré | verificada | Bidaye et al. 2020, *Neuron*; Bidaye, Machacek, Wu e Dickson 2014, *Science* |
+| DNp09 (P9) inicia a marcha para a frente, com curva ipsilateral | **não verificado** (texto não lido; só resumo e trechos de busca) | Bidaye SS et al. 2020, *Neuron* 108:469, "Two brain pathways initiate distinct forward walking programs in Drosophila". Sustentaria a ligação DNp09 → avanço da interface |
+| MDN: ativar basta para a marcha para trás; bloquear impede a ré diante de barreira | **não verificado** (texto não lido; só resumo e trechos de busca) | Bidaye SS, Machacek C, Wu Y, Dickson BJ 2014, *Science* 344:97, "Neuronal control of Drosophila walking direction". Sustentaria a ligação MDN → ré da interface |
 
 ## 5. Ajustes fora do conectoma usados na S1
 B-odor (modelo de odor: taxa de 100 Hz sem fonte), B-10Hz (limiar descritivo sem fonte, retirado da
@@ -117,7 +118,8 @@ usados**, porque a interface não foi construída.
 - Sensibilidade à taxa dos ORNs (p. ex., 25–200 Hz).
 - Nível de atividade (total de spikes e fração ativa) nos 5 embaralhados, que exige simulação nova com
   os spikes salvos.
-- A causa da assimetria: por que o DNa02 D fica calado com os homólogos direitos ativos.
+- **Homólogos direitos ativos (PS013 D 19 Hz, DNae005 D 17 Hz, LAL081 D 45 Hz) com o DNa02 direito calado
+  (0–2 Hz):** a causa não foi determinada.
 - Contribuição isolada de DNae005 E e de LAL081 E.
 
 ## 8. Implicações para a S2 (decisão do usuário)

@@ -444,3 +444,72 @@ ou uma inibição maior sobre ele). Nada disso foi testado.
 - **A queda na ablação mede a contribuição total na rede recorrente** (ver §L).
 - **A ausência de lado pode vir do modelo de estímulo, e a inibição não é detectável sem atividade
   espontânea** (§J5).
+
+## N. Etapa B: sensibilidade à taxa dos ORNs e homólogos (pré-registro, commitado antes de rodar)
+
+Sem corpo e sem interface. Princípios do projeto: o comportamento vem da mosca, o mínimo fora do conectoma
+e, quando houver opção, parâmetro com fonte.
+
+**N1. Fonte para a taxa dos ORNs: ENCONTRADA.**
+- Faucher CP, Hilker M, de Bruyne M 2013, "Interactions of Carbon Dioxide and Food Odours in
+  *Drosophila*: Olfactory Hedonics and Sensory Neuron Properties", *PLoS ONE* 8(2):e56361,
+  doi:10.1371/journal.pone.0056361.
+  - Registro de sensila única com vinagre de maçã orgânico (puro ou diluído em água destilada), 10 µl
+    em papel de filtro, estímulo de 500 ms.
+  - Nos Métodos: "Pre-stimulus activity was then subtracted from the response during stimulation to get
+    an increase (or decrease) in the spike frequency relative to the pre-stimulus frequency". Ou seja,
+    os valores são o **aumento sobre a taxa espontânea**.
+  - A Fig. 2C mostra a dose-resposta de ab1A (Or42b → DM1) e ab1B (Or92a → VA2). Os valores só aparecem
+    na figura; a leitura foi **visual**, com precisão de ~±3 spikes/s.
+- Valores lidos, fêmeas (linha contínua), escolhidas porque o FlyWire é o cérebro de uma fêmea:
+
+| Vinagre | ab1A → ORN_DM1 | ab1B → ORN_VA2 |
+|---|---|---|
+| 0,5 % | ~12 Hz | ~9 Hz |
+| **5 %** | **~42 Hz** | **~22 Hz** |
+| 50 % | ~88 Hz | ~43 Hz |
+
+- **Condição de referência (com fonte): "vin5"**, com ORN_DM1 a 42 Hz e ORN_VA2 a 22 Hz. Como o LIF não
+  tem atividade de fundo, a taxa de Poisson é o próprio aumento medido.
+- **Escolhas sem fonte que sobram:** a concentração (5 %; nenhuma fonte diz a concentração que chega à
+  antena perto da fruta), a curva das fêmeas e a leitura visual da figura.
+
+**N2. Desenho** (`experiments/phase3b_rates.py`):
+- Taxas: **20, 50 e 100 Hz** em todos os ORNs de DM1 e VA2 (varredura, sem fonte) e **vin5** (com fonte).
+- Condições:
+  - conectoma **real**: sem odor, bilateral, só esquerda e só direita;
+  - **5 embaralhados** (os mesmos de §H): sem odor e bilateral.
+- 10 sementes pareadas (1000–1009), 1 s; **380 execuções**.
+- Salva os spikes de **todos** os neurônios (`runs/phase3b/rates/*.npz`) e, no fim, `RATES_OK` com a
+  contagem.
+- A análise (`analyze`) se recusa a rodar sem `RATES_OK` completo.
+- Nota: com várias chamadas de `set_poisson` (uma por tipo de ORN), a ordem dos alvos muda o sorteio. A
+  condição r100 bilateral **não** é uma repetição bit a bit da viabilidade.
+
+**N3. Critérios (fixados agora):**
+- **(a) O DNp09 é excitado em alguma taxa:** no conectoma real, bilateral × sem odor, média das 2 células,
+  Wilcoxon pareado com p < 0,05/4 (Bonferroni sobre as 4 taxas) **e** diferença mediana ≥ 1 Hz, em
+  pelo menos uma taxa.
+- **(b) O viés do DNa02 esquerdo se mantém em todas as taxas:** no bilateral, d = DNa02 E − DNa02 D por
+  semente; em **cada** uma das 4 taxas, Wilcoxon com p < 0,05/4 **e** mediana de d ≥ +2 Hz. Uma taxa
+  em que o DNa02 fica calado conta como "não se mantém".
+- **(c) Algum DN distingue o lado:** Δ ipsi − contra (como em §H), por tipo (4) e por taxa (4), com
+  Wilcoxon p < 0,05/16 **e** |mediana| ≥ 2 Hz, em pelo menos um par tipo × taxa.
+- **(d) O regime de atividade da rede está numa faixa plausível: SEM FONTE.** Não há medida publicada
+  da fração de neurônios ativos no cérebro inteiro da mosca que sirva de comparação para um LIF.
+  - Faixa declarada sem fonte: a fração de neurônios ativos (≥ 1 spike em 1 s) no bilateral deve ficar
+    **≤ 10× a do regime em que o modelo foi validado na Fase 1**: 20 GRNs de açúcar a 150 Hz, 435
+    ativos em 138.639 (0,31 %), portanto limite de **3,1 %**.
+  - Ressalva: os 435 somam 30 trials; por trial, a fração é menor, o que torna o limite mais frouxo.
+
+**N4. Estimativa de tempo** (medida nesta máquina, na mesma sessão):
+- a fila de lateralidade (240 execuções de 1 s, 10 processos) levou ~17 min, incluindo ~1,5–2 min de
+  geração de cada embaralhamento, que agora estão em cache;
+- isso dá ~24 s de parede por execução e por processo, com atividade alta (100 Hz);
+- **380 execuções ≈ 15 min** (teto de ~25 min). As taxas mais baixas devem custar menos. Sob
+  `systemd-inhibit`, no perfil Desempenho, na tomada.
+
+**N5. Só grafo e spikes já salvos, sem simulação** (`experiments/phase3b_homologs.py`): pesos diretos
+de PS013, DNae005 e LAL081 (E e D) em DNa02 E e D; e, com os spikes do odor bilateral a 100 Hz (§K),
+as entradas ativas (peso × taxa) sobre DNa02 D e E, com as somas excitatória e inibitória e as 10
+maiores inibitórias sobre o DNa02 D. É descritivo, sem critério.
