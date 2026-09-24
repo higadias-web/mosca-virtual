@@ -223,3 +223,44 @@ arestas repetidas e sem autolaços novos; o grau e a força de saída ficam igua
 
 Execução separada da análise: `run` grava `runs/phase3b/laterality_runs.csv` e `LAT_OK` com a contagem
 (240 = 6 conectomas × 4 condições × 10 sementes); `analyze` se recusa a rodar sem `LAT_OK` completo.
+
+## I. S1: resultado de lateralidade e especificidade (2026-09-23)
+
+`results/phase3b/laterality.json`; brutos em `runs/phase3b/laterality_runs.csv` (`LAT_OK` 240/240). Análise
+rodada só com a fila completa.
+
+**V1, especificidade: cumprida.**
+- DNa01/02, simétrico − controle: **20,75 Hz no conectoma real**, idêntico ao teste de viabilidade
+  (mesmas sementes).
+- Nos 5 embaralhados: 0; 0,5; 0; 0; 0 Hz (mediana 0), bem abaixo do limite de 0,5 × 20,75.
+- **Pelos critérios de §F1 e §F3, o veredito "viável" fica confirmado**: a resposta do DNa01/02 ao odor
+  depende do cabeamento específico.
+
+**V2, "carrega lado": nenhum tipo carrega lado.**
+
+| Tipo | Δ ipsi − contra (mediana) | p (α = 0,0125) | Carrega lado |
+|---|---|---|---|
+| DNp09 | 0 | 1 | não (0 Hz em todas as condições) |
+| MDN | 0 | 1 | não (0 Hz em todas as condições) |
+| DNa01 | −1,0 Hz | 0,47 | não |
+| DNa02 | +0,75 Hz | 0,64 | não |
+
+Taxas por célula no conectoma real (mediana, E / D), descritivas:
+
+| Tipo | Controle | Simétrico | Só esquerda | Só direita |
+|---|---|---|---|---|
+| DNa01 | 0 / 0 | 21 / 8 | 19,5 / 9 | 18 / 6 |
+| DNa02 | 0 / 0 | 52 / 0,5 | 53 / 0,5 | 51,5 / 0 |
+
+**Achado descritivo, fora dos critérios:** a resposta é **assimétrica e fixa**. A célula esquerda de
+DNa02 (e, em menor grau, a de DNa01) responde forte, e a direita quase não responde, **qualquer que
+seja o lado dos ORNs estimulados**.
+- Leitura: o modelo não codifica o lado do odor nesses DNs. Nele, o odor ativa sobretudo os DNs de
+  curva do lado esquerdo.
+- A causa não foi investigada. Hipóteses: assimetria real do caminho no conectoma ou diferença de
+  reconstrução entre os hemisférios.
+- O sentido da curva que isso produziria está **não verificado** (ligação de Yang et al. 2024).
+- Consequência para a interface aprovada: o odor não gera avanço (o DNp09 fica em 0) e geraria um
+  **viés fixo de curva para um lado**, sem informação sobre onde está a fonte.
+
+A continuação aguarda a revisão do usuário. Nada da interface foi construído.
