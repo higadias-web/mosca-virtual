@@ -638,3 +638,15 @@ ablações apagarem o regime.
 
 **R5. Propostas pedidas (nada rodado com elas):** referência olfativa para reprodução e resposta sobre
 ligações elétricas nos conectomas. Ver `docs/FASE3B_ETAPA_D_RELATORIO.md`.
+
+## S. Etapa D: resultado (2026-09-24). Relatório em `docs/FASE3B_ETAPA_D_RELATORIO.md`
+- `ABL_OK` 140/140, em ~15 min.
+- **Nenhuma ablação volta ao basal.** A persistência continua em A, B e C.
+- **A (sem eLN → PN)** reduz o regime para ~1 % de neurônios ativos (células de Kenyon ~0,5 %, PNs ~11 %),
+  mas os **LNs seguem 68 % ativos**, sustentados por uma **alça eLN → eLN** (94 % da excitação dos eLNs;
+  sem fonte lida sobre eLN → eLN).
+- **B** quase não muda nada.
+- "Cresce com a dose" passa pelo critério, mas com aumentos pequenos (7–19 %).
+- **Propostas:** referência de Olsen et al. 2010 (DM1: Rmax 144, σ 44,8). **Hemibrain e BANC não registram
+  ligações elétricas**, então a O1 não resolve a L1.
+- Registros: princípio de correção por fisiologia (NON_CONNECTOME.md); Fase 9, voo (SPEC.md).
