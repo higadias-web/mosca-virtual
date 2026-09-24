@@ -55,6 +55,16 @@ obter um resultado (critério da aprovação de 2026-09-23).
 | H6-g | Sinais "verified_gluexc": glutamato excitatório em todo o VNC | idem | teste de sensibilidade, sem base documentada |
 | S | Estímulo: Poisson nos DNs (como a ativação optogenética do Shiu); grupo G3 escolhido pelo acionamento no grafo | `experiments/phase3a_s1.py` | protocolo |
 
+## Fase 3b (DNs do FlyWire → controlador do FlyGym; plano em docs/FASE3B_PLANO.md)
+
+| # | Item | Onde | Observação |
+|---|---|---|---|
+| B-odor | **Modelo de odor:** fruta fermentada = Poisson nos ORNs de DM1 e VA2 (os dois lados, 135 neurônios), a **100 Hz (SEM FONTE**; é a convenção de estímulo do Shiu). Na C4, a relação concentração do campo → taxa dos ORNs também é **sem fonte** (a definir antes da C4) | `experiments/phase3b_viability.py` | a escolha dos glomérulos tem fonte: Semmelhack & Wang 2009 (*Nature*), vinagre de maçã → DM1/VA2 necessários e suficientes para a atração |
+| B-filtro | **Filtro da taxa dos DNs antes do CPG:** exponencial com τ_r = 100 ms, amostrado a cada 10 ms (**SEM FONTE**) | (interface, ainda não implementada) | só se a viabilidade passar |
+| B-ganho | **Critério de ganho:** estímulo direto de um grupo a **100 Hz (SEM FONTE)** → \|δ\| = 1 (o passo real gravado); ganhos g_f, g_t, g_b, r_ref e limiar do MDN fixados uma vez | (interface) | sem ajuste depois do teste sensorial |
+| B-cpg | O CPG inteiro (osciladores, vieses de fase, passos pré-programados, regras de correção) e o mapeamento DN → CPG | `flygym_demo.complex_terrain.turning_controller` | FASE3B_PLANO (b) |
+| B-shuf | Controle: conectoma do cérebro embaralhado por trocas duplas de arestas (graus preservados) | (C5) | controle, não modelo |
+
 ## Planejado (a confirmar por fase)
 
 | Item | Animal | Fase | Por que não vem do conectoma |

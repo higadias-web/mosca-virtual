@@ -1,4 +1,4 @@
-# Plano da Fase 3b: mosca livre no terrário, DNs → controlador (PROPOSTA, não aprovada; nada executado)
+# Plano da Fase 3b: mosca livre no terrário, DNs → controlador (APROVADO em 2026-09-23, com os ajustes de §F)
 
 A 3a terminou como "loop fechado não testável com este aparato no prazo" (`docs/FASE3A_RELATORIO.md`).
 Pela D-106, a 3b segue com a opção (a): **os DNs do cérebro FlyWire 783 modulam um controlador de marcha
@@ -112,3 +112,48 @@ Os ganhos não são reajustados para "fazer funcionar".
 - Mendes et al. 2013, *eLife* 2:e00231 (frequência × velocidade).
 - FlyGym 2.1: `flygym_demo/complex_terrain/{turning_controller,hybrid_controller,cpg_controller,common}.py`;
   o tutorial "turning" (`third_party/flygym-gymnasium/doc/source/tutorials/turning.rst`).
+
+## F. Ajustes da aprovação (2026-09-23, commitados antes de executar)
+
+**F1. A S1 começa com um teste de viabilidade sem corpo** (`experiments/phase3b_viability.py`). Se ele
+der negativo, a 3b vai direto ao relatório, **sem construir a interface**.
+- Conectoma: FlyWire 783, só o cérebro (`connectomes.load("783")`), com o LIF do Shiu (os parâmetros
+  da Fase 1).
+- **Odor (modelo, NON-CONNECTOME):** Poisson a **100 Hz** em todos os ORNs dos glomérulos **DM1 e VA2**,
+  nos dois lados (135 neurônios: 68 ORN_DM1 e 67 ORN_VA2, pela anotação do FlyWire; todos os root_ids
+  existem na v783).
+  - Os glomérulos vêm de Semmelhack & Wang 2009 (*Nature*, "Select Drosophila glomeruli mediate innate
+    olfactory attraction and aversion"): no vinagre de maçã em concentração baixa, DM1 e VA2 são
+    necessários para a atração, e ativar cada um basta. É a referência para odor de fruta fermentada.
+  - Os **100 Hz** são **sem fonte**: é a convenção de estímulo do Shiu, dentro da faixa de 10–200 Hz da
+    Fase 1.
+- Controle: sem estímulo, com a **mesma semente** (pareado). 10 sementes (1000–1009), 1 s por
+  execução, como os trials do Shiu.
+- Medida: taxa média por célula de cada grupo durante o estímulo:
+  - **DNp09** (2 células);
+  - **MDN** (4);
+  - **DNa01/02** (DNa01 + DNa02, 4 células).
+- **Critério (fixado agora):** um grupo **muda** se o Wilcoxon pareado bilateral (odor × controle, 10
+  sementes) der p < 0,05/3 (Bonferroni sobre os 3 grupos) **e** a diferença mediana for ≥ 1 Hz.
+  - A 3b segue para a interface se **pelo menos um** grupo mudar; se nenhum mudar, relatório.
+  - Os limiares de 1 Hz e α = 0,05 são **escolha**.
+- Descritivo, que não decide: se a diferença mediana chega a **≥ 10 Hz**. Pelo critério de ganho (100 Hz
+  → |δ| = 1), 10 Hz dá |δ| ≈ 0,1, cerca de 1,4 mm/s. Abaixo disso a interface andaria perto de parada,
+  e C4(ii) fica improvável.
+- Nota: sem estímulo, o LIF do Shiu não tem atividade de fundo, então o controle deve ficar em 0 Hz.
+
+**F2. C4 com grupo principal fixado:** o **DNp09** é o grupo principal de C4(i) (α = 0,05). MDN e
+DNa01/02 entram com Bonferroni (α = 0,05/2 cada). C4(ii), a distância até a fruta, não muda.
+
+**F3. Conectoma embaralhado obrigatório (A3 deixa de ser opcional):**
+- Pesos do cérebro reorganizados por trocas duplas de arestas (a→b, c→d ⇒ a→d, c→b). Isso preserva o
+  grau de saída e de entrada de cada neurônio. O peso e o sinal viajam com a aresta, então o sinal
+  continua sendo o do pré-sináptico.
+- Número de trocas: 10× o número de arestas. 5 embaralhamentos independentes.
+- **Critério em C5:** no conectoma embaralhado, o efeito do odor em C4(i) (DNp09) **e** em C4(ii) precisa
+  cair ≥ 50 % (efeito mediano) em relação ao conectoma real. Se não cair, a resposta não depende do
+  cabeamento específico, e isso é relatado como tal.
+
+**F4. Registrados no NON_CONNECTOME.md como sem fonte:** o modelo de odor (a taxa de 100 Hz e, na
+C4, a relação concentração → taxa), o filtro da taxa dos DNs antes do CPG (τ_r = 100 ms) e os 100 Hz
+do critério de ganho.

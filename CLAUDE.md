@@ -12,7 +12,7 @@ proprioceptivo fechado → encerrar 3a, documentar, 3b com o controlador (a)).
 (`docs/FASE3A_RELATORIO.md`). Demonstrado: sem ritmo em malha aberta, aferência imposta negativa (3 variantes),
 acionamento dos MNs quase nulo, inibição recíproca nos dois sentidos. O aparato de torque falhou nos limites
 3× (impacto > Y). **Encerramento aprovado** (2026-09-23), vídeo em results/phase3a/video_fechamento_3a.webm.
-**Fase 3b: plano PROPOSTO em `docs/FASE3B_PLANO.md`, aguardando aprovação; nada executado.** A entrega paralela "P" (probóscide) ainda não começou.
+**Fase 3b: plano APROVADO (2026-09-23, ajustes em §F); S1 começa pelo teste de viabilidade sem corpo.** A entrega paralela "P" (probóscide) ainda não começou.
 Ao fim de cada fase ou entrega: vídeo WebM de 10–20 s em results/. A cada sessão: figuras em results/phase3a/.
 Fase 1 aprovada em 2026-09-23; Fase 0 em 2026-09-22 (D-003, D-006, D-008, D-101, D-102, D-104).
 Nenhuma fase começa sem aprovação explícita do usuário, e nenhuma ⚠️ DECISÃO é tomada sem ele.
