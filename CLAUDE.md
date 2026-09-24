@@ -8,12 +8,11 @@ A especificação completa, com regras de trabalho, fases e critérios, está em
 BANC; **D-106**: Fase 3 em 3a (bolinha, marcha pelo cordão) e 3b (terrário). Prazo da 3a: 6 sessões
 ou 2 semanas (o que vier primeiro); marco na 3ª sessão (sem ritmo nos MNs de perna com loop
 proprioceptivo fechado → encerrar 3a, documentar, 3b com o controlador (a)).
-**Plano aprovado; Fase 3a em andamento: Sessões 1 e 2 concluídas (2026-09-23).** S1: sem ritmo em
-malha aberta. S2: aferência imposta sem ritmo (nem reflexo); loop fechado INCONCLUSIVO (acionamento
-quase nulo + aparato sem limites/rigidez nas juntas); inibição recíproca funcional confirmada.
-Sessão 3 aprovada com ajustes (pré-registro em `docs/FASE3_PLANO.md` §7.4 e §7.6). Marco pela métrica de ritmo congelada
-(0/4 ausência, ≥ 3/4 ritmo, 1–2/4 ausência + hipótese); loop fechado roda uma única vez, só com o aparato validado (a)–(e). Registro de sessões e resultados em `docs/FASE3_PLANO.md` §6–7. Prazo: 2026-10-07
-ou 6 sessões. A entrega paralela "P" (probóscide) ainda não começou.
+**Fase 3a ENCERRADA na Sessão 3 (2026-09-23): "loop fechado não testável com este aparato no prazo"**
+(`docs/FASE3A_RELATORIO.md`). Demonstrado: sem ritmo em malha aberta, aferência imposta negativa (3 variantes),
+acionamento dos MNs quase nulo, inibição recíproca nos dois sentidos. O aparato de torque falhou nos limites
+3× (impacto > Y). **Aguarda revisão do usuário**; depois: vídeo de fechamento da 3a e plano da 3b (controlador (a),
+corpo com atuadores de posição do FlyGym). A entrega paralela "P" (probóscide) ainda não começou.
 Ao fim de cada fase ou entrega: vídeo WebM de 10–20 s em results/. A cada sessão: figuras em results/phase3a/.
 Fase 1 aprovada em 2026-09-23; Fase 0 em 2026-09-22 (D-003, D-006, D-008, D-101, D-102, D-104).
 Nenhuma fase começa sem aprovação explícita do usuário, e nenhuma ⚠️ DECISÃO é tomada sem ele.
@@ -94,7 +93,8 @@ systemd-inhibit --what=idle:sleep uv run python bench/run_all.py --profiles bala
 - Unidades físicas: mm, s (padrão do FlyGym; gravidade −9810 mm/s²). Modelo neural: ms, mV.
 
 ## Pendências
-- Fase 3a, Sessão 3: aprovar as tolerâncias (§7.4.3), implementar A2' (rigidez de Wang et al. 2025) e validar o aparato antes de qualquer fila; testes baratos T1 (saldo E/I na H6-g) e T2 (inibição recíproca E → F).
+- Fase 3a: revisão do relatório de encerramento; vídeo de fechamento (10–20 s, WebM) em results/phase3a/.
+- Fase 3b: plano (DNs → controlador do FlyGym, corpo `make_locomotion_fly` com atuadores de posição) para aprovação.
 - Filas: rodar com `systemd-inhibit`, gravar `FILA_OK` com a contagem, analisar só com a fila completa, execução separada da análise.
 - Entrega P (paralela, fora do prazo): juntas da probóscide, extensão com açúcar, supressão com amargo, ablação do MN9, vídeo.
 - Fase 3: obter os IDs sensoriais nas anotações da v783 (não herdar a lista v630 do artigo; 1 dos 21 GRNs de açúcar não existe na v783).

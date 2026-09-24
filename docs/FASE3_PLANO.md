@@ -113,9 +113,9 @@ controlador (a), se usado. Tudo entra em `docs/NON_CONNECTOME.md` quando for imp
 |---|---|---|---|---|
 | 1 | 2026-09-23 | Métrica de ritmo (v1 → v2, §7.1); H6: confiabilidade dos transmissores; H2 × H6 em malha aberta (18 condições × 5 sementes); aparato: bola, torque, MN → músculo → junta (sinais de flexão medidos), transdução proprioceptiva (941 sensores); figuras em `results/phase3a/s1/` | H2, H6 (a) e (b) | **Não** (0 de 108 pernas×condições; malha aberta) |
 | 2 | 2026-09-23 | Direção dos proprioceptores por tipo (4 combinações); aferência imposta (marcha gravada) com sinais `verified`, H5 (fundo 5 Hz) e H6-g; ganho muscular fixado por critério (A4); loop fechado com H3 (×1, ×2); diagnóstico sem ajuste; inibição recíproca funcional; sensibilidade F_SAT; §7.2 | H1 (i e ii), H3, H5, H6-g | **Não** (aferência imposta: 0, nem reflexo). **Loop fechado: INCONCLUSIVO** por duas causas: (b) acionamento quase nulo, independente do aparato, e (a) juntas sem limite nem rigidez (§7.2). Sensibilidade F_SAT inválida, não analisada |
-| 3 | 2026-09-23 | (em andamento) Pré-registros §7.4, §7.6 e §7.8; T1 e T2; checagem da unidade (a leitura mN·m/° caiu; mantida pela opção (i)); validação 1 (limite padrão): (c)/(d) falharam; validação 2 ("std2dt"): (a), (b) e (e) passaram, **(c)/(d) falharam** (31/66, até 0,22 rad); falta a alternativa única "direct_dt" (§7.9); nenhuma fila | — | pendente (validação falhou 2×) |
+| 3 | 2026-09-23 | Pré-registros §7.4, §7.6, §7.8 e §7.10; T1 (saldo E/I) e T2 (inibição recíproca E → F: 11/12); checagem da unidade (a leitura mN·m/° caiu; mantida pela opção (i)); 3 tentativas de batente, todas reprovadas em (c)/(d) (66/66 → 31/66 → 8/66), sem instabilidade; nenhuma fila; **3a encerrada** (§7.11, `FASE3A_RELATORIO.md`) | T1, T2 (malha aberta/estrutura) | **não testável** (loop fechado sem aparato válido) |
 
-Marco da 3ª sessão: ainda pendente. O loop fechado da Sessão 2 foi inconclusivo. A Sessão 3 foi aprovada com
+Marco da 3ª sessão: não decidido; a 3a encerrou pelo teto do aparato (§7.11). O loop fechado da Sessão 2 foi inconclusivo. A Sessão 3 foi aprovada com
 ajustes, e a regra do marco (em taxa) e o pré-registro estão em §7.4.
 
 **Pré-registro (Sessão 2, antes de abrir resultados):** configuração principal para o vídeo =
@@ -774,3 +774,18 @@ coativação vinda dos DNs) do que ficou sem teste (o loop fechado). Depois, par
   - `--check` conta os `.npz` por tipo, com regex exata por tipo (sem o defeito do `FILA_OK3` da
     Sessão 2), e grava `FILA_OK`;
   - `--analyze` se recusa a rodar sem as contagens completas dos dois tipos. Nenhuma análise parcial.
+
+### 7.11 Sessão 3: resultado da última tentativa e encerramento da 3a (2026-09-23)
+
+`results/phase3a/s3_validation_direct_dt/`:
+- (a), (b) e (e) passaram.
+- **(c) falhou em 8 de 66 grupos** (até 0,111 rad lido a 1 kHz).
+- **(d) falhou** (18 grupos não monotônicos).
+- **Sem instabilidade:** 0 avisos do MuJoCo em 339 cenas, 0 NaN, energia sem aumento em (b).
+
+Causa, pelas métricas gravadas: a sustentação fica ≤ 0,021 rad em todos os grupos, e o pico no impacto
+(~1 ms) passa de Y em 46 grupos.
+
+Pela regra de §7.10, **a 3a encerra como "loop fechado não testável com este aparato no prazo"**.
+Relatório em `docs/FASE3A_RELATORIO.md`. Nenhuma fila do loop fechado rodou.
+Figura da sessão: `results/phase3a/s3/diagnostico_s3.png`.
