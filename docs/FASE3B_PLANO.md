@@ -259,8 +259,75 @@ seja o lado dos ORNs estimulados**.
   curva do lado esquerdo.
 - A causa não foi investigada. Hipóteses: assimetria real do caminho no conectoma ou diferença de
   reconstrução entre os hemisférios.
-- O sentido da curva que isso produziria está **não verificado** (ligação de Yang et al. 2024).
+- O sentido da curva que isso produziria: ver §J (verificado depois, no preprint de Yang et al.).
 - Consequência para a interface aprovada: o odor não gera avanço (o DNp09 fica em 0) e geraria um
   **viés fixo de curva para um lado**, sem informação sobre onde está a fonte.
 
 A continuação aguarda a revisão do usuário. Nada da interface foi construído.
+
+## J. S1: revisão de V1/V2, sem novas simulações (2026-09-23)
+
+V1 e V2 foram aceitos pelo usuário. Esta revisão só lê o que já existe: fontes, anotações e o grafo.
+
+**J1. Yang et al.: o sentido da ligação do DNa02, agora verificado.**
+- Referência lida: Helen H. Yang, Luke E. Brezovec, Laia Serratosa Capdevila, Quinn X. Vanderbeck,
+  Atsuko Adachi, Richard S. Mann e Rachel I. Wilson, "Fine-grained descending control of steering in
+  walking *Drosophila*", **preprint bioRxiv v2 (30/10/2023), PMC10614758**. A versão revisada por pares
+  (*Cell* 2024) **não foi lida**.
+- Trecho, na legenda da Fig. 4A, sobre o estímulo optogenético unilateral do DNa02: "a brief pulse of
+  light (200 ms) triggered a turn in the direction of the stimulated cell, with no change in forward
+  velocity" → **curva ipsilateral**.
+- Legenda da Fig. 4G: "DNa02 shortens steps on the inside of a turn, while DNg13 lengthens steps on the
+  outside of a turn".
+- O preprint **não descreve o efeito de ativar o DNa01** (só que ele se correlaciona com a velocidade
+  de rotação, Fig. 2). O sentido do DNa01 continua **não verificado**.
+- **Interpretação atualizada do viés:** o odor ativa sobretudo o DNa02 **esquerdo** (52 contra 0,5 Hz).
+  Pelo trecho acima, isso preveria uma **curva para a esquerda da mosca** (ver J2 sobre a convenção de
+  lado), sem avanço (o DNp09 fica em 0) e **independente do lado do odor**. Pelo trecho da Fig. 4G, a
+  regra "encurtar o passo do lado ipsilateral ao DNa02 ativo" do plano (a) passa a ter fonte, no preprint.
+
+**J2. ORNs estimulados e convenção de lado.**
+- Contagens: **só esquerda = 69 ORNs** (35 ORN_DM1 + 34 ORN_VA2); **só direita = 66** (33 + 33); simétrico = 135.
+- Campo usado: `side` de `Supplemental_file1_neuron_annotations.tsv` (repositório `flywire_annotations`,
+  commit 8587524, versão ≥ 3.1.0, materialização `783`; a v2.1.0 era a de Schlegel et al. 2024).
+  Segundo o README das tabelas, `side` é "the soma side for brain-intrinsic neurons and the nerve-entry
+  side for sensory/ascending neurons", ou seja, nos ORNs, **o lado do nervo antenal por onde entram**.
+- **Convenção:** a documentação do `fafbseg` ("Mirroring FlyWire neurons", com base em Schlegel et al.)
+  diz que "the FAFB image dataset underlying it was accidentally flipped along the left-right (i.e. "x")
+  axis" e que "the official `side` labels we provide for FlyWire are biologically correct". Portanto
+  **`left` = lado esquerdo da mosca**.
+
+**J3. Conectividade de DM1/VA2 até DNa01/DNa02** (`experiments/phase3b_connectivity.py`,
+`results/phase3b/connectivity.{csv,json}`). Pesos com sinal do conectoma do LIF, produtos de contagens
+de sinapses nos caminhos de 2 saltos:
+- **Direto:** nenhuma sinapse de ORN_DM1, ORN_VA2, DM1_lPN ou VA2_adPN, de nenhum lado, em DNa01 ou
+  DNa02, de nenhum lado.
+- **2 saltos:** **nada chega às cópias esquerdas** de DNa01 e DNa02 **nem ao DNa01 direito**. Só o
+  **DNa02 direito** recebe caminhos, todos mínimos:
+  - ORN_DM1 esquerdo +5 e direito +2 (1 intermediário);
+  - DM1_lPN direito: E 1, I 6, saldo −5 (via DNb09, glutamatérgico, portanto inibitório no modelo, e
+    via M_spPN5t10);
+  - VA2_adPN direito +1.
+- **Comparação das duas cópias:** nos caminhos de até 2 saltos, a assimetria vai no sentido **oposto**
+  ao da simulação (o direito recebe um pouco, o esquerdo nada). **A forte ativação do DNa02 esquerdo
+  vem de caminhos com 3 ou mais saltos, que não foram analisados.** A causa da assimetria continua
+  aberta.
+
+**J4. O que o embaralhamento preservou** (verificado nos 5):
+- conjunto de pesos (com sinal) idêntico;
+- fração de arestas inibitórias idêntica (0,3997);
+- grau de saída, força de saída com sinal (portanto o sinal E/I de cada neurônio pré-sináptico) e grau
+  de entrada idênticos em todos os neurônios;
+- menos de 0,003 % das arestas ficou no lugar.
+- **O que não se preserva:** a força de entrada E e I de cada neurônio (correlação com a original de
+  0,77 e 0,75), que muda com a troca dos parceiros. É uma consequência esperada do método pré-registrado.
+
+**J5. Ressalvas para o relatório:**
+- **A ausência de lado pode vir do modelo de estímulo.** Os ORNs de um lado recebem a mesma taxa (100
+  Hz) em todos os neurônios, sem gradiente de concentração entre as antenas nem diferença de tempo, e
+  o LIF trata cada sinapse só pela contagem, sem propriedades de liberação que possam ser assimétricas.
+  O teste mostra que, **com este estímulo e este modelo**, os DNs não carregam o lado. Isso não prova
+  que o conectoma não tenha a informação.
+- **A inibição não é detectável:** DNp09 e MDN ficam em 0 Hz também sem odor (o modelo não tem
+  atividade espontânea), e o mesmo vale para as cópias silenciosas de DNa01/02. Uma inibição pelo odor
+  não apareceria neste teste.
