@@ -169,14 +169,57 @@ dispararam a 99 Hz (mediana).
 | MDN | 0 Hz | 0 Hz | 0 (0–0) | 1 | **não** | não |
 | **DNa01/02** | 20,75 Hz | 0 Hz | 20,75 (18,75–22,75) | 0,002 | **sim** | sim |
 
-**Pelo critério de §F1, a 3b é viável** (um grupo mudou) e segue para a interface. Implicações,
-registradas antes de qualquer outro passo:
-- **O grupo principal de C4(i), o DNp09, não responde ao odor**: 0 spikes nas 10 sementes. Na
-  interface aprovada, o avanço vem só do DNp09, então **o odor sozinho não faria a mosca andar**, e
-  C4(i) no grupo principal tende ao negativo.
-- A única resposta está no grupo de **curva** (DNa01/02), cuja ligação com o sentido da curva ainda
-  **está a confirmar** (Yang et al. 2024). Com odor simétrico nos dois lados, um sinal de curva tende a
-  se cancelar. A assimetria esquerda/direita não foi medida: o CSV guarda só a média do grupo, e nada
-  foi rodado de novo.
-- O controle ficou em 0 Hz em todos os grupos, como esperado num LIF sem atividade de fundo.
-- Nada da interface foi construído. A continuação aguarda a revisão do usuário.
+**Veredito "viável": PENDENTE** (decisão do usuário, 2026-09-23), até o controle com conectoma
+embaralhado (§H, V1). O critério de §F1 foi cumprido por um grupo (DNa01/02), mas falta o critério
+obrigatório de especificidade (§F3).
+
+Notas (corrigidas na revisão):
+- **99 × 100 Hz:** 100 Hz é a taxa de ENTRADA pré-registrada; 99,2 ± 0,9 Hz é a taxa de SAÍDA medida
+  (média de 135 ORNs em 1 s, entre as 10 sementes). A dispersão bate com o sorteio de Poisson (~0,86 Hz
+  esperado), e o déficit médio de 0,8 Hz não foi investigado.
+- **DNp09 e MDN ficam em 0 Hz também sem odor:** o modelo não tem atividade espontânea, então **uma
+  inibição desses grupos pelo odor não é detectável neste teste**. "Não muda" quer dizer "não é
+  excitado", não "não é afetado".
+- **O sentido da ligação do DNa01/02 com a curva está NÃO VERIFICADO.** Yang et al. 2024 (*Cell*) só
+  entra na interpretação com a referência completa e o trecho lido. Na revisão, o texto não abriu
+  (bioRxiv 429, Cell 403).
+- **Os "10 Hz"** saem da conclusão. Eles estavam em §F1 como descritivo, antes de rodar, mas a
+  leitura "relevante para mover a mosca" depende do critério de ganho (B-ganho), que não tem fonte.
+  Registrado no NON_CONNECTOME.md (B-10Hz).
+- A continuação aguarda a revisão do usuário. Nada da interface foi construído.
+
+## H. S1: lateralidade e especificidade, opção (2) (pré-registro, commitado antes de rodar)
+
+`experiments/phase3b_laterality.py`; embaralhamento em `terrario/brain/shuffle.py` (trocas duplas de
+arestas, 10 × E trocas bem-sucedidas, sementes 0–4, com verificação de grau de entrada igual, sem
+arestas repetidas e sem autolaços novos; o grau e a força de saída ficam iguais por construção).
+- Conectomas: **real** e **5 embaralhados** (§F3).
+- Condições:
+  - **controle** (sem estímulo);
+  - **simétrico** (ORNs de DM1+VA2 dos dois lados, 100 Hz);
+  - **só esquerda** (ORNs com `side == left`);
+  - **só direita**.
+- 10 sementes pareadas (1000–1009), 1 s. A condição simétrica no conectoma real repete o teste de
+  viabilidade (mesmas sementes, então resultado idêntico esperado).
+- Medida: **taxa por célula** de DNp09 (E, D), MDN (2 E, 2 D), DNa01 (E, D) e DNa02 (E, D).
+
+**V1, especificidade da viabilidade (critério de §F3, aplicado ao DNa01/02):**
+- efeito_real = mediana entre as sementes de [taxa do grupo DNa01/02 no simétrico − controle], no
+  conectoma real;
+- efeito_emb = mediana, entre os 5 embaralhamentos, da mesma medida;
+- **específico se efeito_emb ≤ 0,5 × efeito_real.** Se não for, a resposta ao odor não depende do
+  cabeamento específico, e isso é relatado como tal.
+
+**V2, "carrega lado"** (fixado agora), para cada tipo T ∈ {DNa01, DNa02, DNp09, MDN}:
+- por semente, Δ_T = ½[(r_E − r_D | só esquerda) + (r_D − r_E | só direita)], ou seja, ipsilateral −
+  contralateral ao lado estimulado. No MDN, a taxa do lado é a média das 2 células;
+- teste: **Wilcoxon pareado bilateral de Δ_T contra 0**, com **α = 0,05/4 = 0,0125** (Bonferroni
+  sobre os 4 tipos);
+- diferença mínima: **|mediana Δ_T| ≥ 2 Hz** (**escolha, sem fonte**);
+- T "carrega lado" se as duas condições valerem. O sinal (ipsi > contra ou o contrário) é relatado,
+  **sem** interpretação de sentido de curva (a ligação não está verificada);
+- especificidade lateral (só para os tipos que carregam lado): |Δ| mediana dos 5 embaralhamentos ≤
+  0,5 × |Δ_real|.
+
+Execução separada da análise: `run` grava `runs/phase3b/laterality_runs.csv` e `LAT_OK` com a contagem
+(240 = 6 conectomas × 4 condições × 10 sementes); `analyze` se recusa a rodar sem `LAT_OK` completo.
