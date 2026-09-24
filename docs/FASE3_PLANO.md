@@ -662,3 +662,55 @@ pré-registrado.**
 - (a) e (b) passaram porque não chegam perto dos limites.
 - É um defeito de implementação do aparato (parâmetro numérico do limite), não dos critérios.
   **Nenhuma fila roda.** A correção precisa de aprovação (ver o relato da sessão).
+
+### 7.8 Sessão 3: terceira rodada de ajustes (2026-09-23, commitada antes de refazer a validação)
+
+**1. Limites: `solref` negativo verificado, e parâmetro fixado.**
+Verificado no código-fonte do MuJoCo **3.9.0** (a versão instalada; `src/engine/engine_core_constraint.c`,
+`getsolparam`, `mj_makeImpedance`, `mj_referenceConstraint`) e na documentação (`modeling.html`,
+"Solver parameters"):
+- Formato padrão (solref > 0): K = 1/(dmax²·tc²·ζ²) e B = 2/(dmax·tc). A trava `refsafe` impõe
+  tc ≥ 2·dt.
+- Formato direto (solref < 0): K = −solref[0]/dmax² e B = −solref[1]/dmax. **Funciona nesta versão**,
+  e a trava `refsafe` **não** se aplica a ele (só vale para `solref[0] > 0`).
+- **Nos dois formatos, K e B entram na aceleração de referência** (`efc_aref = −B·v − K·imp·r`, em
+  s⁻²), e a força sai do regularizador `R = (1−imp)/imp · diagApprox`, com diagApprox ≈ inverso da
+  massa efetiva. Ou seja, o formato "direto" **não** tira a escala pela inércia: a rigidez em força
+  continua ∝ inércia. A única vantagem dele é escapar do `refsafe`, com risco de instabilidade no
+  integrador.
+- Comparação por estimativa analítica, grosseira e tomada como teto. A junta chega ao batente na
+  velocidade terminal τ/c. O erro estático é ≈ (1 − dmax)·(τ/I)·tc², e o pico no impacto é ≈ (τ/c)·tc/e,
+  com duração de ~tc:
+
+| Opção | Parâmetros | Erro estático máx. (estim.) | Pico no impacto (estim.; máx / mediana) |
+|---|---|---|---|
+| **Principal: "std2dt"** | solref = (0,0002 s; 1) = 2·dt, o mínimo do `refsafe`; solimp padrão (0,9; 0,95; 0,001; 0,5; 2) | 0,012 rad | 0,41 / 0,14 rad, por ≲ 1 ms |
+| **Alternativa única: "direct_dt"** (só se a principal falhar) | formato direto equivalente a tc = dt: solref = (−10⁸; −2×10⁴); solimp (0,95; 0,99; 0,001; 0,5; 2) para reduzir o erro estático | 0,0006 rad | 0,21 / 0,07 rad, por ≲ 0,5 ms |
+
+- Aumentar só o `solimp` reduz o erro estático, mas não o pico, porque dmax se cancela na rigidez
+  efetiva perto de d = dmax. Por isso a alternativa combina tc = dt com solimp alto. Reduzir o passo
+  da física não é opção: o loop assume 10 passos de 0,1 ms por ms do LIF.
+- **Amostragem do critério (c), declarada antes de rodar:** a violação é lida a **1 kHz**, a mesma
+  taxa em que os proprioceptores e a rede leem os ângulos (código de §7.4, sem mudança). O **pico a
+  cada passo de 0,1 ms** também é gravado (`viol_step_*`), só como descritivo, porque a estimativa
+  prevê picos de impacto acima de Y com duração abaixo de 1 ms. **Y não muda.**
+- **Teto:** se a validação com "std2dt" falhar, roda-se **uma única vez** a alternativa "direct_dt"
+  (fixada aqui). Se ela também falhar, a 3a encerra como **"não testável com este aparato no prazo"**,
+  com relatório, e a 3b segue com o controlador (a).
+- **A validação inteira (a)–(e) é refeita**, inclusive o (e): na primeira rodada ele passou com os
+  batentes inoperantes.
+
+**2. Unidade de Wang et al.: opção (i).** A leitura mN·m/° continua como valor principal. A checagem
+pré-registrada falhou (m* = 2,5 contra a faixa [10, 160]; discrepância de 16× com o ×40 do artigo; as
+outras leituras ficam a ≥ 62×). A fonte é preprint. "Sustentar" **não** foi redefinido. Registro em
+`docs/NON_CONNECTOME.md` (A2').
+
+**3. Sensibilidade à rigidez (fixada agora).**
+- No loop fechado, além do valor principal (k), roda **um único ponto a k/16**: é o fator que, no
+  nosso modelo, leva o ×40 do artigo ao limiar de sustentação (40/16 = 2,5 = m*).
+- Só na combinação "pooled", com 5 sementes. **Leitura provisória, a confirmar na revisão** (o loop não
+  roda antes dela): mesmos 3 grupos × 2 escalas; as 4 combinações de direção juntadas num único conjunto
+  de 5 sementes por condição (7000–7004, com as combinações em rodízio 00, 01, 10, 11, 00); a métrica v2
+  sobre essas 5 sementes.
+- **O marco é decidido só pelo valor principal.** Ritmo que apareça só em k/16 vira hipótese, não
+  positivo.

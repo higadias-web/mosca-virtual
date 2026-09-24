@@ -51,8 +51,11 @@ KEYS = {"ThC": "thc_pitch", "CTr": "ctr_pitch", "FTi": "fti_pitch"}
 OUT = ROOT / "results/phase3a"
 
 
+LIMIT = "std2dt"  # §7.8; trocado por --limit direct_dt só na alternativa única
+
+
 def _scene(offset=0.0):
-    sc = build_ball_scene(ball_z_offset=offset, passive="wang2025")
+    sc = build_ball_scene(ball_z_offset=offset, passive="wang2025", limit=LIMIT)
     fly = sc.fly
     jd = [d.name for d in fly.get_jointdofs_order()]
     ad = [d.name for d in fly.get_actuated_jointdofs_order(ActuatorType.MOTOR)]
@@ -155,14 +158,18 @@ def _hold(tq_vec, ms, jd, ad, offset=-5.0):
     hi = np.array([rng[n][1] for n in ad])
     viol, tail = 0.0, []
     steps = int(ms * 10)
+    viol_step = 0.0  # descritivo: pico a cada passo de 0,1 ms (o critério usa 1 kHz, como sensores e rede)
     for k in range(steps):
         sc.sim.set_actuator_inputs(sc.fly.name, ActuatorType.MOTOR, tq_vec)
         sc.sim.step()
+        qs = np.asarray(sc.sim.get_joint_angles(sc.fly.name))[aidx]
+        viol_step = max(viol_step, float(np.max(np.maximum(lo - qs, qs - hi))))
         if k % 10 == 0:
             q = np.asarray(sc.sim.get_joint_angles(sc.fly.name))[aidx]
             viol = max(viol, float(np.max(np.maximum(lo - q, q - hi))))
             if k >= steps - 500:
                 tail.append(q)
+    _hold.last_step_viol = viol_step
     return viol, np.mean(tail, 0)
 
 
@@ -172,22 +179,25 @@ def test_c_d():
     q_rest = np.asarray(sc.sim.get_joint_angles(sc.fly.name))[aidx]
     rows = []
     for name, d, s in _groups(ad):
-        finals, viols = [], []
+        finals, viols, vsteps = [], [], []
         for a in (0.2, 0.4, 0.6, 0.8, 1.0):
             tq = np.zeros(len(ad))
             tq[d] = np.clip(s * a, -TORQUE_LIMIT, TORQUE_LIMIT)
             v, qf = _hold(tq, TOL["limit_ms"], jd, ad)
             viols.append(v)
+            vsteps.append(_hold.last_step_viol)
             finals.append(np.sign(s) * (qf[d] - q_rest[d]))
         f = np.array(finals)
         mono = bool(np.all(np.diff(f) >= -TOL["mono"]) and f[-1] > 0)
         rows.append(dict(group=name, dof=ad[d], viol_act1=viols[-1], viol_max=max(viols), monotonic=mono,
+                         viol_step_act1=vsteps[-1], viol_step_max=max(vsteps),
                          **{f"dq_{a}": x for a, x in zip((0.2, 0.4, 0.6, 0.8, 1.0), f)}))
     df = pd.DataFrame(rows)
     df.to_csv(OUT / "s3_validation_cd.csv", index=False)
     c_ok = bool((df.viol_act1 <= TOL["Y"]).all())
     d_ok = bool(df.monotonic.all() and (df.viol_max <= TOL["Y"]).all())
-    return (dict(passed=c_ok, viol_max=float(df.viol_act1.max()), n_fail=int((df.viol_act1 > TOL["Y"]).sum())),
+    return (dict(passed=c_ok, viol_max=float(df.viol_act1.max()), n_fail=int((df.viol_act1 > TOL["Y"]).sum()),
+                 viol_step_max_descritivo=float(df.viol_step_max.max())),
             dict(passed=d_ok, n_nonmonotonic=int((~df.monotonic).sum()), n_groups=len(df)))
 
 
@@ -312,11 +322,18 @@ def test_e():
 
 
 def main():
-    res = dict(tol=TOL, a=test_a(), b=test_b())
+    global OUT, LIMIT
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--limit", default="std2dt", choices=["std2dt", "direct_dt"])
+    LIMIT = ap.parse_args().limit
+    OUT = ROOT / "results/phase3a" / f"s3_validation_{LIMIT}"  # a 1ª validação (limite padrão) fica em s3_validation*.csv
+    OUT.mkdir(exist_ok=True)
+    res = dict(tol=TOL, limit=LIMIT, a=test_a(), b=test_b())
     res["c"], res["d"] = test_c_d()
     res["e"] = test_e()
     res["all_passed"] = all(res[k]["passed"] for k in "abcde")
-    json.dump(res, open(OUT / "s3_validation.json", "w"), indent=1, ensure_ascii=False)
+    json.dump(res, open(OUT / f"s3_validation_{LIMIT}.json", "w"), indent=1, ensure_ascii=False)
     print(json.dumps(res, indent=1, ensure_ascii=False))
 
 

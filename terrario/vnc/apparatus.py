@@ -55,6 +55,16 @@ WANG2025_K = {
 _K_UNMEASURED = {"f": 0.859, "m": 0.602, "h": 2.120}
 TAU_PASSIVE_S = 1.0 / (2 * np.pi * 20.0)  # 8 ms: não filtrar a banda de passada (3–20 Hz, Mendes 2013)
 RANGE_MARGIN = 0.3                        # limites = faixa da marcha real ± 30 % da amplitude (SEM FONTE)
+# Limites (Sessão 3, FASE3_PLANO §7.8): parâmetros do limite macio do MuJoCo (NON-CONNECTOME, numérico).
+# O padrão (solref 0,02 s) deixava o limite inoperante: a rigidez do limite escala com a massa efetiva
+# (engine_core_constraint.c, MuJoCo 3.9.0: efc_aref = −B·v − K·imp·r; R = (1−imp)/imp·diagApprox).
+#   "std2dt" (principal): solref = (2·dt, 1) = (0,0002 s, 1), o mínimo que o refsafe permite; solimp padrão.
+#   "direct_dt" (alternativa única, só se a principal falhar): formato direto com K, B equivalentes a
+#     timeconst = dt (fora do refsafe): solref = (−1/dt², −2/dt) = (−1e8, −2e4); solimp (0,95; 0,99; 0,001; 0,5; 2).
+LIMIT_MODES = {
+    "std2dt": dict(solref=(2e-4, 1.0), solimp=(0.9, 0.95, 0.001, 0.5, 2.0)),
+    "direct_dt": dict(solref=(-1e8, -2e4), solimp=(0.95, 0.99, 0.001, 0.5, 2.0)),
+}
 DOF_KEYS = ("thc_yaw", "thc_pitch", "thc_roll", "ctr_pitch", "trf_roll", "fti_pitch", "tita_pitch")
 
 
@@ -116,7 +126,8 @@ def passive_params(k_scale: float = 1.0) -> dict[str, dict]:
     return out
 
 
-def make_neuromuscular_fly(name: str = "fly", passive: str = "flygym", k_scale: float = 1.0) -> NeuroMechFly:
+def make_neuromuscular_fly(name: str = "fly", passive: str = "flygym", k_scale: float = 1.0,
+                           limit: str = "std2dt") -> NeuroMechFly:
     """Como flygym_demo.complex_terrain.common.make_locomotion_fly, com atuadores de torque.
 
     passive="flygym": passivos de make_locomotion_fly (0,05 / 0,06), sem limites (Sessões 1–2; defeito A2).
@@ -139,6 +150,8 @@ def make_neuromuscular_fly(name: str = "fly", passive: str = "flygym", k_scale: 
             ref = float(j.springref)
             j.range = [min(p["range"][0], ref), max(p["range"][1], ref)]
             j.limited = mj.mjtLimited.mjLIMITED_TRUE
+            j.solref_limit = LIMIT_MODES[limit]["solref"]
+            j.solimp_limit = LIMIT_MODES[limit]["solimp"]
         elif passive == "wang2025" and jd.child.link not in PASSIVE_TARSAL_LINKS:
             raise KeyError(f"DOF sem parâmetro A2': {jd.name}")
     dofs = sk.get_actuated_dofs_from_preset(ActuatedDOFPreset.LEGS_ACTIVE_ONLY)
@@ -191,10 +204,10 @@ class BallScene:
 
 
 def build_ball_scene(ball_z_offset: float = 0.0, textured: bool = False,
-                     passive: str = "flygym") -> BallScene:
+                     passive: str = "flygym", k_scale: float = 1.0, limit: str = "std2dt") -> BallScene:
     from flygym import Simulation
     from flygym.utils.math import Rotation3D
-    fly = make_neuromuscular_fly(passive=passive)
+    fly = make_neuromuscular_fly(passive=passive, k_scale=k_scale, limit=limit)
     world = TetheredBallWorld(ball_z_offset=ball_z_offset, textured=textured)
     world.add_fly(fly, [0, 0, 0], Rotation3D("quat", [1, 0, 0, 0]))
     sim = Simulation(world)
