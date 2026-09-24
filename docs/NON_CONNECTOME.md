@@ -64,6 +64,7 @@ obter um resultado (critério da aprovação de 2026-09-23).
 | B-ganho | **Critério de ganho:** estímulo direto de um grupo a **100 Hz (SEM FONTE)** → \|δ\| = 1 (o passo real gravado); ganhos g_f, g_t, g_b, r_ref e limiar do MDN fixados uma vez | (interface) | sem ajuste depois do teste sensorial |
 | B-10Hz | Limiar **descritivo** de 10 Hz na viabilidade (≈ \|δ\| 0,1 pelo B-ganho, ~1,4 mm/s): **sem fonte**. Estava em §F1 como descritivo antes de rodar, mas a leitura "relevante para mover a mosca" depende do B-ganho (sem fonte). Retirado da conclusão | `experiments/phase3b_viability.py` | não decide nada |
 | B-lat | Critério "carrega lado": diferença mínima ipsi − contra de **2 Hz (sem fonte)**; Wilcoxon, α = 0,05/4 | `experiments/phase3b_laterality.py` | FASE3B_PLANO §H |
+| B-mag | **Magnitude** taxa do DNa02 → encurtamento do passo ipsilateral (g_t, r_ref): **SEM FONTE**. Yang et al. 2023 (preprint bioRxiv v2, PMC10614758) dão só o **sentido** (curva ipsilateral; encurta o passo do lado de dentro). DNa01: sentido **não verificado** (Rayshubskiy et al. 2025, *eLife*, não o afirma explicitamente); fora da regra de curva | (interface) | FASE3B_PLANO §J1, §K |
 | B-cpg | O CPG inteiro (osciladores, vieses de fase, passos pré-programados, regras de correção) e o mapeamento DN → CPG | `flygym_demo.complex_terrain.turning_controller` | FASE3B_PLANO (b) |
 | B-shuf | Controle: conectoma do cérebro embaralhado por trocas duplas de arestas (graus preservados) | (C5) | controle, não modelo |
 

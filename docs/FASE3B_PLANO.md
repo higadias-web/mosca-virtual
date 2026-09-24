@@ -289,10 +289,13 @@ V1 e V2 foram aceitos pelo usuário. Esta revisão só lê o que já existe: fon
 **J2. ORNs estimulados e convenção de lado.**
 - Contagens: **só esquerda = 69 ORNs** (35 ORN_DM1 + 34 ORN_VA2); **só direita = 66** (33 + 33); simétrico = 135.
 - Campo usado: `side` de `Supplemental_file1_neuron_annotations.tsv` (repositório `flywire_annotations`,
-  commit 8587524, versão ≥ 3.1.0, materialização `783`; a v2.1.0 era a de Schlegel et al. 2024).
+  commit 8587524, versão ≥ 3.1.0, materialização `783`; a v2.1.0 era a de Schlegel et al. 2024: Schlegel P,
+  Yin Y, Bates AS, Dorkenwald S, Eichler K, Brooks P, … Costa M, Seung HS, Murthy M, Hartenstein V, Bock DD,
+  Jefferis GSXE, "Whole-brain annotation and multi-connectome cell typing of Drosophila", *Nature* 634:139–152
+  (2024), doi:10.1038/s41586-024-07686-5).
   Segundo o README das tabelas, `side` é "the soma side for brain-intrinsic neurons and the nerve-entry
   side for sensory/ascending neurons", ou seja, nos ORNs, **o lado do nervo antenal por onde entram**.
-- **Convenção:** a documentação do `fafbseg` ("Mirroring FlyWire neurons", com base em Schlegel et al.)
+- **Convenção:** a documentação do `fafbseg` ("Mirroring FlyWire neurons", com base em Schlegel et al. 2024, acima)
   diz que "the FAFB image dataset underlying it was accidentally flipped along the left-right (i.e. "x")
   axis" e que "the official `side` labels we provide for FlyWire are biologically correct". Portanto
   **`left` = lado esquerdo da mosca**.
@@ -331,3 +334,37 @@ de sinapses nos caminhos de 2 saltos:
 - **A inibição não é detectável:** DNp09 e MDN ficam em 0 Hz também sem odor (o modelo não tem
   atividade espontânea), e o mesmo vale para as cópias silenciosas de DNa01/02. Uma inibição pelo odor
   não apareceria neste teste.
+
+## K. S1: de onde vem a ativação do DNa02 esquerdo (pré-registro, commitado antes de rodar; teto: esta sessão)
+
+Pedido do usuário: **não** analisar caminhos de 3 saltos no grafo estático. Em vez disso, usar a atividade
+simulada (`experiments/phase3b_backtrace.py`):
+1. **odor:** odor bilateral (ORNs de DM1+VA2 a 100 Hz), conectoma real, **5 sementes** (1000–1004), 1 s,
+   salvando os spikes de **todos** os neurônios.
+2. **tree:**
+   - r_j = taxa média de cada neurônio nas 5 sementes;
+   - contribuição de j para k = W(j→k) · r_j, com W = contagem de sinapses com sinal, a mesma do LIF;
+   - a partir do **DNa02 esquerdo**, os **3 pré-sinápticos de maior contribuição positiva**, e recua do
+     mesmo jeito até **3 níveis** (≤ 3 + 9 + 27 nós);
+   - os 3 maiores inibitórios de cada nó entram só como descritivo;
+   - tipo, lado, superclasse e transmissor vêm da anotação.
+3. **silence:** silencia os **1, 2 e 3 principais do nível 1**, de forma cumulativa (top1; top1+2;
+   top1+2+3). As sinapses de saída são zeradas, como em `model.py:silence` do Shiu. Mesmo odor e mesmas
+   sementes. A escolha dos neurônios é algorítmica (a ordem do passo 2), sem escolha manual.
+4. **evaluate:** **critério de QUEDA** (fixado agora): a mediana da queda relativa do DNa02 esquerdo
+   contra o intacto da mesma semente precisa ser **≥ 50 %**, e a queda precisa ser **≥ 50 % em ≥ 4 de 5
+   sementes**. Com 5 sementes, um Wilcoxon não alcança p < 0,05 bilateral, por isso o critério é de
+   magnitude. DNa02 direito, DNa01 E/D e o total de spikes entram como descritivos.
+
+Cada etapa exige a anterior completa (`ODOR_OK`, `tree_OK.json`, `SIL_OK`).
+
+**Fontes da interface, atualizadas:**
+- **DNa01:** Rayshubskiy A, Holtz SL, Bates AS, Vanderbeck QX, Serratosa Capdevila L, Rockwell V, Wilson
+  RI, "Neural circuit mechanisms for steering control in walking Drosophila", *eLife* 2025,
+  doi:10.7554/eLife.102230 (lido no PMC12279373). O texto lido **não afirma o sentido do DNa01**. Há o
+  registro pareado ("rotational velocity is related to the right-left firing rate difference in this
+  DNa01 paired recording", Fig. 3, suplemento 2), sem a convenção de sinal no trecho, e a Discussão diz
+  que "inhibiting DNa01 produced only small defects in steering". O sentido do DNa01 continua **não
+  verificado**, e ele fica fora da regra de curva até haver fonte.
+- **A magnitude taxa → encurtamento do passo não tem fonte**: Yang et al. 2023 só dão o sentido.
+  Registrado no NON_CONNECTOME.md (B-mag).
