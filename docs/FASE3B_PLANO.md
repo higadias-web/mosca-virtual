@@ -576,3 +576,14 @@ Sem corpo, sem interface, sem vídeo. `experiments/phase3b_regime.py`.
 **P4. Regra da causa:** se a causa apontar para uma limitação conhecida do modelo, **nada é corrigido**.
 A limitação é descrita com fonte, e as opções são listadas com prós, contras e o quanto cada uma
 interfere no conectoma.
+
+## Q. Etapa C: resultado (2026-09-24). Relatório em `docs/FASE3B_ETAPA_C_RELATORIO.md`
+- `REGIME_OK` 190/190, em ~9 min.
+- **Persistência: sim** no conectoma real (razão de 0,98; não desliga); não nos embaralhados.
+- **Dose com fonte: nenhum limiar** (0,1 %, 0,5 % e 5 %: 10/10 sementes em estado alto).
+- **Causal: o AOTU019 E cala o DNa02 D** (0 → 44,5 Hz, p = 0,002; o viés some).
+- **Núcleo da persistência:** alça química excitatória de LNs colinérgicos ↔ PNs no lobo antenal
+  (inferência pelas fontes de excitação). É a limitação L1: na mosca, a excitação eLN → PN é elétrica
+  (Yaksi & Wilson 2010).
+- APL não disparador na mosca (Amin et al. 2020) e disparando a ~340 Hz no modelo (L2).
+- Opções O0–O6 listadas; **nada foi corrigido**.

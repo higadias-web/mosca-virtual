@@ -22,7 +22,9 @@ acionamento dos MNs quase nulo, inibição recíproca nos dois sentidos. O apara
 **Fase 3b: plano APROVADO (2026-09-23, ajustes em §F). S1 CONCLUÍDA (sem corpo; `docs/FASE3B_S1_RELATORIO.md`):**
 odor → DNa01/02 (específico), DNp09/MDN não excitados, nenhum DN carrega lado (DNa02 E fixo). Etapa B (`docs/FASE3B_ETAPA_B_RELATORIO.md`): taxa dos ORNs com fonte (Faucher et al. 2013);
 DNp09 nunca excitado, viés do DNa02 E em todas as taxas, sem lado; rede real em regime alto de tudo ou nada (6 % ativos já a 20 Hz).
-**Interface NÃO construída; S2 aguarda decisão do usuário.** A entrega paralela "P" (probóscide) ainda não começou.
+Etapa C (`docs/FASE3B_ETAPA_C_RELATORIO.md`): o odor liga um estado PERSISTENTE (não desliga) sem limiar nas doses
+com fonte; AOTU019 E causa o viés; limitação apontada: alça química eLN↔PN (na mosca é elétrica, Yaksi & Wilson 2010).
+**Interface NÃO construída; aguarda decisão do usuário entre as opções O0–O6.** A entrega paralela "P" (probóscide) ainda não começou.
 Vídeos: só depois que a mosca chegar à fruta sozinha (princípio acima). A cada sessão: figuras de diagnóstico em results/.
 Fase 1 aprovada em 2026-09-23; Fase 0 em 2026-09-22 (D-003, D-006, D-008, D-101, D-102, D-104).
 Nenhuma fase começa sem aprovação explícita do usuário, e nenhuma ⚠️ DECISÃO é tomada sem ele.
@@ -38,6 +40,7 @@ docs/FASE3A_RELATORIO.md relatório da 3a (loop fechado não testável com este 
 docs/FASE3B_PLANO.md     plano da 3b (DNs do FlyWire → HybridTurningController do FlyGym) e registro da S1 (§F–§M)
 docs/FASE3B_S1_RELATORIO.md relatório da 3b S1 (viabilidade, lateralidade, recuo do DNa02 esquerdo)
 docs/FASE3B_ETAPA_B_RELATORIO.md sensibilidade à taxa dos ORNs, regime de atividade, homólogos do DNa02
+docs/FASE3B_ETAPA_C_RELATORIO.md persistência, dose com fonte, causal AOTU019, limitação eLN e opções
 docs/D105_CONECTOMA.md   ⚠️ D-105/D-106: FlyWire × BANC × híbrido, com benchmark e revalidação
 docs/BENCHMARK.md        medições desta máquina e dimensionamento de episódios
 docs/DECISIONS.md        decisões técnicas (D-0xx técnicas, D-1xx pendentes)

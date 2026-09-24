@@ -1,0 +1,50 @@
+{
+ "acetylcholine": {
+  "n": 80,
+  "n_active": 60,
+  "rate_mean_active": 191.55,
+  "drive_to_PN": 8711279.0,
+  "drive_to_LN": 17376195.0,
+  "drive_to_ORN": 2781823.0
+ },
+ "dopamine": {
+  "n": 12,
+  "n_active": 12,
+  "rate_mean_active": 293.75,
+  "drive_to_PN": 5039746.0,
+  "drive_to_LN": 8238285.999999999,
+  "drive_to_ORN": 245704.0
+ },
+ "gaba": {
+  "n": 147,
+  "n_active": 121,
+  "rate_mean_active": 126.56198347107438,
+  "drive_to_PN": -2859156.0000000005,
+  "drive_to_LN": -1541541.0000000005,
+  "drive_to_ORN": -7630870.0
+ },
+ "glutamate": {
+  "n": 148,
+  "n_active": 124,
+  "rate_mean_active": 117.87903225806451,
+  "drive_to_PN": -1658156.0,
+  "drive_to_LN": -2181186.0,
+  "drive_to_ORN": -163720.0
+ },
+ "octopamine": {
+  "n": 2,
+  "n_active": 2,
+  "rate_mean_active": 141.99999999999997,
+  "drive_to_PN": 49699.999999999985,
+  "drive_to_LN": 110333.99999999997,
+  "drive_to_ORN": 3691.999999999999
+ },
+ "serotonin": {
+  "n": 40,
+  "n_active": 40,
+  "rate_mean_active": 276.775,
+  "drive_to_PN": 18469730.0,
+  "drive_to_LN": 26029466.0,
+  "drive_to_ORN": 7443169.0
+ }
+}
