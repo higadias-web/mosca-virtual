@@ -1,5 +1,6 @@
-"""Fase 3a, Sessão 3: validação do aparato com o A2' (FASE3_PLANO §7.4.3). NÃO RODAR antes da aprovação
-das tolerâncias. Se qualquer teste falhar, nenhuma fila roda (e o critério não é ajustado).
+"""Fase 3a, Sessão 3: validação do aparato com o A2' (FASE3_PLANO §7.4.3 e §7.6). Tolerâncias (a)–(d)
+aprovadas em 2026-09-23; (e) pedido na mesma aprovação. Se qualquer teste falhar, nenhuma fila roda (e o
+critério não é ajustado).
 
 Corpo: build_ball_scene(passive="wang2025") (rigidez de Wang et al. 2025, amortecimento pelo critério,
 limites da marcha real ± 30 %). Tolerâncias (propostas; valores em TOL):
@@ -15,6 +16,17 @@ limites da marcha real ± 30 %). Tolerâncias (propostas; valores em TOL):
   (d) faixa dinâmica: ativação 0,2…1,0 em 5 degraus por grupo (bola afastada): o ângulo final do DOF do
       grupo (média dos últimos 50 ms) anda no sentido do torque e de forma monotônica (tolerância de
       Y/5 para ruído); e respeita (c).
+  (e) controle negativo mecânico (§7.6): sem conectoma. Cada MN de perna dispara Poisson tônico na sua
+      taxa média da Sessão 2 (runs/phase3a/s2/diag_rates_closed.npy, janela A, média das 120 execuções
+      do loop fechado), com o mesmo protocolo do loop (MotorDrive, pulso A7 em 200–250 ms, 5,7 s),
+      5 sementes (7000–7004). A métrica congelada (v2), na janela A (450–3450 ms), é aplicada:
+        - aos proprioceptores: trens de Poisson gerados pela transdução (terrario/vnc/proprio.py) a
+          partir da cinemática, população de cada perna, 4 combinações de direção → rhythm_v2 completo;
+        - aos ângulos: cada DOF ativo (7 por perna), média em janelas de 5 ms → só a parte espectral da
+          v2 (Welch, proeminência ≥ 5) + reprodutibilidade (≥ 3/5 sementes a ±1 Hz). O teste de
+          surrogados (deslocamento circular por neurônio) não se define para um sinal único; sem ele o
+          critério fica MAIS sensível, o que é o lado conservador num controle negativo.
+      Passa se não houver NENHUM positivo. Se houver, o aparato gera ritmo sozinho e nenhuma fila roda.
 Saída: results/phase3a/s3_validation.json (+ .csv por teste)
 """
 
@@ -31,6 +43,7 @@ from terrario import ROOT
 from terrario.vnc.apparatus import (FLEX_SIGN, TORQUE_LIMIT, BALL_RADIUS, MotorDrive, build_ball_scene,
                                     dof_name)
 from terrario.vnc.motor_map import LEGS
+from terrario.vnc import rhythm
 
 TOL = dict(X=0.35, Y=0.05, Z_s=5.7, settle_s=0.5, ball_mm=0.2, limit_ms=200, mono=0.05 / 5)
 KP, SERVO_LIM = 150.0, 30.0
@@ -178,10 +191,131 @@ def test_c_d():
             dict(passed=d_ok, n_nonmonotonic=int((~df.monotonic).sum()), n_groups=len(df)))
 
 
+def _welch_prom_signal(x, bin_ms=5.0, seg_ms=1000.0, band=rhythm.BAND_HZ, fmax=60.0):
+    """Cópia fiel da parte espectral de rhythm.welch_peak (congelada), para um sinal contínuo já em
+    janelas de bin_ms, no lugar das contagens de spikes. Conferida contra welch_peak em _check_copy()."""
+    L = int(seg_ms / bin_ms)
+    step = L // 2
+    win = np.hanning(L)
+    P = []
+    for s0 in range(0, len(x) - L + 1, step):
+        y = x[s0:s0 + L] - x[s0:s0 + L].mean()
+        P.append(np.abs(np.fft.rfft(y * win)) ** 2)
+    P = np.mean(P, axis=0)
+    f = np.fft.rfftfreq(L, d=bin_ms / 1000)
+    best_k, prom = None, 0.0
+    for k in range(3, len(f) - 3):
+        if not (band[0] <= f[k] <= band[1]) or f[k] > fmax:
+            continue
+        if P[k] <= P[k - 1] or P[k] <= P[k + 1]:
+            continue
+        flank = np.r_[P[k - 3:k - 1], P[k + 2:k + 4]]
+        pr = float(P[k] / flank.mean()) if flank.mean() > 0 else 0.0
+        if pr > prom:
+            best_k, prom = k, pr
+    if best_k is None:
+        return False, None, 0.0
+    return bool(prom >= rhythm.PROMINENCE), float(f[best_k]), prom
+
+
+def _check_copy():
+    rng = np.random.default_rng(1)
+    t = np.sort(rng.uniform(0, 3000, 3000))
+    t = np.r_[t, np.arange(0, 3000, 125.0)]  # componente a 8 Hz
+    i = np.zeros(len(t), dtype=np.int64)
+    ref = rhythm.welch_peak(i, t, np.array([0]), 0, 3000)
+    counts, _ = np.histogram(t, bins=600, range=(0, 3000))
+    mine = _welch_prom_signal(counts.astype(float))
+    assert ref["peak_hz"] == mine[1] and abs(ref["prominence"] - mine[2]) < 1e-9, (ref, mine)
+
+
+def _reproducible(peaks):
+    ok = [p for p in peaks if p[0] and p[1] is not None]
+    if not ok:
+        return False, None
+    f0 = float(np.median([p[1] for p in ok]))
+    return sum(abs(p[1] - f0) <= 1.0 for p in ok) >= 3, f0
+
+
+def test_e():
+    from terrario.brain import banc, hybrid
+    from terrario.vnc.proprio import Proprioception
+    from flygym.anatomy import BodySegment
+    _check_copy()
+    mnt = pd.read_csv(ROOT / "runs/phase3a/s1/leg_mn_table.csv")
+    rates = np.load(ROOT / "runs/phase3a/s2/diag_rates_closed.npy").mean(0)  # (391,), ordem de mnt.h
+    mn_h = mnt.h.to_numpy()
+    meta = banc.load_meta()
+    hidx = hybrid.banc_index(hybrid.load(1.0, sign_mode="verified"), meta)
+    seeds = [7000 + k for k in range(5)]
+    A0, A1, T = 450, 3450, 5700
+    kin = []
+    for seed in seeds:
+        sc, jd, ad = _scene()
+        md = MotorDrive(mnt, ad, FLEX_SIGN)
+        kick = np.zeros(len(ad))
+        for leg in ("lf", "rm", "lh"):  # mesmo pulso de terrario/vnc/loop.py (A7)
+            kick[ad.index(dof_name(leg, "ctr_pitch"))] = 10 * FLEX_SIGN["ctr_pitch"]
+            kick[ad.index(dof_name(leg, "fti_pitch"))] = 10 * FLEX_SIGN["fti_pitch"]
+        tarsi = [BodySegment(f"{leg}_tarsus{k}") for leg in ["lf", "lm", "lh", "rf", "rm", "rh"] for k in range(1, 6)]
+        rng = np.random.default_rng(seed)
+        Q, QD, LF = [], [], []
+        for ms in range(T):
+            q = np.asarray(sc.sim.get_joint_angles(sc.fly.name)).copy()
+            qd = np.asarray(sc.sim.get_joint_velocities(sc.fly.name)).copy()
+            f = sc.sim.get_bodysegment_contact_forces(sc.fly.name, tarsi, ground_only=True)
+            Q.append(q); QD.append(qd); LF.append(np.linalg.norm(f, axis=1).reshape(6, 5).sum(1))
+            spk = mn_h[rng.random(len(mn_h)) < rates * 1e-3]
+            tq = md.step(spk, 1.0)
+            if 200 <= ms < 250:
+                tq = tq + kick
+            sc.sim.set_actuator_inputs(sc.fly.name, ActuatorType.MOTOR, tq)
+            for _ in range(10):
+                sc.sim.step()
+        kin.append((np.array(Q), np.array(QD), np.array(LF), jd, ad))
+    rows = []
+    # ângulos: 7 DOFs ativos por perna
+    for leg in LEGS:
+        for key in ("thc_yaw", "thc_pitch", "thc_roll", "ctr_pitch", "trf_roll", "fti_pitch", "tita_pitch"):
+            peaks = []
+            for Q, _, _, jd, _ in kin:
+                x = Q[A0:A1, jd.index(dof_name(leg, key))].reshape(-1, 5).mean(1)
+                peaks.append(_welch_prom_signal(x))
+            pos, f0 = _reproducible(peaks)
+            rows.append(dict(signal="angle", leg=leg, what=key, combo="-", positive=pos, peak_hz=f0,
+                             max_prominence=max(p[2] for p in peaks)))
+    # proprioceptores: população por perna, 4 combinações, rhythm_v2 completo
+    for combo in [(0, 0), (0, 1), (1, 0), (1, 1)]:
+        runs, prs = [], []
+        for seed, (Q, QD, LF, jd, _) in zip(seeds, kin):
+            pr = Proprioception(meta, hidx, jd, seed=seed, combo=combo)
+            rng = np.random.default_rng(seed + 17)
+            ii, tt = [], []
+            for ms in range(T):
+                r = pr.rates(Q[ms], QD[ms], LF[ms])
+                fire = rng.random(len(r)) < r * 1e-3
+                ii.append(pr.h[fire]); tt.append(np.full(fire.sum(), float(ms)))
+            runs.append((np.concatenate(ii), np.concatenate(tt)))
+            prs.append(pr)
+        for leg in LEGS:
+            members = prs[0].h[prs[0].leg == leg]
+            r2 = rhythm.rhythm_v2(runs, members, A0, A1)
+            rows.append(dict(signal="proprio", leg=leg, what="all", combo=f"{combo[0]}{combo[1]}",
+                             positive=r2["rhythmic"], peak_hz=r2["peak_hz"],
+                             max_prominence=max((p["prominence"] or 0) for p in r2["per_seed"])))
+    df = pd.DataFrame(rows)
+    df.to_csv(OUT / "s3_validation_e.csv", index=False)
+    return dict(passed=bool(not df.positive.any()), n_positive=int(df.positive.sum()), n_tests=len(df),
+                max_prominence_angle=float(df[df.signal == "angle"].max_prominence.max()),
+                max_prominence_proprio=float(df[df.signal == "proprio"].max_prominence.max()),
+                mn_rate_mean=float(rates.mean()))
+
+
 def main():
     res = dict(tol=TOL, a=test_a(), b=test_b())
     res["c"], res["d"] = test_c_d()
-    res["all_passed"] = all(res[k]["passed"] for k in "abcd")
+    res["e"] = test_e()
+    res["all_passed"] = all(res[k]["passed"] for k in "abcde")
     json.dump(res, open(OUT / "s3_validation.json", "w"), indent=1, ensure_ascii=False)
     print(json.dumps(res, indent=1, ensure_ascii=False))
 

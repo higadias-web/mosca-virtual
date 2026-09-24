@@ -11,8 +11,8 @@ proprioceptivo fechado → encerrar 3a, documentar, 3b com o controlador (a)).
 **Plano aprovado; Fase 3a em andamento: Sessões 1 e 2 concluídas (2026-09-23).** S1: sem ritmo em
 malha aberta. S2: aferência imposta sem ritmo (nem reflexo); loop fechado INCONCLUSIVO (acionamento
 quase nulo + aparato sem limites/rigidez nas juntas); inibição recíproca funcional confirmada.
-Sessão 3 aprovada com ajustes (regra do marco em taxa < 10 Hz, sem exceção de F_SAT; pré-registro em
-`docs/FASE3_PLANO.md` §7.4). Tolerâncias da validação do aparato aguardam aprovação; nenhuma fila antes. Registro de sessões e resultados em `docs/FASE3_PLANO.md` §6–7. Prazo: 2026-10-07
+Sessão 3 aprovada com ajustes (pré-registro em `docs/FASE3_PLANO.md` §7.4 e §7.6). Marco pela métrica de ritmo congelada
+(0/4 ausência, ≥ 3/4 ritmo, 1–2/4 ausência + hipótese); loop fechado roda uma única vez, só com o aparato validado (a)–(e). Registro de sessões e resultados em `docs/FASE3_PLANO.md` §6–7. Prazo: 2026-10-07
 ou 6 sessões. A entrega paralela "P" (probóscide) ainda não começou.
 Ao fim de cada fase ou entrega: vídeo WebM de 10–20 s em results/. A cada sessão: figuras em results/phase3a/.
 Fase 1 aprovada em 2026-09-23; Fase 0 em 2026-09-22 (D-003, D-006, D-008, D-101, D-102, D-104).

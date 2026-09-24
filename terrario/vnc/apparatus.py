@@ -102,20 +102,21 @@ def _neutral_inertia() -> dict[str, float]:
     return _CACHE["inertia"]
 
 
-def passive_params() -> dict[str, dict]:
-    """k, c e range de cada DOF ativo pelo critério A2' (fixado antes de rodar; §7.4.2)."""
+def passive_params(k_scale: float = 1.0) -> dict[str, dict]:
+    """k, c e range de cada DOF ativo pelo critério A2' (fixado antes de rodar; §7.4.2).
+    k_scale ≠ 1 só na checagem da unidade (FASE3_PLANO §7.6: multiplicador que sustenta a mosca)."""
     rngs, inert = _gait_ranges(), _neutral_inertia()
     out = {}
     for name, (lo, hi) in rngs.items():
         key, leg = _dof_key(name)
-        k = passive_stiffness(key, leg)
+        k = passive_stiffness(key, leg) * k_scale
         c = max(k * TAU_PASSIVE_S, 2 * np.sqrt(k * inert[name]))
         span = hi - lo
         out[name] = dict(k=k, c=c, range=(lo - RANGE_MARGIN * span, hi + RANGE_MARGIN * span))
     return out
 
 
-def make_neuromuscular_fly(name: str = "fly", passive: str = "flygym") -> NeuroMechFly:
+def make_neuromuscular_fly(name: str = "fly", passive: str = "flygym", k_scale: float = 1.0) -> NeuroMechFly:
     """Como flygym_demo.complex_terrain.common.make_locomotion_fly, com atuadores de torque.
 
     passive="flygym": passivos de make_locomotion_fly (0,05 / 0,06), sem limites (Sessões 1–2; defeito A2).
@@ -126,7 +127,7 @@ def make_neuromuscular_fly(name: str = "fly", passive: str = "flygym") -> NeuroM
     sk = Skeleton(axis_order=AxisOrder.YAW_PITCH_ROLL, joint_preset=JointPreset.LEGS_ONLY)
     fly = NeuroMechFly(name=name)
     joints = fly.add_joints(sk, neutral_pose=neutral, stiffness=0.05, damping=0.06)
-    pp = passive_params() if passive == "wang2025" else {}
+    pp = passive_params(k_scale) if passive == "wang2025" else {}
     for jd, j in joints.items():
         if jd.child.link in PASSIVE_TARSAL_LINKS:
             j.stiffness[0] = 7.5

@@ -398,7 +398,7 @@ contando para o marco:
 
 Commitado antes de qualquer execução da Sessão 3. O que diverge de §7.3 vale como está aqui.
 
-**1. Regra do marco, em taxa (substitui §7.3 (b)).**
+**1. Regra do marco, em taxa (substitui §7.3 (b)). SUBSTITUÍDA em §7.6.1; não vale mais.**
 - Se a mediana entre sementes da taxa média dos MNs por grupo ficar **abaixo de 10 Hz** (equivalente
   a 0,05 × 200 Hz) **em todas as condições**, o resultado conta como ausência de ritmo com o loop
   fechado. A 3a é encerrada e a 3b segue com o controlador (a).
@@ -529,3 +529,95 @@ agregado nas 6 pernas, alvo = todos os MNs da perna):
 - Com a Sessão 2 (flexores → extensores: 12 de 12, com os extensores caindo 44–96 %), a inibição
   recíproca é funcional **nos dois sentidos**. O efeito é assimétrico: os extensores inibem os flexores
   menos do que o contrário.
+
+### 7.6 Sessão 3: segunda rodada de ajustes (2026-09-23, commitada antes de rodar a validação)
+
+Tolerâncias (a)–(d) de §7.4.3 **aprovadas como propostas**.
+
+**1. Regra do marco (substitui a regra por taxa de §7.4.1).**
+- Com o aparato validado, o loop fechado roda **uma única vez**, no mesmo desenho da Sessão 2:
+  - 3 grupos de DNs (G2, G3, G4) × 2 escalas (×1, ×2) × 4 combinações de direção × 5 sementes;
+  - sinais `verified`, F_SAT 200 Hz, janela A = 450–3450 ms;
+  - corpo `passive="wang2025"`.
+- O marco é decidido pela **métrica de ritmo congelada (v2)**. Numa combinação, uma perna é rítmica se
+  a v2 passar (≥ 3 de 5 sementes). Para cada condição (grupo × escala) e cada perna, conta-se em
+  quantas das 4 combinações ela é rítmica:
+  - **0/4 em todas** as condições e pernas → **ausência de ritmo**;
+  - **≥ 3/4** em alguma condição e perna → **ritmo**. Continua valendo §1b.2: o ritmo só se sustenta
+    se sumir na ablação;
+  - **1–2/4** (e nenhum ≥ 3/4) → **ausência para o marco**, registrada como **hipótese**, porque a
+    direção por tipo (A5b) não está verificada.
+- A taxa dos MNs entra **só como diagnóstico** (a regra por taxa de §7.4.1 foi retirada).
+- Se a validação do aparato falhar: relatar e parar.
+- **Juntas no limite:** fração do tempo, na janela A, em que cada DOF ativo fica a ≤ 0,02 rad de um
+  dos limites ou além deles (a margem de 0,02 rad é escolha: a folga do limite macio do MuJoCo). Um
+  ritmo numa perna em que algum DOF ativo fica no limite **> 50 % do tempo** é marcado como
+  **suspeito de artefato**, e a decisão do marco sobre ele espera a sua revisão, sem nova rodada.
+
+**2. Rigidez de Wang et al. 2025: valor bruto, unidade e conversão.**
+Fonte: bioRxiv 10.1101/2025.04.29.651225 v2, **PREPRINT** (sem revisão por pares); PMC12324252,
+Tabela 1. A legenda diz, textualmente: "Median stiffness for each of the measured joints in **mN/°**".
+Um valor em mN/° é dimensionalmente uma **força** por ângulo, não um torque. A unidade impressa está
+incompleta, e a leitura **mN·m/°** é uma **hipótese nossa**, a ser checada (item 3).
+
+| Grau de liberdade (fonte) | Anterior | Média | Posterior |
+|---|---|---|---|
+| Lev-Dep | 1,5×10⁻⁸ | 8,6×10⁻⁹ | 2,7×10⁻⁸ |
+| Ret-Pro | 1,9×10⁻⁹ | 1,1×10⁻⁸ | 5,6×10⁻⁸ |
+| Ext-Flex | 1,7×10⁻⁸ | 2,5×10⁻⁸ | 1,7×10⁻⁸ |
+| Pro-sup | 1,5×10⁻⁸ | 1×10⁻⁸ | 4,7×10⁻⁸ |
+
+Conversão, exemplo com Ext-Flex anterior = 1,7×10⁻⁸ mN·m/°:
+1. mN·m → N·m: × 10⁻³ → 1,7×10⁻¹¹ N·m/°.
+2. N → µN: × 10⁶; m → mm: × 10³ → 1,7×10⁻¹¹ × 10⁹ = 1,7×10⁻² µN·mm/°.
+3. ° → rad: 1 rad = 57,296°, então (por °) × 57,296 = (por rad) → 1,7×10⁻² × 57,296 =
+   **0,974 µN·mm/rad**.
+Fator total: × 10⁶ × 57,296 = × 5,7296×10⁷. O modelo usa g, mm e s. A força sai em g·mm/s² = 10⁻⁶ N
+= µN, e o torque em µN·mm (o kp = 150 µN·mm/rad do tutorial 2 do FlyGym está na mesma unidade).
+As outras leituras possíveis deslocam tudo por potências de 10³: mN·mm/° → 0,000974;
+µN·m/° → 0,000974; N·m/° → 974.
+
+**3. Checagem da leitura (reproduz um número do próprio artigo).**
+Número escolhido: "a **40-fold increase** implemented uniformly across all leg joints was necessary
+to support the fly" (e, com a rigidez medida, a mosca simulada cai: "fell within 20 milliseconds").
+O multiplicador que sustenta a mosca muda por 10³ entre as leituras, então ele discrimina a leitura.
+- **Protocolo** (`experiments/phase3a_s3_unitcheck.py`):
+  - NeuroMechFly com `passive="wang2025"` e toda a rigidez das pernas × m, com o amortecimento pelo
+    mesmo critério;
+  - mosca livre no chão plano, sem torque e sem adesão, por 1 s;
+  - "sustenta" = tórax, abdome e cabeça sem contato com o chão em ≥ 95 % do tempo entre 0,5 e 1 s;
+  - grade m ∈ {1; 2,5; 5; 10; 20; 40; 80; 160; 320; 640; 1000}; m* = o menor que sustenta.
+- **Critério:**
+  - m* ∈ [10, 160] (fator 4 em torno de 40, para cobrir as diferenças entre o modelo OpenSim deles e
+    o NeuroMechFly: massas, geometria, pose, definição de "sustentar") → a leitura se mantém;
+  - m* fora dessa faixa → **a leitura "mN·m/°" cai**, e voltamos a discutir;
+  - sanidade: m = 1000 precisa sustentar, senão a checagem é inválida.
+- Descritivo: tempo até o primeiro contato do corpo com m = 1 (no artigo, < 20 ms).
+- Os ângulos de repouso e a constante de tempo não servem: o artigo só dá os ângulos em figura, e os
+  ~100 ms são o decaimento da força ativa (inativação dos MNs + músculo), não a mecânica passiva.
+
+**4. Limites anatômicos: procurados, nenhum utilizável.**
+- NeuroMechFly (FlyGym 2.1 e 1.x): as juntas não têm `range`.
+- `flybody` (FlyGym, `assets/model/flybody/joints.yaml`): tem faixas, mas em outra referência de
+  ângulo. A FTi vai de −1,35 a 1,3 rad, contra 0,2–2,5 na marcha do NeuroMechFly. Não é transferível.
+- FlyMimic (Ozdil et al. 2026, ICLR; `assets/model/musculoskeletal/`, convertido do OpenSim): tem a
+  mesma convenção do NeuroMechFly, mas só na perna anterior esquerda. Só 2 DOFs têm limite ativo (ThC
+  roll 0,14–0,62; FTi 0,48–2,50); os demais têm `limited="false"`, e nada documenta a origem das faixas.
+- **Mantemos a marcha ± 30 %** e relatamos a fração do tempo no limite (item 1). Para comparação, a
+  FTi da L1 fica em 0,03–2,72 com o nosso critério, contra 0,48–2,50 no FlyMimic.
+
+**5. Teste (e), controle negativo mecânico.**
+- Sem conectoma. Cada MN de perna dispara Poisson tônico na **sua taxa média da Sessão 2** (janela A,
+  média das 120 execuções do loop fechado; média entre MNs 8,9 Hz, máximo 92 Hz).
+- Mesmo protocolo do loop: pulso A7, 5,7 s, 5 sementes, corpo novo.
+- A métrica congelada é aplicada aos **ângulos** (cada DOF ativo) e aos **proprioceptores** (Poisson
+  da transdução, população por perna, 4 combinações). Detalhe em `experiments/phase3a_s3_validate.py`:
+  - para os ângulos, só a parte espectral da v2 mais a reprodutibilidade. O teste de surrogados não
+    se define para um sinal único; sem ele o critério fica mais sensível, o que é o lado conservador
+    num controle negativo;
+  - a cópia da parte espectral é conferida contra `rhythm.welch_peak`.
+- **Qualquer pico na banda de 3–20 Hz que passe pela métrica = o aparato gera ritmo sozinho, e nenhuma
+  fila roda.**
+
+**Ordem:** este commit; depois a checagem da unidade (item 3) e a validação (a)–(e); depois parar
+para revisão.
