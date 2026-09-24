@@ -11,8 +11,8 @@ proprioceptivo fechado → encerrar 3a, documentar, 3b com o controlador (a)).
 **Fase 3a ENCERRADA na Sessão 3 (2026-09-23): "loop fechado não testável com este aparato no prazo"**
 (`docs/FASE3A_RELATORIO.md`). Demonstrado: sem ritmo em malha aberta, aferência imposta negativa (3 variantes),
 acionamento dos MNs quase nulo, inibição recíproca nos dois sentidos. O aparato de torque falhou nos limites
-3× (impacto > Y). **Aguarda revisão do usuário**; depois: vídeo de fechamento da 3a e plano da 3b (controlador (a),
-corpo com atuadores de posição do FlyGym). A entrega paralela "P" (probóscide) ainda não começou.
+3× (impacto > Y). **Encerramento aprovado** (2026-09-23), vídeo em results/phase3a/video_fechamento_3a.webm.
+**Fase 3b: plano PROPOSTO em `docs/FASE3B_PLANO.md`, aguardando aprovação; nada executado.** A entrega paralela "P" (probóscide) ainda não começou.
 Ao fim de cada fase ou entrega: vídeo WebM de 10–20 s em results/. A cada sessão: figuras em results/phase3a/.
 Fase 1 aprovada em 2026-09-23; Fase 0 em 2026-09-22 (D-003, D-006, D-008, D-101, D-102, D-104).
 Nenhuma fase começa sem aprovação explícita do usuário, e nenhuma ⚠️ DECISÃO é tomada sem ele.
@@ -23,6 +23,9 @@ docs/SPEC.md             especificação (do usuário)
 docs/FASE0_RELATORIO.md  relatório da Fase 0: premissas corrigidas, ⚠️ decisões com opções
 docs/FASE1_RELATORIO.md  relatório da Fase 1: reprodução do Shiu et al. 2024
 docs/FASE2_RELATORIO.md  relatório da Fase 2: arena, sensores, custo
+docs/FASE3_PLANO.md      plano da Fase 3 e registro das sessões da 3a
+docs/FASE3A_RELATORIO.md relatório da 3a (loop fechado não testável com este aparato no prazo)
+docs/FASE3B_PLANO.md     proposta da 3b (DNs do FlyWire → HybridTurningController do FlyGym)
 docs/D105_CONECTOMA.md   ⚠️ D-105/D-106: FlyWire × BANC × híbrido, com benchmark e revalidação
 docs/BENCHMARK.md        medições desta máquina e dimensionamento de episódios
 docs/DECISIONS.md        decisões técnicas (D-0xx técnicas, D-1xx pendentes)
@@ -93,8 +96,7 @@ systemd-inhibit --what=idle:sleep uv run python bench/run_all.py --profiles bala
 - Unidades físicas: mm, s (padrão do FlyGym; gravidade −9810 mm/s²). Modelo neural: ms, mV.
 
 ## Pendências
-- Fase 3a: revisão do relatório de encerramento; vídeo de fechamento (10–20 s, WebM) em results/phase3a/.
-- Fase 3b: plano (DNs → controlador do FlyGym, corpo `make_locomotion_fly` com atuadores de posição) para aprovação.
+- Fase 3b: aprovar `docs/FASE3B_PLANO.md`; confirmar no texto completo de Yang et al. 2024 qual DN de curva alonga/encurta o passo e para que lado.
 - Filas: rodar com `systemd-inhibit`, gravar `FILA_OK` com a contagem, analisar só com a fila completa, execução separada da análise.
 - Entrega P (paralela, fora do prazo): juntas da probóscide, extensão com açúcar, supressão com amargo, ablação do MN9, vídeo.
 - Fase 3: obter os IDs sensoriais nas anotações da v783 (não herdar a lista v630 do artigo; 1 dos 21 GRNs de açúcar não existe na v783).
