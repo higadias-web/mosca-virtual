@@ -113,7 +113,7 @@ controlador (a), se usado. Tudo entra em `docs/NON_CONNECTOME.md` quando for imp
 |---|---|---|---|---|
 | 1 | 2026-09-23 | Métrica de ritmo (v1 → v2, §7.1); H6: confiabilidade dos transmissores; H2 × H6 em malha aberta (18 condições × 5 sementes); aparato: bola, torque, MN → músculo → junta (sinais de flexão medidos), transdução proprioceptiva (941 sensores); figuras em `results/phase3a/s1/` | H2, H6 (a) e (b) | **Não** (0 de 108 pernas×condições; malha aberta) |
 | 2 | 2026-09-23 | Direção dos proprioceptores por tipo (4 combinações); aferência imposta (marcha gravada) com sinais `verified`, H5 (fundo 5 Hz) e H6-g; ganho muscular fixado por critério (A4); loop fechado com H3 (×1, ×2); diagnóstico sem ajuste; inibição recíproca funcional; sensibilidade F_SAT; §7.2 | H1 (i e ii), H3, H5, H6-g | **Não** (aferência imposta: 0, nem reflexo). **Loop fechado: INCONCLUSIVO** por duas causas: (b) acionamento quase nulo, independente do aparato, e (a) juntas sem limite nem rigidez (§7.2). Sensibilidade F_SAT inválida, não analisada |
-| 3 | 2026-09-23 | (em andamento) Pré-registro §7.4 (marco em taxa; A2' com rigidez de Wang et al. 2025); T1 (saldo E/I na H6-g) e T2 (inibição recíproca E → F); validação do aparato implementada, **não rodada** (tolerâncias aguardam aprovação) | — (T1/T2 são estruturais/malha aberta) | pendente |
+| 3 | 2026-09-23 | (em andamento) Pré-registro §7.4 e §7.6 (marco pela métrica congelada; A2' com Wang et al. 2025); T1 e T2; checagem da unidade (**leitura mN·m/° caiu**: m* = 2,5 contra 40); validação: (a), (b) e (e) passaram, **(c) e (d) falharam** (limites macios do MuJoCo não seguram); nenhuma fila (§7.7) | — | pendente (validação falhou) |
 
 Marco da 3ª sessão: ainda pendente. O loop fechado da Sessão 2 foi inconclusivo. A Sessão 3 foi aprovada com
 ajustes, e a regra do marco (em taxa) e o pré-registro estão em §7.4.
@@ -621,3 +621,44 @@ O multiplicador que sustenta a mosca muda por 10³ entre as leituras, então ele
 
 **Ordem:** este commit; depois a checagem da unidade (item 3) e a validação (a)–(e); depois parar
 para revisão.
+
+### 7.7 Sessão 3: resultado da checagem da unidade e da validação (2026-09-23). VALIDAÇÃO FALHOU; nenhuma fila rodou
+
+**Checagem da unidade** (`results/phase3a/s3_unitcheck.json`): **a leitura "mN·m/°" CAIU pelo critério
+pré-registrado.**
+
+| m (× rigidez da fonte) | 1 | 2,5 | 5 | 10 | 20 | 40 | 80 | 160 | 1000 |
+|---|---|---|---|---|---|---|---|---|---|
+| Sustenta (corpo sem tocar o chão) | não (1º contato em 53 ms) | sim | sim | sim | sim | sim | sim | sim | sim |
+| Altura do tórax em 1 s (mm) | 0,43 | 0,63 | 0,64 | 0,62 | 0,61 | 0,83 | 1,01 | 1,09 | 1,15 |
+
+- Resultado: m* = 2,5, fora de [10, 160] (no artigo, 40). A referência ×1000 sustenta, e a resposta é
+  monotônica, então a checagem é válida. A massa do modelo é 1,02 mg.
+- Direção da discrepância: o nosso modelo precisa de **menos** rigidez que o do artigo para não
+  encostar o corpo.
+- Para a discussão, e não como critério: as leituras vizinhas (mN·mm/° ou µN·m/°, 10³× menores)
+  levariam m* para ~2.500; N·m/° (10³× maior) levaria para ~0,0025. As duas ficam mais longe de 40 que
+  mN·m/°.
+- A definição de "sustentar" usada aqui (corpo sem contato) é frouxa. Entre m = 2,5 e 20 o tórax fica
+  a ~55 % da altura da referência rígida. A definição do artigo não foi verificada.
+- Defeito menor, só no campo descritivo: `thorax_z0` foi lido antes do primeiro passo e saiu 0.
+
+**Validação do aparato** (`results/phase3a/s3_validation*.{json,csv}`):
+
+| Teste | Resultado | Números |
+|---|---|---|
+| (a) Réplica com torques | **passou** | razão da amplitude de 0,95 a 1,00 (mediana 0,99), 0 de 18 fora de ±35 % |
+| (b) Repouso | **passou** | deriva máxima 0,003 rad (CTr da R1); bola 0,015 mm |
+| (c) Limites | **FALHOU** | 66 de 66 grupos; violação de 2,3 a 36,6 rad |
+| (d) Faixa dinâmica | **FALHOU** (por (c)) | 0 de 66 não monotônicos; todos passam do limite |
+| (e) Controle negativo mecânico | **passou** | 0 positivos em 66 (42 ângulos + 24 proprioceptores); proeminência máxima 6,1 (ângulo; sem reprodutibilidade) e 4,9 (proprioceptores) |
+
+**Causa de (c), diagnosticada só lendo o modelo compilado, sem nova simulação:**
+- Os limites estão ativos: `jnt_limited` = 1 e nenhum `mjDSBL_LIMIT`.
+- Eles usam o `solref` padrão do MuJoCo (0,02 s, amortecimento 1). No MuJoCo, a rigidez de um
+  limite macio escala com a massa efetiva da junta: k ≈ I/τ². Com I ~ 10⁻⁵ e τ = 20 ms, k ≈ 0,025
+  µN·mm/rad. Um torque de 10–22 µN·mm atravessa o limite como se ele não existisse. O ângulo andou o
+  que dava torque/rigidez em 200 ms (FTi ~21 rad, ThC pitch da perna anterior ~37 rad).
+- (a) e (b) passaram porque não chegam perto dos limites.
+- É um defeito de implementação do aparato (parâmetro numérico do limite), não dos critérios.
+  **Nenhuma fila roda.** A correção precisa de aprovação (ver o relato da sessão).
