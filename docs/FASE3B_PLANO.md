@@ -650,3 +650,19 @@ ligações elétricas nos conectomas. Ver `docs/FASE3B_ETAPA_D_RELATORIO.md`.
 - **Propostas:** referência de Olsen et al. 2010 (DM1: Rmax 144, σ 44,8). **Hemibrain e BANC não registram
   ligações elétricas**, então a O1 não resolve a L1.
 - Registros: princípio de correção por fisiologia (NON_CONNECTOME.md); Fase 9, voo (SPEC.md).
+
+## T. Etapa E: análise e leitura (2026-09-24). Relatório em `docs/FASE3B_ETAPA_E_RELATORIO.md`
+Nenhuma simulação nova; o modelo oficial não mudou; nenhuma proposta de correção.
+- **Sinal:** coluna `Excitatory` do Shiu. Previsão por sinapse (Eckstein), neurônio inibitório se > 50 % GABA/Glu;
+  monoaminas excitatórias; junções ignoradas (Shiu 2024, Métodos lidos).
+- **Os 18 LNs divergentes:** nenhum entre os 148 eLNs; respondem por 3,7 % (intacto) e 5,5 % (A) da excitação que
+  chega aos eLNs.
+- **eLN → eLN:** conexões recíprocas existem (Huang et al. 2010), sem o mecanismo no resumo. Divergência com
+  Yaksi & Wilson 2010 quanto ao componente químico eLN → PN. Não há fonte com números para o retorno dos LNs ao
+  basal.
+- **Olsen 2010:** entrada e saída como aumento sobre o basal, na mesma convenção de Faucher. Modelo oficial: PN de
+  DM1 a 212–248 Hz contra 8,5–68 previstos (saturado). Ablação A: 7,5 / 10 / 111 Hz contra 8,5 / 26 / 68.
+- **Trabalhos de 2026:** Li et al. (pesos aprendidos; hubs inibitórios; FlyWire omite junções) e Lazar & Zhou
+  (abstrações DNP). Nenhum oferece correção com fonte para o LIF do Shiu.
+- **Critério (usuário):** dose-resposta futura julgada contra a curva de Olsen, com tolerância numérica
+  pré-registrada.

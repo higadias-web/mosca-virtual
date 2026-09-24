@@ -28,6 +28,8 @@ Etapa C (`docs/FASE3B_ETAPA_C_RELATORIO.md`): o odor liga um estado PERSISTENTE 
 com fonte; AOTU019 E causa o viés; limitação apontada: alça química eLN↔PN (na mosca é elétrica, Yaksi & Wilson 2010).
 Etapa D (`docs/FASE3B_ETAPA_D_RELATORIO.md`): ablações diagnósticas (modelo oficial intacto): nenhuma volta ao basal;
 sem eLN→PN, KCs/PNs se apagam mas persiste uma alça eLN→eLN. Referência proposta: Olsen et al. 2010 (curva ORN→PN de DM1).
+Etapa E (`docs/FASE3B_ETAPA_E_RELATORIO.md`): PN de DM1 no modelo oficial 212–248 Hz vs. 8,5–68 da curva de Olsen
+2010 (saturado); critério futuro de dose-resposta = curva de Olsen com tolerância pré-registrada.
 **Interface NÃO construída; aguarda decisão do usuário.** A entrega paralela "P" (probóscide) ainda não começou.
 Vídeos: só depois que a mosca chegar à fruta sozinha (princípio acima). A cada sessão: figuras de diagnóstico em results/.
 Fase 1 aprovada em 2026-09-23; Fase 0 em 2026-09-22 (D-003, D-006, D-008, D-101, D-102, D-104).
@@ -46,6 +48,7 @@ docs/FASE3B_S1_RELATORIO.md relatório da 3b S1 (viabilidade, lateralidade, recu
 docs/FASE3B_ETAPA_B_RELATORIO.md sensibilidade à taxa dos ORNs, regime de atividade, homólogos do DNa02
 docs/FASE3B_ETAPA_C_RELATORIO.md persistência, dose com fonte, causal AOTU019, limitação eLN e opções
 docs/FASE3B_ETAPA_D_RELATORIO.md ablações diagnósticas, referência olfativa (Olsen 2010), ligações elétricas
+docs/FASE3B_ETAPA_E_RELATORIO.md sinais do modelo, fontes sobre eLNs, PN de DM1 × Olsen 2010, trabalhos de 2026
 docs/D105_CONECTOMA.md   ⚠️ D-105/D-106: FlyWire × BANC × híbrido, com benchmark e revalidação
 docs/BENCHMARK.md        medições desta máquina e dimensionamento de episódios
 docs/DECISIONS.md        decisões técnicas (D-0xx técnicas, D-1xx pendentes)

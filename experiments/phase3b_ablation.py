@@ -51,8 +51,13 @@ def edge_masks(c):
     out_pos = np.zeros(c.n, bool)
     out_pos[pre[c.syn_count > 0]] = True
     ln = (a.cell_class == "ALLN").to_numpy()
-    kn = a.known_nt.astype(str).str.lower()
-    bad = kn.str.contains("gaba") | kn.str.contains("glutamate") | kn.str.contains("octopamine")
+    # known_nt: "X-negative" significa NÃO X (ex.: "acetylcholine; gaba-negative"); só marcadores positivos contam
+    def positives(v):
+        if not isinstance(v, str):
+            return set()
+        toks = [t.strip().lower() for t in v.replace(";", ",").split(",")]
+        return {t.split()[0] for t in toks if t and not t.endswith("-negative")}
+    bad = a.known_nt.map(lambda v: bool(positives(v) & {"gaba", "glutamate", "octopamine"}))
     eln = ln & out_pos & ~bad.to_numpy()
     pn = (a.cell_class == "ALPN").to_numpy()
     orn = a.cell_type.astype(str).str.startswith("ORN_").to_numpy()

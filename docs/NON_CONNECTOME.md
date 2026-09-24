@@ -9,6 +9,11 @@
 > por **critérios fisiológicos da literatura** (p. ex., o lobo antenal e as células de Kenyon se comportando
 > como na mosca real), **nunca pelo comportamento da mosca**. **Uma mudança de cada vez.** Ablações
 > diagnósticas não são correções e não entram no modelo oficial.
+>
+> **Critério de dose-resposta olfativa (usuário, 2026-09-24):** todo teste futuro de dose-resposta é julgado contra a
+> curva de Olsen, Bhandawat & Wilson 2010 (*Neuron* 66:287, Eq. 1: PN = Rmax·ORN^1,5/(ORN^1,5 + σ^1,5 + s^1,5); DM1:
+> Rmax 144, σ 44,8 spikes/s; ORN e PN como aumento sobre o basal), com **tolerância numérica fixada no pré-registro**,
+> e não só por significância.
 
 Tudo que é engenharia, e não biologia, aparece aqui e no código com `# NON-CONNECTOME:`.
 Fase atual: 2 (concluída, aguardando aprovação). As entradas marcadas como *planejado*
@@ -77,6 +82,7 @@ obter um resultado (critério da aprovação de 2026-09-23).
 | B-10Hz | Limiar **descritivo** de 10 Hz na viabilidade (≈ \|δ\| 0,1 pelo B-ganho, ~1,4 mm/s): **sem fonte**. Estava em §F1 como descritivo antes de rodar, mas a leitura "relevante para mover a mosca" depende do B-ganho (sem fonte). Retirado da conclusão | `experiments/phase3b_viability.py` | não decide nada |
 | B-lat | Critério "carrega lado": diferença mínima ipsi − contra de **2 Hz (sem fonte)**; Wilcoxon, α = 0,05/4 | `experiments/phase3b_laterality.py` | FASE3B_PLANO §H |
 | B-mag | **Magnitude** taxa do DNa02 → encurtamento do passo ipsilateral (g_t, r_ref): **SEM FONTE**. Yang et al. 2023 (preprint bioRxiv v2, PMC10614758) dão só o **sentido** (curva ipsilateral; encurta o passo do lado de dentro). DNa01: sentido **não verificado** (Rayshubskiy et al. 2025, *eLife*, não o afirma explicitamente); fora da regra de curva | (interface) | FASE3B_PLANO §J1, §K |
+| B-sign | **Sinal dos neurônios (do modelo do Shiu, não nosso):** coluna `Excitatory` do `Connectivity_783.parquet`; inibitório se > 50 % dos sítios pré-sinápticos forem previstos GABA ou glutamato (Eckstein et al., por sinapse, cleft score ≥ 50); dopamina, octopamina e serotonina contam como excitatórias; junções comunicantes ignoradas (Shiu et al. 2024, Métodos). No lobo antenal, 18 LNs divergem da anotação conhecida (excitatórios no modelo, GABA/Glu/octopamina na anotação); **não corrigido** | `third_party/Drosophila_brain_model` | FASE3B_ETAPA_E_RELATORIO §1 |
 | B-cpg | O CPG inteiro (osciladores, vieses de fase, passos pré-programados, regras de correção) e o mapeamento DN → CPG | `flygym_demo.complex_terrain.turning_controller` | FASE3B_PLANO (b) |
 | B-shuf | Controle: conectoma do cérebro embaralhado por trocas duplas de arestas (graus preservados) | (C5) | controle, não modelo |
 

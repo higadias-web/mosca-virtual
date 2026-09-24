@@ -1,0 +1,120 @@
+{
+ "n_eLN148": 148,
+ "n_div18": 18,
+ "div18_in_eLN148": 0,
+ "div18_types": {
+  "lLN2P_b": 12,
+  "v2LN36": 2,
+  "il3LN6": 2,
+  "OA-VUMa5": 2
+ },
+ "div18_known": {
+  "gaba, MIP; acetylcholine-negative": 12,
+  "glutamate": 2,
+  "gaba": 2,
+  "octopamine": 2
+ },
+ "excitation_onto_eLN148_intacto": {
+  "total": 69095435.0,
+  "from_eLN148": 0.6025251451126981,
+  "from_div18": 0.03668679414204426,
+  "div18_rates_Hz": [
+   236.0,
+   258.0,
+   268.0,
+   268.0,
+   248.99999999999997,
+   156.99999999999997,
+   156.0,
+   295.0,
+   258.0,
+   257.0,
+   260.0,
+   257.0,
+   141.99999999999997,
+   251.0,
+   141.99999999999997,
+   293.99999999999994,
+   257.0,
+   255.0
+  ]
+ },
+ "excitation_onto_eLN148_A": {
+  "total": 40182891.0,
+  "from_eLN148": 0.8964663592771361,
+  "from_div18": 0.05514919272483406,
+  "div18_rates_Hz": [
+   171.0,
+   196.99999999999997,
+   196.0,
+   191.99999999999997,
+   190.0,
+   138.0,
+   136.99999999999997,
+   275.0,
+   200.0,
+   198.0,
+   193.0,
+   183.0,
+   114.0,
+   188.0,
+   120.99999999999999,
+   268.0,
+   188.0,
+   198.99999999999997
+  ]
+ },
+ "AL_divergences": [
+  {
+   "cls": "ALLN",
+   "n": 429,
+   "model_exc_known_inh": 16,
+   "model_inh_known_exc": 0,
+   "model_exc_top_inh": 40,
+   "model_inh_top_exc": 8,
+   "n_known": 62
+  },
+  {
+   "cls": "ALPN",
+   "n": 685,
+   "model_exc_known_inh": 0,
+   "model_inh_known_exc": 0,
+   "model_exc_top_inh": 0,
+   "model_inh_top_exc": 0,
+   "n_known": 606
+  },
+  {
+   "cls": "ALON",
+   "n": 14,
+   "model_exc_known_inh": 0,
+   "model_inh_known_exc": 0,
+   "model_exc_top_inh": 0,
+   "model_inh_top_exc": 0,
+   "n_known": 0
+  },
+  {
+   "cls": "ORN",
+   "n": 2269,
+   "model_exc_known_inh": 0,
+   "model_inh_known_exc": 1,
+   "model_exc_top_inh": 3,
+   "model_inh_top_exc": 0,
+   "n_known": 2265
+  }
+ ],
+ "AL_model_inh_known_exc_types": {
+  "ORN_V": 1
+ },
+ "AL_model_exc_top_inh_types": {
+  "lLN2P_b": 12,
+  "v2LN3A1_b": 5,
+  "lLN2F_a": 4,
+  "lLN2X04": 4,
+  "CB1473": 3,
+  "lLN2P_a": 2,
+  "l2LN22": 1,
+  "ORN_VM6m": 1,
+  "ORN_V": 1,
+  "CB1013": 1
+ }
+}
