@@ -1,0 +1,56 @@
+{
+ "n_orn": 135,
+ "n_cells": {
+  "DNp09": 2,
+  "MDN": 4,
+  "DNa01/02": 4
+ },
+ "rate_hz": 100.0,
+ "seeds": [
+  1000,
+  1001,
+  1002,
+  1003,
+  1004,
+  1005,
+  1006,
+  1007,
+  1008,
+  1009
+ ],
+ "orn_rate_odor_median": 99.18518518518519,
+ "groups": {
+  "DNp09": {
+   "odor_median": 0.0,
+   "control_median": 0.0,
+   "diff_median": 0.0,
+   "diff_min": 0.0,
+   "diff_max": 0.0,
+   "p_wilcoxon": 1.0,
+   "changes": false,
+   "relevant_ge_10Hz": false
+  },
+  "MDN": {
+   "odor_median": 0.0,
+   "control_median": 0.0,
+   "diff_median": 0.0,
+   "diff_min": 0.0,
+   "diff_max": 0.0,
+   "p_wilcoxon": 1.0,
+   "changes": false,
+   "relevant_ge_10Hz": false
+  },
+  "DNa01/02": {
+   "odor_median": 20.75,
+   "control_median": 0.0,
+   "diff_median": 20.75,
+   "diff_min": 18.75,
+   "diff_max": 22.75,
+   "p_wilcoxon": 0.001953125,
+   "changes": true,
+   "relevant_ge_10Hz": true
+  }
+ },
+ "viable": true,
+ "decision": "segue para a interface (S1)"
+}

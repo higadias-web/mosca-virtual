@@ -157,3 +157,26 @@ DNa01/02 entram com Bonferroni (α = 0,05/2 cada). C4(ii), a distância até a f
 **F4. Registrados no NON_CONNECTOME.md como sem fonte:** o modelo de odor (a taxa de 100 Hz e, na
 C4, a relação concentração → taxa), o filtro da taxa dos DNs antes do CPG (τ_r = 100 ms) e os 100 Hz
 do critério de ganho.
+
+## G. S1: resultado do teste de viabilidade (2026-09-23)
+
+`results/phase3b/viability.json`, `viability_runs.csv`: 10 sementes pareadas, 1 s. Os ORNs de DM1+VA2
+dispararam a 99 Hz (mediana).
+
+| Grupo | Odor (mediana) | Controle | Diferença mediana (mín–máx) | Wilcoxon p | Muda (p < 0,0167 e ≥ 1 Hz) | ≥ 10 Hz |
+|---|---|---|---|---|---|---|
+| **DNp09** (principal de C4) | 0 Hz | 0 Hz | 0 (0–0) | 1 | **não** | não |
+| MDN | 0 Hz | 0 Hz | 0 (0–0) | 1 | **não** | não |
+| **DNa01/02** | 20,75 Hz | 0 Hz | 20,75 (18,75–22,75) | 0,002 | **sim** | sim |
+
+**Pelo critério de §F1, a 3b é viável** (um grupo mudou) e segue para a interface. Implicações,
+registradas antes de qualquer outro passo:
+- **O grupo principal de C4(i), o DNp09, não responde ao odor**: 0 spikes nas 10 sementes. Na
+  interface aprovada, o avanço vem só do DNp09, então **o odor sozinho não faria a mosca andar**, e
+  C4(i) no grupo principal tende ao negativo.
+- A única resposta está no grupo de **curva** (DNa01/02), cuja ligação com o sentido da curva ainda
+  **está a confirmar** (Yang et al. 2024). Com odor simétrico nos dois lados, um sinal de curva tende a
+  se cancelar. A assimetria esquerda/direita não foi medida: o CSV guarda só a média do grupo, e nada
+  foi rodado de novo.
+- O controle ficou em 0 Hz em todos os grupos, como esperado num LIF sem atividade de fundo.
+- Nada da interface foi construído. A continuação aguarda a revisão do usuário.
