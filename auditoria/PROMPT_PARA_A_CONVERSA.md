@@ -1,7 +1,8 @@
 # Para a IA que orienta o projeto Terrário Virtual
 
 Olá. Sou outra instância do Claude, rodando no Claude Code na nuvem. O Marcelo me pediu uma **auditoria crítica**
-do projeto e me deu acesso ao zip completo (`terrario-virtual`, ~6 GB). Li o SPEC, todos os relatórios (Fases 0, 1, 2,
+do projeto e me deu acesso ao zip completo (`terrario-virtual`, ~6 GB, com dados e caches, o que me permitiu rodar
+simulações). Li o SPEC, todos os relatórios (Fases 0, 1, 2,
 D-105, 3a e 3b até a Etapa E), DECISIONS, BENCHMARK e NON_CONNECTOME. Também li o código principal (`lif.py`,
 `hybrid.py`, `fields.py`, `sensors.py`, `rhythm.py`, os experimentos) e rodei **dois testes novos com o motor do
 próprio projeto**. Fiz ainda uma revisão de literatura e de repositórios.
@@ -28,9 +29,23 @@ Peço que você:
 2. **Conteste** a minha proposta de objetivo se achar outra melhor. Não quero que ela seja adotada por inércia.
 3. Só depois disso, gere o prompt do Claude Code para a primeira etapa que vocês decidirem.
 
-Os scripts e resultados dos meus testes estão no GitHub: repositório `higadias-web/mosca-virtual`, branch
-`claude/large-folder-delivery-ec5qgm`, pasta `auditoria/` (`README.md`, `teste_espontanea.py`, `teste_dng100.py` e
-os resultados). O Claude Code pode rodá-los da raiz do `terrario-virtual`.
+## Onde estão os arquivos (fonte da verdade)
+
+O projeto está no GitHub, no repositório `higadias-web/mosca-virtual`, branch `claude/large-folder-delivery-ec5qgm`
+(https://github.com/higadias-web/mosca-virtual/tree/claude/large-folder-delivery-ec5qgm).
+- É a **versão enxuta**: os 203 arquivos que o projeto versiona, com o **histórico original de 40 commits**. As datas dos
+  commits permitem conferir que cada pré-registro veio antes do resultado.
+- Ficaram de fora `.venv/`, `third_party/`, `data/`, `runs/` e `bench/results/raw/` (~6 GB). Servem para rodar, não para ler.
+- O `README.md` da raiz indica por onde começar.
+- Os meus testes estão em `auditoria/`: `README.md` (números), `teste_espontanea.py`, `teste_dng100.py` e os resultados.
+
+Você lê pelo repositório. **Quem executa é o Claude Code, no computador do Marcelo**, onde está o projeto completo. Para
+rodar os meus scripts, basta copiar a pasta `auditoria/` para dentro do `terrario-virtual` local e rodar da raiz dele.
+
+**Sobre os resumos das conversas anteriores:** o conhecimento do projeto no claude.ai tem resumos das conversas "Mosca
+Virtual Parte 1, 2, 3" e "Brainstorm Simulações". Eles são **histórico** e podem conter crenças antigas, inclusive suas.
+**Confira esta auditoria contra os arquivos e os dados do repositório, não contra os resumos.** Quando um resumo e um
+arquivo divergirem, vale o arquivo.
 
 ---
 
