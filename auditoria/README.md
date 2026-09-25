@@ -43,3 +43,19 @@ dois DNs só tinham sido estimulados dentro de G3 (20 DNs) e G4 (159 DNs).
 **Conclusão:** os dois DNs que produzem ritmo no modelo de taxa de Pugliese não produzem ritmo no LIF do
 Shiu com o mesmo tipo de conectoma. O negativo da Fase 3a em malha aberta aponta para a classe do modelo
 (H4), não para o cordão.
+
+## Medição 3: diferença de odor entre as antenas na Fase 2
+
+Fonte: `runs/phase2/walk_soil_fruit_landscape.parquet` (travessia de 2,5 s da Fase 2, 500 amostras a 200 Hz).
+Diferença relativa |E − D| / média, por canal:
+
+| Canal | Mediana | p90 | Máximo |
+|---|---|---|---|
+| Fruta | 1,05 % | 1,33 % | 1,59 % |
+| Fermento | 1,04 % | 2,61 % | 3,16 % |
+| Bactérias | 0,80 % | 1,05 % | 1,54 % |
+
+Campo de odor: difusão 2D em ar parado (D = 10 mm²/s, k = 0,05 /s), sem vento nem intermitência.
+Em moscas que andam, a navegação olfativa depende de vento e de encontros intermitentes com o odor
+(Álvarez-Salvado et al. 2018, eLife 7:e37815; Demir et al. 2020, eLife 9:e57524). O NeuroMechFly v2
+já simula uma pluma de odor.
