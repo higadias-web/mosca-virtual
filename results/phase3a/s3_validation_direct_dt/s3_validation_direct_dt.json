@@ -1,0 +1,91 @@
+{
+ "tol": {
+  "X": 0.35,
+  "Y": 0.05,
+  "Z_s": 5.7,
+  "settle_s": 0.5,
+  "ball_mm": 0.2,
+  "limit_ms": 200,
+  "mono": 0.01
+ },
+ "limit": "direct_dt",
+ "a": {
+  "passed": true,
+  "ratio_open_min": 0.9482332368891003,
+  "ratio_open_max": 1.0012390430555953,
+  "ratio_open_median": 0.988693035676175,
+  "n_outside": 0
+ },
+ "b": {
+  "passed": true,
+  "drift_max": 0.0032388620739651763,
+  "drift_worst_dof": "rf_coxa-rf_trochanterfemur-pitch",
+  "ball_mm": 0.014789725982580815,
+  "energy_E0": -2773.227931654335,
+  "energy_max_rise": 0.0
+ },
+ "c": {
+  "passed": false,
+  "viol_max": 0.11084726962165864,
+  "n_fail": 8,
+  "viol_step_max_descritivo": 0.1988789007684848
+ },
+ "d": {
+  "passed": false,
+  "n_nonmonotonic": 18,
+  "n_groups": 66
+ },
+ "e": {
+  "passed": true,
+  "n_positive": 0,
+  "n_tests": 66,
+  "max_prominence_angle": 6.169809788895528,
+  "max_prominence_proprio": 6.220109525474879,
+  "mn_rate_mean": 8.908830633702756
+ },
+ "instability": {
+  "a": {
+   "n_scenes": 2,
+   "warnings": {
+    "mjWARN_BADQACC": 0,
+    "mjWARN_BADQVEL": 0,
+    "mjWARN_BADQPOS": 0
+   },
+   "nonfinite": 0
+  },
+  "b_energy": {
+   "E_0p5s": -2773.227931654335,
+   "max_rise": 0.0,
+   "rising": false
+  },
+  "b": {
+   "n_scenes": 1,
+   "warnings": {
+    "mjWARN_BADQACC": 0,
+    "mjWARN_BADQVEL": 0,
+    "mjWARN_BADQPOS": 0
+   },
+   "nonfinite": 0
+  },
+  "cd": {
+   "n_scenes": 331,
+   "warnings": {
+    "mjWARN_BADQACC": 0,
+    "mjWARN_BADQVEL": 0,
+    "mjWARN_BADQPOS": 0
+   },
+   "nonfinite": 0
+  },
+  "e": {
+   "n_scenes": 5,
+   "warnings": {
+    "mjWARN_BADQACC": 0,
+    "mjWARN_BADQVEL": 0,
+    "mjWARN_BADQPOS": 0
+   },
+   "nonfinite": 0
+  },
+  "unstable": false
+ },
+ "all_passed": false
+}

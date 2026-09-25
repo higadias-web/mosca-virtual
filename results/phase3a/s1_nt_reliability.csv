@@ -1,0 +1,8 @@
+classe,n,score_mediano,frac_score_menor_06,n_verificados,concordancia_prev_verif,previsto
+VNC intrínsecos,12835,0.953,0.017,9949.0,0.993,"{'gaba': 5367, 'acetylcholine': 5260, 'glutamate': 2119}"
+MNs de perna,391,0.465,0.849,0.0,,"{'gaba': 260, 'acetylcholine': 81, 'octopamine': 12}"
+Todos os MNs (motor),805,0.464,0.834,30.0,0.067,"{'gaba': 444, 'acetylcholine': 179, 'octopamine': 71}"
+ANs,1849,0.92,0.063,1306.0,0.984,"{'acetylcholine': 1228, 'gaba': 433, 'glutamate': 129}"
+DNs,1316,0.923,0.055,155.0,0.852,"{'acetylcholine': 910, 'gaba': 241, 'glutamate': 102}"
+Sensoriais do VNC,7593,0.856,0.084,859.0,0.868,"{'acetylcholine': 6871, 'glutamate': 233, 'gaba': 225}"
+VNC intrínsecos: consistência dentro da hemilinhagem,11777,,,,0.964,"40 hemilinhagens; 5 com <0,9"

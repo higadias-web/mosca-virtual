@@ -1,0 +1,10 @@
+.venv/
+third_party/
+data/
+runs/
+bench/results/raw/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+output/
+MUJOCO_LOG.TXT

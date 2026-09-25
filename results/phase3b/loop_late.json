@@ -1,0 +1,453 @@
+{
+ "activity_900_1000": {
+  "APL": {
+   "n_active": 2,
+   "n": 2,
+   "rate_mean_active": 344.0
+  },
+  "DAN": {
+   "n_active": 142,
+   "n": 331,
+   "rate_mean_active": 60.894366197183096
+  },
+  "LAL/AOTU": {
+   "n_active": 111,
+   "n": 778,
+   "rate_mean_active": 50.765765765765764
+  },
+  "LNs do lobo antenal": {
+   "n_active": 359,
+   "n": 429,
+   "rate_mean_active": 156.83565459610028
+  },
+  "MBON": {
+   "n_active": 67,
+   "n": 96,
+   "rate_mean_active": 120.35820895522389
+  },
+  "PNs do lobo antenal": {
+   "n_active": 549,
+   "n": 685,
+   "rate_mean_active": 105.25500910746813
+  },
+  "corno lateral (LH*)": {
+   "n_active": 1062,
+   "n": 1611,
+   "rate_mean_active": 70.25047080979284
+  },
+  "células de Kenyon": {
+   "n_active": 3364,
+   "n": 5177,
+   "rate_mean_active": 48.859988109393576
+  },
+  "demais (ascending)": {
+   "n_active": 5,
+   "n": 1736,
+   "rate_mean_active": 23.8
+  },
+  "demais (central)": {
+   "n_active": 1924,
+   "n": 23270,
+   "rate_mean_active": 39.222972972972975
+  },
+  "demais (endocrine)": {
+   "n_active": 0,
+   "n": 76,
+   "rate_mean_active": 0.0
+  },
+  "demais (motor)": {
+   "n_active": 4,
+   "n": 110,
+   "rate_mean_active": 7.25
+  },
+  "demais (nan)": {
+   "n_active": 0,
+   "n": 14,
+   "rate_mean_active": 0.0
+  },
+  "demais (optic)": {
+   "n_active": 47,
+   "n": 77530,
+   "rate_mean_active": 9.574468085106384
+  },
+  "demais (sensory_ascending)": {
+   "n_active": 0,
+   "n": 581,
+   "rate_mean_active": 0.0
+  },
+  "demais (visual_centrifugal)": {
+   "n_active": 50,
+   "n": 524,
+   "rate_mean_active": 21.42
+  },
+  "demais (visual_projection)": {
+   "n_active": 27,
+   "n": 8038,
+   "rate_mean_active": 19.0
+  },
+  "descendentes": {
+   "n_active": 157,
+   "n": 1299,
+   "rate_mean_active": 32.859872611464965
+  },
+  "sensoriais": {
+   "n_active": 440,
+   "n": 16352,
+   "rate_mean_active": 40.78409090909091
+  }
+ },
+ "drive": {
+  "APL": {
+   "E": 5093608.0,
+   "I": 622026.0,
+   "top_excitatory_sources": [
+    [
+     "células de Kenyon",
+     0.7119350370110931
+    ],
+    [
+     "demais (central)",
+     0.1054735660851797
+    ],
+    [
+     "PNs do lobo antenal",
+     0.10459285441675135
+    ],
+    [
+     "DAN",
+     0.059189281939246205
+    ]
+   ]
+  },
+  "DAN": {
+   "E": 5644199.0,
+   "I": 2514794.0,
+   "top_excitatory_sources": [
+    [
+     "células de Kenyon",
+     0.6054136291083996
+    ],
+    [
+     "demais (central)",
+     0.1969276774259731
+    ],
+    [
+     "PNs do lobo antenal",
+     0.08392085395996846
+    ],
+    [
+     "MBON",
+     0.046578974270751264
+    ]
+   ]
+  },
+  "LAL/AOTU": {
+   "E": 5323983.0,
+   "I": 6431735.0,
+   "top_excitatory_sources": [
+    [
+     "demais (central)",
+     0.5551016973570352
+    ],
+    [
+     "LAL/AOTU",
+     0.2234533806738301
+    ],
+    [
+     "corno lateral (LH*)",
+     0.12370400130879457
+    ],
+    [
+     "MBON",
+     0.056509008387141735
+    ]
+   ]
+  },
+  "LNs do lobo antenal": {
+   "E": 101448230.0,
+   "I": 16974651.0,
+   "top_excitatory_sources": [
+    [
+     "LNs do lobo antenal",
+     0.6242331187049789
+    ],
+    [
+     "PNs do lobo antenal",
+     0.33156063935270236
+    ],
+    [
+     "sensoriais",
+     0.03099445894718912
+    ],
+    [
+     "demais (central)",
+     0.01255337821073862
+    ]
+   ]
+  },
+  "MBON": {
+   "E": 10893631.0,
+   "I": 5191345.0,
+   "top_excitatory_sources": [
+    [
+     "células de Kenyon",
+     0.6863973086659535
+    ],
+    [
+     "demais (central)",
+     0.1246613732372613
+    ],
+    [
+     "DAN",
+     0.09345708515370128
+    ],
+    [
+     "MBON",
+     0.06250092370486938
+    ]
+   ]
+  },
+  "PNs do lobo antenal": {
+   "E": 53971061.0,
+   "I": 22436377.0,
+   "top_excitatory_sources": [
+    [
+     "LNs do lobo antenal",
+     0.7807800183880024
+    ],
+    [
+     "PNs do lobo antenal",
+     0.15125218679692068
+    ],
+    [
+     "sensoriais",
+     0.0483189500387995
+    ],
+    [
+     "demais (central)",
+     0.009578355333796383
+    ]
+   ]
+  },
+  "corno lateral (LH*)": {
+   "E": 56851386.0,
+   "I": 31602635.0,
+   "top_excitatory_sources": [
+    [
+     "PNs do lobo antenal",
+     0.8207752577923079
+    ],
+    [
+     "corno lateral (LH*)",
+     0.07644197100137541
+    ],
+    [
+     "demais (central)",
+     0.06906806106714795
+    ],
+    [
+     "MBON",
+     0.025792088868334714
+    ]
+   ]
+  },
+  "células de Kenyon": {
+   "E": 75538856.0,
+   "I": 38952200.0,
+   "top_excitatory_sources": [
+    [
+     "PNs do lobo antenal",
+     0.7374906630833805
+    ],
+    [
+     "células de Kenyon",
+     0.15825470007117926
+    ],
+    [
+     "DAN",
+     0.05501756605898294
+    ],
+    [
+     "demais (central)",
+     0.038825290126183534
+    ]
+   ]
+  },
+  "demais (ascending)": {
+   "E": 305965.0,
+   "I": 850078.0,
+   "top_excitatory_sources": [
+    [
+     "demais (central)",
+     0.5135587403788014
+    ],
+    [
+     "descendentes",
+     0.2927034137891589
+    ],
+    [
+     "corno lateral (LH*)",
+     0.06924975078848888
+    ],
+    [
+     "PNs do lobo antenal",
+     0.04221724707074338
+    ]
+   ]
+  },
+  "demais (central)": {
+   "E": 82834243.0,
+   "I": 77163219.0,
+   "top_excitatory_sources": [
+    [
+     "PNs do lobo antenal",
+     0.3717647543419936
+    ],
+    [
+     "demais (central)",
+     0.31599478732485065
+    ],
+    [
+     "corno lateral (LH*)",
+     0.14227354018313418
+    ],
+    [
+     "MBON",
+     0.06676614404504186
+    ]
+   ]
+  },
+  "demais (motor)": {
+   "E": 80936.0,
+   "I": 105106.0,
+   "top_excitatory_sources": [
+    [
+     "descendentes",
+     0.6994415340515964
+    ],
+    [
+     "demais (central)",
+     0.2860037560541663
+    ],
+    [
+     "demais (visual_centrifugal)",
+     0.006795492735000494
+    ],
+    [
+     "MBON",
+     0.005016309182564001
+    ]
+   ]
+  },
+  "demais (optic)": {
+   "E": 6079904.0,
+   "I": 6923494.0,
+   "top_excitatory_sources": [
+    [
+     "demais (visual_centrifugal)",
+     0.9640313399685259
+    ],
+    [
+     "demais (visual_projection)",
+     0.023222570619536097
+    ],
+    [
+     "descendentes",
+     0.008800961330968384
+    ],
+    [
+     "demais (optic)",
+     0.002979981262862045
+    ]
+   ]
+  },
+  "demais (visual_centrifugal)": {
+   "E": 898798.0,
+   "I": 826155.0,
+   "top_excitatory_sources": [
+    [
+     "demais (central)",
+     0.446761118738582
+    ],
+    [
+     "demais (visual_centrifugal)",
+     0.16271175503283275
+    ],
+    [
+     "PNs do lobo antenal",
+     0.1305076335283345
+    ],
+    [
+     "descendentes",
+     0.09408788181549135
+    ]
+   ]
+  },
+  "demais (visual_projection)": {
+   "E": 1225080.0,
+   "I": 5772119.0,
+   "top_excitatory_sources": [
+    [
+     "demais (visual_centrifugal)",
+     0.2972720148888236
+    ],
+    [
+     "demais (central)",
+     0.2874644921148007
+    ],
+    [
+     "PNs do lobo antenal",
+     0.19963349332288505
+    ],
+    [
+     "corno lateral (LH*)",
+     0.08528422633623926
+    ]
+   ]
+  },
+  "descendentes": {
+   "E": 5499270.0,
+   "I": 6094918.0,
+   "top_excitatory_sources": [
+    [
+     "demais (central)",
+     0.486305273245358
+    ],
+    [
+     "descendentes",
+     0.20225429920698565
+    ],
+    [
+     "PNs do lobo antenal",
+     0.1156488042958429
+    ],
+    [
+     "LAL/AOTU",
+     0.07056918463723368
+    ]
+   ]
+  },
+  "sensoriais": {
+   "E": 23971850.0,
+   "I": 18606943.0,
+   "top_excitatory_sources": [
+    [
+     "LNs do lobo antenal",
+     0.961070630760663
+    ],
+    [
+     "PNs do lobo antenal",
+     0.02594025909556417
+    ],
+    [
+     "sensoriais",
+     0.009873122016031303
+    ],
+    [
+     "demais (central)",
+     0.0019468251303090913
+    ]
+   ]
+  }
+ }
+}

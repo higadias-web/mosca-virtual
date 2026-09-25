@@ -1,0 +1,191 @@
+{
+ "table": [
+  {
+   "group": "células de Kenyon",
+   "n_total": 5177,
+   "n_active": 3412,
+   "rate_mean_active": 47.727784290738576,
+   "spikes_per_s": 162847.2,
+   "frac_active": 0.6590689588564805,
+   "share_of_spikes": 0.3429666100416285
+  },
+  {
+   "group": "demais (central)",
+   "n_total": 23270,
+   "n_active": 2091,
+   "rate_mean_active": 35.49732185557149,
+   "spikes_per_s": 74224.9,
+   "frac_active": 0.0898581865062312,
+   "share_of_spikes": 0.1563223827838542
+  },
+  {
+   "group": "corno lateral (LH*)",
+   "n_total": 1611,
+   "n_active": 1097,
+   "rate_mean_active": 67.18012762078395,
+   "spikes_per_s": 73696.6,
+   "frac_active": 0.680943513345748,
+   "share_of_spikes": 0.15520974922254652
+  },
+  {
+   "group": "PNs do lobo antenal",
+   "n_total": 685,
+   "n_active": 557,
+   "rate_mean_active": 102.36427289048473,
+   "spikes_per_s": 57016.9,
+   "frac_active": 0.8131386861313868,
+   "share_of_spikes": 0.12008123509696529
+  },
+  {
+   "group": "LNs do lobo antenal",
+   "n_total": 429,
+   "n_active": 362,
+   "rate_mean_active": 153.49944751381213,
+   "spikes_per_s": 55566.8,
+   "frac_active": 0.8438228438228438,
+   "share_of_spikes": 0.11702723182751168
+  },
+  {
+   "group": "sensoriais",
+   "n_total": 16352,
+   "n_active": 577,
+   "rate_mean_active": 37.50727902946274,
+   "spikes_per_s": 21641.7,
+   "frac_active": 0.035286203522504896,
+   "share_of_spikes": 0.045578803224973534
+  },
+  {
+   "group": "DAN",
+   "n_total": 331,
+   "n_active": 149,
+   "rate_mean_active": 57.095302013422824,
+   "spikes_per_s": 8507.2,
+   "frac_active": 0.4501510574018127,
+   "share_of_spikes": 0.017916706857386198
+  },
+  {
+   "group": "MBON",
+   "n_total": 96,
+   "n_active": 69,
+   "rate_mean_active": 114.18695652173913,
+   "spikes_per_s": 7878.9,
+   "frac_active": 0.71875,
+   "share_of_spikes": 0.016593466905522394
+  },
+  {
+   "group": "LAL/AOTU",
+   "n_total": 778,
+   "n_active": 121,
+   "rate_mean_active": 46.32644628099174,
+   "spikes_per_s": 5605.5,
+   "frac_active": 0.15552699228791775,
+   "share_of_spikes": 0.011805541222620642
+  },
+  {
+   "group": "descendentes",
+   "n_total": 1299,
+   "n_active": 197,
+   "rate_mean_active": 25.355837563451775,
+   "spikes_per_s": 4995.1,
+   "frac_active": 0.15165511932255582,
+   "share_of_spikes": 0.010519999814666376
+  },
+  {
+   "group": "demais (visual_centrifugal)",
+   "n_total": 524,
+   "n_active": 54,
+   "rate_mean_active": 19.507407407407406,
+   "spikes_per_s": 1053.4,
+   "frac_active": 0.10305343511450382,
+   "share_of_spikes": 0.0022185277181176674
+  },
+  {
+   "group": "APL",
+   "n_total": 2,
+   "n_active": 2,
+   "rate_mean_active": 338.45000000000005,
+   "spikes_per_s": 676.9000000000001,
+   "frac_active": 1.0,
+   "share_of_spikes": 0.0014255946576740546
+  },
+  {
+   "group": "demais (visual_projection)",
+   "n_total": 8038,
+   "n_active": 30,
+   "rate_mean_active": 16.793333333333333,
+   "spikes_per_s": 503.8,
+   "frac_active": 0.003732271709380443,
+   "share_of_spikes": 0.0010610349956214932
+  },
+  {
+   "group": "demais (optic)",
+   "n_total": 77530,
+   "n_active": 85,
+   "rate_mean_active": 5.458823529411765,
+   "spikes_per_s": 464.0,
+   "frac_active": 0.0010963498000773895,
+   "share_of_spikes": 0.0009772136521801762
+  },
+  {
+   "group": "demais (ascending)",
+   "n_total": 1736,
+   "n_active": 5,
+   "rate_mean_active": 22.8,
+   "spikes_per_s": 114.0,
+   "frac_active": 0.002880184331797235,
+   "share_of_spikes": 0.0002400912852339226
+  },
+  {
+   "group": "demais (motor)",
+   "n_total": 110,
+   "n_active": 7,
+   "rate_mean_active": 3.7857142857142856,
+   "spikes_per_s": 26.5,
+   "frac_active": 0.06363636363636363,
+   "share_of_spikes": 5.5810693497359205e-05
+  },
+  {
+   "group": "demais (endocrine)",
+   "n_total": 76,
+   "n_active": 0,
+   "rate_mean_active": 0.0,
+   "spikes_per_s": 0.0,
+   "frac_active": 0.0,
+   "share_of_spikes": 0.0
+  },
+  {
+   "group": "demais (sensory_ascending)",
+   "n_total": 581,
+   "n_active": 0,
+   "rate_mean_active": 0.0,
+   "spikes_per_s": 0.0,
+   "frac_active": 0.0,
+   "share_of_spikes": 0.0
+  },
+  {
+   "group": "demais (nan)",
+   "n_total": 14,
+   "n_active": 0,
+   "rate_mean_active": 0.0,
+   "spikes_per_s": 0.0,
+   "frac_active": 0.0,
+   "share_of_spikes": 0.0
+  }
+ ],
+ "special": {
+  "APL_left": [
+   346.1
+  ],
+  "APL_right": [
+   330.8
+  ],
+  "AOTU019_left": [
+   127.1
+  ],
+  "AOTU019_right": [
+   78.0
+  ]
+ },
+ "total_active": 8815,
+ "total_spikes_per_s": 474819.4
+}

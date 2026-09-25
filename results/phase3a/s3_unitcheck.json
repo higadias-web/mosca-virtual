@@ -1,0 +1,100 @@
+{
+ "grid": [
+  {
+   "m": 1,
+   "frac_body_contact": 1.0,
+   "supports": false,
+   "first_contact_ms": 53.00000000000001,
+   "thorax_z0": 0.0,
+   "thorax_z1": 0.42736489543249073
+  },
+  {
+   "m": 2.5,
+   "frac_body_contact": 0.0,
+   "supports": true,
+   "first_contact_ms": null,
+   "thorax_z0": 0.0,
+   "thorax_z1": 0.6339290437472107
+  },
+  {
+   "m": 5,
+   "frac_body_contact": 0.0,
+   "supports": true,
+   "first_contact_ms": null,
+   "thorax_z0": 0.0,
+   "thorax_z1": 0.6420595970387156
+  },
+  {
+   "m": 10,
+   "frac_body_contact": 0.0,
+   "supports": true,
+   "first_contact_ms": null,
+   "thorax_z0": 0.0,
+   "thorax_z1": 0.6231330753393017
+  },
+  {
+   "m": 20,
+   "frac_body_contact": 0.0,
+   "supports": true,
+   "first_contact_ms": null,
+   "thorax_z0": 0.0,
+   "thorax_z1": 0.6090817663682742
+  },
+  {
+   "m": 40,
+   "frac_body_contact": 0.0,
+   "supports": true,
+   "first_contact_ms": null,
+   "thorax_z0": 0.0,
+   "thorax_z1": 0.8329315000358195
+  },
+  {
+   "m": 80,
+   "frac_body_contact": 0.0,
+   "supports": true,
+   "first_contact_ms": null,
+   "thorax_z0": 0.0,
+   "thorax_z1": 1.0146458725633898
+  },
+  {
+   "m": 160,
+   "frac_body_contact": 0.0,
+   "supports": true,
+   "first_contact_ms": null,
+   "thorax_z0": 0.0,
+   "thorax_z1": 1.0937455564051373
+  },
+  {
+   "m": 320,
+   "frac_body_contact": 0.0,
+   "supports": true,
+   "first_contact_ms": null,
+   "thorax_z0": 0.0,
+   "thorax_z1": 1.1216910177371018
+  },
+  {
+   "m": 640,
+   "frac_body_contact": 0.0,
+   "supports": true,
+   "first_contact_ms": null,
+   "thorax_z0": 0.0,
+   "thorax_z1": 1.143400367458702
+  },
+  {
+   "m": 1000,
+   "frac_body_contact": 0.0,
+   "supports": true,
+   "first_contact_ms": null,
+   "thorax_z0": 0.0,
+   "thorax_z1": 1.1536433651317557
+  }
+ ],
+ "m_star": 2.5,
+ "monotonic": true,
+ "reference_1000_supports": true,
+ "valid": true,
+ "total_mass_model": 0.0010243100000000003,
+ "reading_holds": false,
+ "paper_multiplier": 40,
+ "first_contact_ms_at_m1": 53.00000000000001
+}

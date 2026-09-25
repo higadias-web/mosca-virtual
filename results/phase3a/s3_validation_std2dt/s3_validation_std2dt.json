@@ -1,0 +1,45 @@
+{
+ "tol": {
+  "X": 0.35,
+  "Y": 0.05,
+  "Z_s": 5.7,
+  "settle_s": 0.5,
+  "ball_mm": 0.2,
+  "limit_ms": 200,
+  "mono": 0.01
+ },
+ "limit": "std2dt",
+ "a": {
+  "passed": true,
+  "ratio_open_min": 0.946544097180224,
+  "ratio_open_max": 1.0000604623747895,
+  "ratio_open_median": 0.9881615637674106,
+  "n_outside": 0
+ },
+ "b": {
+  "passed": true,
+  "drift_max": 0.0032388620739651763,
+  "drift_worst_dof": "rf_coxa-rf_trochanterfemur-pitch",
+  "ball_mm": 0.014789725982580815
+ },
+ "c": {
+  "passed": false,
+  "viol_max": 0.21686820727023415,
+  "n_fail": 31,
+  "viol_step_max_descritivo": 0.21686820727023415
+ },
+ "d": {
+  "passed": false,
+  "n_nonmonotonic": 0,
+  "n_groups": 66
+ },
+ "e": {
+  "passed": true,
+  "n_positive": 0,
+  "n_tests": 66,
+  "max_prominence_angle": 5.691439317024561,
+  "max_prominence_proprio": 5.6537253028318775,
+  "mn_rate_mean": 8.908830633702756
+ },
+ "all_passed": false
+}
