@@ -22,3 +22,24 @@ estado alto e persistente da Etapa C?
 
 **Conclusão:** qualquer entrada espontânea nos ORNs, a partir de 0,5 Hz, liga o mesmo estado que o odor.
 O controle "sem odor = 0 spikes" das Etapas B a D só existe porque o modelo tem basal 0.
+
+## Teste 2: DNg100 e DNb08 isolados no cordão (Fase 3a)
+
+Pugliese et al. 2025 (bioRxiv 10.1101/2025.09.12.675944; código github.com/smpuglie/Pugliese_cpg_2025)
+obtêm ritmo nos MNs de perna estimulando **só o DNg100** (e o DNb08), num **modelo de taxa** (tanh,
+τ ≈ 20 ms, parâmetros sorteados por réplica), em malha aberta e sem propriocepção. No Terrário Virtual, esses
+dois DNs só tinham sido estimulados dentro de G3 (20 DNs) e G4 (159 DNs).
+
+**Protocolo:** o mesmo da Sessão 1 v2 (`experiments/phase3a_s1.py:main_v2`): híbrido FlyWire 783 + BANC, sinais
+`verified`, 3,25 s, 5 sementes, métrica v2 congelada.
+
+| DN estimulado | Taxa | MNs de perna ativos (de 391) | Taxa média dos MNs | Pernas rítmicas (v2) | Maior proeminência (limiar 5, precisa de 3/5 sementes) |
+|---|---|---|---|---|---|
+| DNg100 (2) | 100 Hz | 54 | 1,1 Hz | **0** | 5,0 (1 semente, LF, 9 Hz) |
+| DNg100 (2) | 200 Hz | 67 | 2,3 Hz | **0** | 4,0 |
+| DNb08 (4) | 100 Hz | 33 | 0,4 Hz | **0** | 4,9 |
+| DNb08 (4) | 200 Hz | 40 | 0,8 Hz | **0** | 6,4 (1 semente, LH) |
+
+**Conclusão:** os dois DNs que produzem ritmo no modelo de taxa de Pugliese não produzem ritmo no LIF do
+Shiu com o mesmo tipo de conectoma. O negativo da Fase 3a em malha aberta aponta para a classe do modelo
+(H4), não para o cordão.
