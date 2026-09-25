@@ -49,6 +49,40 @@ acha que o projeto ainda pode virar algo impressionante e quer saber como.
 
 Justificativa e caminho nas seções 4 e 5. Alternativas estão na seção 6, para você comparar.
 
+### Atualização: o Marcelo escolheu a alternativa C (seção 6)
+
+Depois de ler as alternativas, o Marcelo escolheu **C: a mosca vai até o odor com a marcha e a direção vindas do
+conectoma**, isto é, A (marcha pelo cordão) + B (olfato corrigido por fisiologia). Duas premissas precisam ficar
+claras, e peço que você as confira:
+
+1. **Nenhum dos dois lados está pronto; os dois estão em fase de diagnóstico.** [VERIFICADO: código/dados]
+   - Cordão: 0 de 6 pernas rítmicas, mesmo com o DNg100 isolado (meu teste 2).
+   - Olfato: qualquer entrada, inclusive 0,5 Hz espontâneos, satura o lobo antenal (meu teste 1).
+   - O que está avançado é a infraestrutura e o diagnóstico, não o resultado.
+2. **Os laboratórios não estão focados só em andar.** [FONTE: resumo]
+   - O laboratório da Wilson estuda como sinais olfativos chegam ao DNa02 (Rayshubskiy et al. 2025, *eLife*).
+   - O NeuroMechFly v2 (laboratório Ramdya) já navega em pluma de odor, com controlador programado.
+   - Wang-Chen & Ramdya 2026 (*Curr Opin Neurobiol*, arXiv 2601.08056) tratam modelos neuromecânicos integrados como
+     a direção da área.
+   - A Eon persegue a mosca "multicomportamento".
+
+   A junção é um objetivo conhecido da área. Ela não foi feita porque é difícil, não por falta de interesse.
+   **[OPINIÃO]** O que seria novo é fazê-la **sem controlador programado**: marcha pelo cordão e direção pelo cérebro,
+   ambos pelo conectoma, com ablações e comparação com dados reais.
+
+**Estrutura sugerida para C [OPINIÃO; conteste se discordar]:** duas trilhas **independentes, em paralelo**, cada uma
+com resultado próprio publicável, e a junção no fim.
+- **Trilha A (cordão):** Etapas 1–5 da seção 5. Resultado próprio: marcha gerada pelo VNC num corpo.
+- **Trilha B (cérebro):**
+  - corrigir o lobo antenal contra fisiologia, com atividade espontânea ligada;
+  - critérios: curva de Olsen 2010, retorno ao basal, KCs esparsas;
+  - depois, mostrar que o **lado do odor** chega ao DNa02 como diferença E − D (hoje não chega).
+  - Resultado próprio: olfato fisiológico no cérebro inteiro.
+- **Junção:** a diferença E − D do DNa02 vinda do cérebro entra no cordão da trilha A. Segundo Yang et al. 2024, o
+  DNa02 unilateral encurta o passo ipsilateral; a curva tem que emergir do cordão, não de um mapeamento manual.
+- **Ordem:** as trilhas não dependem uma da outra até a junção. Cada uma tem critérios de parada próprios. Se uma
+  falhar, a outra ainda entrega.
+
 ---
 
 ## 2. Auditoria do projeto, da Fase 0 até a Etapa E da 3b
